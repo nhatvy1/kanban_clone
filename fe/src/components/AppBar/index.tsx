@@ -11,9 +11,9 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Profiles from './Menus/Profiles'
 import Badge from '@mui/material/Badge'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import Tooltip from '@mui/material/Tooltip'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 
 const AppBar = () => {
   return (
@@ -24,7 +24,9 @@ const AppBar = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 10px'
+        gap: 2,
+        overflowX: 'auto',
+        px: 2
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -39,25 +41,26 @@ const AppBar = () => {
           </Typography>
         </Box>
 
-        <Workspaces />
-        <Recent />
-        <Starred />
-        <Templates />
-
-        <Button variant='outlined'>Create</Button>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+          <Workspaces />
+          <Recent />
+          <Starred />
+          <Templates />
+          <Button variant='outlined'>Create</Button>
+        </Box>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <TextField id='outlined-search' label='Search...' size='small' type='search' />
+        <TextField id='outlined-search' label='Search...' size='small' type='search' sx={{ minWidth: 120 }} />
         <ModeSelect />
 
-        <Tooltip title="Notification">
+        <Tooltip title='Notifications'>
           <Badge color='primary' variant='dot' sx={{ cursor: 'pointer' }}>
-            <NotificationsNoneIcon />
+            <NotificationsNoneIcon sx={{ color: 'primary.main' }} />
           </Badge>
         </Tooltip>
-        <Tooltip title="Notification">
+        <Tooltip title='Notification'>
           <Badge color='primary' variant='dot' sx={{ cursor: 'pointer' }}>
-            <HelpOutlineIcon />
+            <HelpOutlineIcon sx={{ color: 'primary.main' }} />
           </Badge>
         </Tooltip>
 

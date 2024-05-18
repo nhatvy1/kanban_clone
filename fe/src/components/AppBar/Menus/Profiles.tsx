@@ -8,7 +8,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import Avatar from '@mui/material/Avatar'
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 
 const Profiles = () => {
@@ -23,29 +23,29 @@ const Profiles = () => {
 
   return (
     <Box>
-      <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ padding: 0 }}
-            aria-controls={open ? 'basic-button-Profiles' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-          </IconButton>
-        </Tooltip>
+      <Tooltip title='Account settings'>
+        <IconButton
+          onClick={handleClick}
+          size='small'
+          sx={{ padding: 0 }}
+          aria-controls={open ? 'basic-button-Profiles' : undefined}
+          aria-haspopup='true'
+          aria-expanded={open ? 'true' : undefined}
+        >
+          <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+        </IconButton>
+      </Tooltip>
       <Menu
         id='basic-menu-Profiles'
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button-Profiles',
+          'aria-labelledby': 'basic-button-Profiles'
         }}
       >
         <MenuItem>
-          <Avatar sx={{ width: 28, height: 28, mr: 2 }}/> Profile
+          <Avatar sx={{ width: 28, height: 28, mr: 2 }} /> Profile
         </MenuItem>
         <Divider />
         <MenuItem>
