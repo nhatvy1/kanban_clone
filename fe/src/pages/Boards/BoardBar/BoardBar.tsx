@@ -10,6 +10,7 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '~/utils/formatter'
 
 const menuStyles = {
   color: 'white',
@@ -23,7 +24,8 @@ const menuStyles = {
   }
 }
 
-const BoardBar = () => {
+const BoardBar = ({ board }: any) => {
+
   return (
     <Box
       sx={{
@@ -34,14 +36,13 @@ const BoardBar = () => {
         justifyContent: 'space-between',
         gap: 2,
         overflowX: 'auto',
-        borderBottom: '1px solid white',
         px: 2,
         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2')
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Chip sx={menuStyles} icon={<DashboardIcon />} label='Trello' clickable />
-        <Chip sx={menuStyles} icon={<VpnLockIcon />} label='Public/Private workspaces' clickable />
+        <Chip sx={menuStyles} icon={<DashboardIcon />} label={board?.title} clickable />
+        <Chip sx={menuStyles} icon={<VpnLockIcon />} label={capitalizeFirstLetter(board?.type)} clickable />
         <Chip sx={menuStyles} icon={<AddToDriveIcon />} label='Add to google drive' clickable />
         <Chip sx={menuStyles} icon={<BoltIcon />} label='Automation' clickable />
         <Chip sx={menuStyles} icon={<FilterList />} label='Filters' clickable />

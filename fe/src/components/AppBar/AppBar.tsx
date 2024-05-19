@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import ModeSelect from '../ModeSelect'
+import ModeSelect from '../ModeSelect/ModeSelect'
 import AppsIcon from '@mui/icons-material/Apps'
 import TrelloIcon from '../Icons/TrelloIcon'
 import Typography from '@mui/material/Typography'

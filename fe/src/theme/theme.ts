@@ -16,13 +16,17 @@ declare module '@mui/material/styles' {
 
 export const app_bar_height = '58px'
 export const board_bar_height = '60px'
+export const columns_header_height = '50px'
+export const columns_footer_height = '56px'
 export const board_content_height = `calc(100vh - ${app_bar_height} - ${board_bar_height})`
 
 const theme = extendTheme({
   trello: {
     appBarHeight: app_bar_height,
     boardBarHeight: board_bar_height,
-    boardContentHeight: board_content_height
+    boardContentHeight: board_content_height,
+    columnHeaderHeight: columns_header_height,
+    columnFooterHeight: columns_footer_height
   },
   // colorSchemes: {
   //   light: {
