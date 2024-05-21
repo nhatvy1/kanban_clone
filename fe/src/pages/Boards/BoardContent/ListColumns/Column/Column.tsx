@@ -18,7 +18,7 @@ import Button from '@mui/material/Button'
 import { MouseEvent, useState } from 'react'
 import ListCards from './ListCards/ListCards'
 
-const Column = () => {
+const Column = ({ column }: any) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: MouseEvent<HTMLSpanElement>) => {
@@ -43,14 +43,16 @@ const Column = () => {
       {/* Box column header */}
       <Box
         sx={{
-          height: (theme)=> theme.trello.columnsFooterHeight,
+          height: (theme) => theme.trello.columnsFooterHeight,
           p: 2,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}
       >
-        <Typography sx={{ fontWeight: 'bold', cursor: 'pointer' }}>Column Title</Typography>
+        <Typography sx={{ fontWeight: 'bold', cursor: 'pointer' }}>
+          {column.title}
+        </Typography>
         <Box>
           <Tooltip title='More options'>
             <Typography
@@ -116,12 +118,12 @@ const Column = () => {
       </Box>
 
       {/* Box column list card */}
-      <ListCards />
+      <ListCards cards={column?.cards}/>
 
       {/* Box column footer */}
       <Box
         sx={{
-          height: (theme)=> theme.trello.columnFooterHeight,
+          height: (theme) => theme.trello.columnFooterHeight,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',

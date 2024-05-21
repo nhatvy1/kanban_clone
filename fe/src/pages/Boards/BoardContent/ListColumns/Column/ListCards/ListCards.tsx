@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box'
 import Card from './Card/Card'
 
-const ListCards = () => {
+const ListCards = ({ cards }: any) => {
+  console.log(cards)
   return (
     <Box
       sx={{
@@ -26,22 +27,9 @@ const ListCards = () => {
         }
       }}
     >
-      <Card />
-      <Card temporaryHideMedia />
-      {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
-        <Card
-          key={index}
-          sx={{
-            cursor: 'pointer',
-            boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
-            overflow: 'unset'
-          }}
-        >
-          <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-            <Typography>Lizard</Typography>
-          </CardContent>
-        </Card>
-      ))} */}
+      {cards?.map((card: any)=> (
+        <Card key={card?._id} card={card}/>
+      ))}
     </Box>
   )
 }
