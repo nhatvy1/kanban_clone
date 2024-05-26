@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import Card from './Card/Card'
 
 const ListCards = ({ cards }: any) => {
-  console.log(cards)
   return (
     <Box
       sx={{

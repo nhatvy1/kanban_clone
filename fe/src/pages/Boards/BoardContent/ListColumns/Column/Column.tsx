@@ -17,8 +17,25 @@ import DragHandleIcon from '@mui/icons-material/DragHandle'
 import Button from '@mui/material/Button'
 import { MouseEvent, useState } from 'react'
 import ListCards from './ListCards/ListCards'
+import { mapOrder } from '~/utils/sorts'
+
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 const Column = ({ column }: any) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: column._id,
+      data: { ...column }
+    })
+
+  const dndKitColumnStyles = {
+    touchAction: 'none', // Dành cho sensor default dạng PointerSensor
+    // Nếu sử dụng CSS.Transform như docs sẽ lỗi kiểu stretch
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: MouseEvent<HTMLSpanElement>) => {
@@ -28,16 +45,24 @@ const Column = ({ column }: any) => {
     setAnchorEl(null)
   }
 
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+
   return (
     <Box
+      ref={setNodeRef}
+      style={dndKitColumnStyles}
+      {...attributes}
+      {...listeners}
       sx={{
         minWidth: '300px',
         maxWidth: '300px',
-        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark' ? '#333643' : '#ebecf0',
         ml: 2,
         borderRadius: '6px',
         height: 'fit-content',
-        maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
+        maxHeight: (theme) =>
+          `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
       }}
     >
       {/* Box column header */}
@@ -118,7 +143,7 @@ const Column = ({ column }: any) => {
       </Box>
 
       {/* Box column list card */}
-      <ListCards cards={column?.cards}/>
+      <ListCards cards={orderedCards} />
 
       {/* Box column footer */}
       <Box
