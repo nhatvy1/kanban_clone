@@ -1,8 +1,8 @@
 import Container from '@mui/material/Container'
-import BoardBar from './BoardBar/BoardBar'
-import BoardContent from './BoardContent/BoardContent'
+import BoardBar from './Boards/BoardBar'
 import AppBar from '~/components/AppBar/AppBar'
 import { mockData } from '~/apis/mock-data'
+import BoardContent from './Boards/BoardContent'
 
 const Board = () => {
   return (

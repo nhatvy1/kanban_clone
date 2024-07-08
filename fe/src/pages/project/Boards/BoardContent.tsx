@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import ListColumns from './ListColumns/ListColumns'
 import { mapOrder } from '~/utils/sorts'
 
 import {
@@ -13,6 +12,7 @@ import {
   useSensors
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
+import ListColumns from '../columns/ListColumns'
 
 const BoardContent = ({ board }: any) => {
   const pointerSensor = useSensor(PointerSensor, {

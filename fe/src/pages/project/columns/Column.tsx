@@ -16,11 +16,11 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import Button from '@mui/material/Button'
 import { MouseEvent, useState } from 'react'
-import ListCards from './ListCards/ListCards'
 import { mapOrder } from '~/utils/sorts'
 
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import ListCards from '../Cards/ListCards'
 
 const Column = ({ column }: any) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
