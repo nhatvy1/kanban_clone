@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Role } from "../role/role.entity"
+import { Team } from "../team/team.entity"
 
 export enum Status {
   ACTIVE = 1,
@@ -37,4 +38,8 @@ export class User {
   @ManyToOne(()=> Role, (role)=> role.id)
   @JoinColumn({ name: 'role' })
   role: Role
+
+  @ManyToOne(()=> Team, (team)=> team.user)
+  @JoinColumn({ name: 'team' })
+  team: Team
 }

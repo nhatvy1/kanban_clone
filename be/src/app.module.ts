@@ -5,6 +5,7 @@ import typeormConfig from './database/typeorm.config'
 import { UserModule } from './module/user/user.module'
 import { RoleModule } from './module/role/role.module'
 import { PermissionModule } from './module/permission/permission.module'
+import { TeamModule } from './module/team/team.module'
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -13,7 +14,8 @@ import { PermissionModule } from './module/permission/permission.module'
     }),
     UserModule,
     RoleModule,
-    PermissionModule
+    PermissionModule,
+    TeamModule
   ],
   controllers: [],
   providers: [{ provide: 'PORT', useValue: 7000 }]
