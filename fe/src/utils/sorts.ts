@@ -1,9 +1,16 @@
-export const mapOrder = (originalArray: any, orderArray: any, key: any) => {
+export const mapOrder = <T>(
+  originalArray: T[],
+  orderArray: string[],
+  key: keyof T
+) => {
   if (!originalArray || !orderArray || !key) return []
 
   const clonedArray = [...originalArray]
-  const orderedArray = clonedArray.sort((a, b) => {
-    return orderArray.indexOf(a[key]) - orderArray.indexOf(b[key])
+  const orderedArray = clonedArray.sort((a: T, b: T) => {
+    return (
+      orderArray.indexOf(a[key] as string) -
+      orderArray.indexOf(b[key] as string)
+    )
   })
 
   return orderedArray
@@ -21,5 +28,4 @@ const itemOrderIds = ['id-5', 'id-4', 'id-2', 'id-3', 'id-1']
 const key = 'id'
 
 const orderedArray = mapOrder(originalItems, itemOrderIds, key)
-// console.log('Original:', originalItems)
-// console.log('Ordered:', orderedArray)
+console.log(orderedArray)
