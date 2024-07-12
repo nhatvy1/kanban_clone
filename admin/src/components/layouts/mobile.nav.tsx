@@ -6,8 +6,8 @@ import {
   Package,
   Package2,
   PanelLeft,
-  ShoppingCart,
-  Users2
+  User,
+  Users,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -34,35 +34,35 @@ const MobileNav = () => {
             className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'
           >
             <Home className='h-5 w-5' />
-            Dashboard
+            Trang chủ
           </Link>
           <Link
             href='#'
             className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'
           >
-            <ShoppingCart className='h-5 w-5' />
-            Orders
+            <Package className='h-5 w-5' />
+            Dự án
           </Link>
           <Link
             href='#'
             className='flex items-center gap-4 px-2.5 text-foreground'
           >
-            <Package className='h-5 w-5' />
-            Products
+            <Users className='h-5 w-5' />
+            Team
           </Link>
           <Link
             href='#'
             className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'
           >
-            <Users2 className='h-5 w-5' />
-            Customers
+            <User className='h-5 w-5' />
+            NGười dùng
           </Link>
           <Link
             href='#'
             className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'
           >
             <LineChart className='h-5 w-5' />
-            Settings
+            Thống kê
           </Link>
         </nav>
       </SheetContent>

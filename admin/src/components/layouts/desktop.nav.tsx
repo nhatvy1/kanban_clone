@@ -5,8 +5,8 @@ import {
   LineChart,
   Package,
   Settings,
-  ShoppingCart,
-  Users2
+  User,
+  Users,
 } from 'lucide-react'
 import { VercelLogo } from '../icons/icons'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
@@ -23,23 +23,23 @@ const DesktopNav = () => {
           <span className='sr-only'>Acme Inc</span>
         </Link>
 
-        <NavItem href='#' label='Dashboard'>
+        <NavItem href='#' label='Trang chủ'>
           <Home className='h-5 w-5' />
         </NavItem>
 
-        <NavItem href='#' label='Orders'>
-          <ShoppingCart className='h-5 w-5' />
-        </NavItem>
-
-        <NavItem href='/' label='Products'>
+        <NavItem href='/' label='Dự án'>
           <Package className='h-5 w-5' />
         </NavItem>
 
-        <NavItem href='/customers' label='Customers'>
-          <Users2 className='h-5 w-5' />
+        <NavItem href='#' label='Team'>
+          <Users className='h-5 w-5' />
         </NavItem>
 
-        <NavItem href='#' label='Analytics'>
+        <NavItem href='/customers' label='Người dùng'>
+          <User className='h-5 w-5' />
+        </NavItem>
+
+        <NavItem href='#' label='Thống kê'>
           <LineChart className='h-5 w-5' />
         </NavItem>
       </nav>
@@ -54,7 +54,7 @@ const DesktopNav = () => {
               <span className='sr-only'>Settings</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side='right'>Settings</TooltipContent>
+          <TooltipContent side='right' className='bg-white shadow-xl border text-black text-base'>C</TooltipContent>
         </Tooltip>
       </nav>
     </aside>

@@ -1,16 +1,18 @@
 import SearchInput from '@/components/filter/search'
+import DashboardBreadcrumb from '@/components/layouts/DashboardBreadcrumb'
 import DesktopNav from '@/components/layouts/desktop.nav'
 import MobileNav from '@/components/layouts/mobile.nav'
-import User from '@/components/layouts/user'
+import { User } from 'lucide-react'
 import { ReactNode } from 'react'
-  
-export default function Home({ children }: { children: ReactNode }) {
+
+const DashboadLayout = ({ children }: { children: ReactNode }) => {
   return (
     <main className='flex flex-col min-h-screen w-full bg-muted/40'>
       <DesktopNav />
       <div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
         <header className='sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
           <MobileNav />
+          <DashboardBreadcrumb />
           <SearchInput />
           <User />
         </header>
@@ -21,3 +23,5 @@ export default function Home({ children }: { children: ReactNode }) {
     </main>
   )
 }
+
+export default DashboadLayout
