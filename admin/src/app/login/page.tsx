@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { login } from '@/actions/auth'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Email is required' }),
@@ -31,13 +32,13 @@ const LoginPage = () => {
   })
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof formSchema>)=> {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log('Check: ', values)
       const res = await login(values)
-    } catch(e) {
+    } catch (e) {
       console.log('Check: ', e)
-    } 
+    }
   }
 
   return (
@@ -65,13 +66,30 @@ const LoginPage = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder='Enter your password' {...field} type='password'/>
+                    <Input
+                      placeholder='Enter your password'
+                      {...field}
+                      type='password'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type='submit' className='w-full '>Login</Button>
+            <Button type='submit' className='w-full '>
+              Login
+            </Button>
+            <div
+              onClick={() =>
+                toast('Event has been created', {
+                  description: 'Sunday, December 03, 2023 at 9:00 AM',
+                  position: 'top-right',
+                  duration: 3000
+                })
+              }
+            >
+              submit
+            </div>
           </form>
         </Form>
       </div>

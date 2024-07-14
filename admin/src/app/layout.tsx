@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from '@/components/providers/provider'
+import AuthProvider from '@/context/AuthProvider'
+import { cookies } from 'next/headers'
+import { Toaster } from '@/components/ui/sonner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,12 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = cookies()
+  const sessionToken = cookieStore.get('sessionToken')
+
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <Providers>
-          {children}
-        </Providers>
+        <AuthProvider initialToken={sessionToken?.value}>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   )

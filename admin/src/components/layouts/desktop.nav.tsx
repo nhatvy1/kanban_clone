@@ -23,19 +23,19 @@ const DesktopNav = () => {
           <span className='sr-only'>Acme Inc</span>
         </Link>
 
-        <NavItem href='#' label='Trang chủ'>
+        <NavItem href='/' label='Trang chủ'>
           <Home className='h-5 w-5' />
         </NavItem>
 
-        <NavItem href='/' label='Dự án'>
+        <NavItem href='/project-management' label='Dự án'>
           <Package className='h-5 w-5' />
         </NavItem>
 
-        <NavItem href='#' label='Team'>
+        <NavItem href='/team-management' label='Team'>
           <Users className='h-5 w-5' />
         </NavItem>
 
-        <NavItem href='/customers' label='Người dùng'>
+        <NavItem href='/user-management' label='Người dùng'>
           <User className='h-5 w-5' />
         </NavItem>
 
