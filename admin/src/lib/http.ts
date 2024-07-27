@@ -3,22 +3,6 @@ type CustomOptions = Omit<RequestInit, 'method'> & {
 }
 
 const BACKEND_URL = 'http://localhost:5001/api/v1/'
-class SessionToken {
-  private token = ''
-
-  get value() {
-    return this.token
-  }
-
-  set value(value: string) {
-    // If you can this method on server, an error will occur
-    if (typeof window === undefined) {
-      throw new Error('Cannot set token on server side')
-    }
-    this.token = value
-  }
-}
-export const clientSessionToken = new SessionToken()
 
 const request = async <Response>(
   method: 'POST' | 'PUT' | 'GET' | 'DELETE' | 'PATCH',
@@ -27,10 +11,7 @@ const request = async <Response>(
 ) => {
   const body = options?.body ? JSON.stringify(options.body) : undefined
   const baseHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: clientSessionToken.value
-      ? `Bearer ${clientSessionToken.value}`
-      : ''
+    'Content-Type': 'application/json'
   }
   const baseUrl = options?.baseUrl === undefined ? BACKEND_URL : options.baseUrl
   // validate url

@@ -77,19 +77,8 @@ const LoginPage = () => {
               )}
             />
             <Button type='submit' className='w-full '>
-              Login
+              Đăng nhập
             </Button>
-            <div
-              onClick={() =>
-                toast('Event has been created', {
-                  description: 'Sunday, December 03, 2023 at 9:00 AM',
-                  position: 'top-right',
-                  duration: 3000
-                })
-              }
-            >
-              submit
-            </div>
           </form>
         </Form>
       </div>
