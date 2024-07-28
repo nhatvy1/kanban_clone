@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
-import Link from 'next/link'
 
 const User = () => {
   const user = {
@@ -35,24 +34,12 @@ const User = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
-        {user ? (
-          <DropdownMenuItem>
-            <form
-            // action={async () => {
-            //   'use server'
-            //   await signOut()
-            // }}
-            >
-              <button type='submit'>Sign Out</button>
-            </form>
-          </DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem>
-            <Link href='/login'>Sign In</Link>
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem>
+          <form>
+            <button type='submit'>Sign Out</button>
+          </form>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

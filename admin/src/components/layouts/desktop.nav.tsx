@@ -1,17 +1,12 @@
 import Link from 'next/link'
 import NavItem from './nav.item'
-import {
-  Home,
-  LineChart,
-  Package,
-  Settings,
-  User,
-  Users,
-} from 'lucide-react'
+import { Settings } from 'lucide-react'
 import { VercelLogo } from '../icons/icons'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import { ListMenu } from './data'
 
 const DesktopNav = () => {
+
   return (
     <aside className='fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex'>
       <nav className='flex flex-col items-center gap-4 px-2 sm:py-5'>
@@ -23,25 +18,11 @@ const DesktopNav = () => {
           <span className='sr-only'>Acme Inc</span>
         </Link>
 
-        <NavItem href='/' label='Trang chủ'>
-          <Home className='h-5 w-5' />
-        </NavItem>
-
-        <NavItem href='/project-management' label='Dự án'>
-          <Package className='h-5 w-5' />
-        </NavItem>
-
-        <NavItem href='/team-management' label='Team'>
-          <Users className='h-5 w-5' />
-        </NavItem>
-
-        <NavItem href='/user-management' label='Người dùng'>
-          <User className='h-5 w-5' />
-        </NavItem>
-
-        <NavItem href='#' label='Thống kê'>
-          <LineChart className='h-5 w-5' />
-        </NavItem>
+        {ListMenu.map((item) => (
+          <NavItem href={item.href} label={item.label} key={item.id}>
+            <item.icon className='h-5 w-5' />
+          </NavItem>
+        ))}
       </nav>
       <nav className='mt-auto flex flex-col items-center gap-4 px-2 sm:py-5'>
         <Tooltip>
@@ -54,7 +35,12 @@ const DesktopNav = () => {
               <span className='sr-only'>Settings</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side='right' className='bg-white shadow-xl border text-black text-base'>C</TooltipContent>
+          <TooltipContent
+            side='right'
+            className='bg-white shadow-xl border text-black text-base'
+          >
+            Settings
+          </TooltipContent>
         </Tooltip>
       </nav>
     </aside>

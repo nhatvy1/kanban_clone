@@ -32,8 +32,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = cookies()
-  const sessionToken = cookieStore.get('sessionToken')
+  // const cookieStore = cookies()
+  // const sessionToken = cookieStore.get('sessionToken')
 
   return (
     <html lang='en'>

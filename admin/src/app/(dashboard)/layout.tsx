@@ -2,7 +2,7 @@ import SearchInput from '@/components/filter/search'
 import DashboardBreadcrumb from '@/components/layouts/DashboardBreadcrumb'
 import DesktopNav from '@/components/layouts/desktop.nav'
 import MobileNav from '@/components/layouts/mobile.nav'
-import { User } from 'lucide-react'
+import User from '@/components/layouts/user'
 import { ReactNode } from 'react'
 
 const DashboadLayout = ({ children }: { children: ReactNode }) => {
