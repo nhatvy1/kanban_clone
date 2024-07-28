@@ -18,6 +18,6 @@ import { TeamModule } from './module/team/team.module'
     TeamModule
   ],
   controllers: [],
-  providers: [{ provide: 'PORT', useValue: 7000 }]
+  providers: [{ provide: 'PORT', useValue: 5001 }]
 })
 export class AppModule {}

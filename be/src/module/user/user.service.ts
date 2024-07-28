@@ -9,11 +9,25 @@ export class UserService {
 
   async checkEmail(email: string) {
     try {
-      const result = await this.userRepository.findOneBy({ email })
-      return result
+      const existEmail = await this.userRepository.findOneBy({ email })
+      if(!existEmail) {
+        throw new NotFoundException(`Email hoặc mật khẩu không chính xác`)
+      } 
+      return existEmail
     } catch (e) {
-      throw new NotFoundException(`Email doesn't exist`)
+      throw e
     }
   }
 
+  async getUserLogin(email: string) {
+    try {
+      const user = await this.userRepository.findOneBy({ email })
+      if(!user) {
+        throw new NotFoundException(`Email hoặc mật khẩu không chính xác`)
+      } 
+      return user
+    } catch(e) {
+      throw e
+    }
+  }
 }

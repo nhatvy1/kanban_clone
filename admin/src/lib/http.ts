@@ -2,7 +2,7 @@ type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined
 }
 
-const BACKEND_URL = 'http://localhost:5001/api/v1/'
+const BACKEND_URL = 'http://localhost:5001/api/v1'
 
 const request = async <Response>(
   method: 'POST' | 'PUT' | 'GET' | 'DELETE' | 'PATCH',
