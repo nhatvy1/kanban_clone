@@ -1,4 +1,4 @@
-import { ConflictException, HttpStatus, Injectable } from '@nestjs/common'
+import { ConflictException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { role, Role } from './role.entity'
 import { Repository } from 'typeorm'
@@ -73,6 +73,27 @@ export class RoleService {
     try {
       return 1
     } catch (e) {
+      throw e
+    }
+  }
+
+  async getRoleById(id: number) {
+    try {
+      const role = await this.roleRepository.findOneBy({ id })
+      return role
+    } catch(e) {
+      throw e
+    }
+  }
+
+  async getRoleByName(name: string) {
+    try {
+      const role = await this.roleRepository.findOneBy({ slug: name })
+      if(!name) {
+        throw new NotFoundException('Role not found')
+      }
+      return role
+    } catch(e) {
       throw e
     }
   }

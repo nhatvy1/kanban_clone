@@ -6,6 +6,7 @@ import { UserModule } from './module/user/user.module'
 import { RoleModule } from './module/role/role.module'
 import { PermissionModule } from './module/permission/permission.module'
 import { TeamModule } from './module/team/team.module'
+import { AuthModule } from './module/auth/auth.module'
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -13,11 +14,12 @@ import { TeamModule } from './module/team/team.module'
       useFactory: typeormConfig
     }),
     UserModule,
+    AuthModule,
     RoleModule,
     PermissionModule,
     TeamModule
   ],
   controllers: [],
-  providers: [{ provide: 'PORT', useValue: 5001 }]
+  providers: [{ provide: 'PORT', useValue: 5000 }]
 })
 export class AppModule {}

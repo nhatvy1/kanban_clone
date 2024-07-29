@@ -23,10 +23,10 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/',
-    '/project-management',
-    '/team-management',
-    '/user-management',
-    '/login'
+    // '/',
+    // '/project-management',
+    // '/team-management',
+    // '/user-management',
+    // '/login'
   ]
 }

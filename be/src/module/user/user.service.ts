@@ -1,18 +1,29 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from './user.entity'
 import { Repository } from 'typeorm'
+import { RegisterDto } from '../auth/dto/register.dto'
+import { Role, role } from '../role/role.entity'
+import { RoleService } from '../role/role.service'
+import { Hash } from 'src/utils/hash'
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly roleService: RoleService
+  ) {}
 
   async checkEmail(email: string) {
     try {
       const existEmail = await this.userRepository.findOneBy({ email })
-      if(!existEmail) {
+      if (!existEmail) {
         throw new NotFoundException(`Email hoặc mật khẩu không chính xác`)
-      } 
+      }
       return existEmail
     } catch (e) {
       throw e
@@ -21,12 +32,41 @@ export class UserService {
 
   async getUserLogin(email: string) {
     try {
-      const user = await this.userRepository.findOneBy({ email })
-      if(!user) {
+      const user = await this.userRepository.findOne({
+        where: { email: email },
+        select: ['id', 'email', 'password']
+      })
+      if (!user) {
         throw new NotFoundException(`Email hoặc mật khẩu không chính xác`)
-      } 
+      }
       return user
-    } catch(e) {
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async register(createUser: RegisterDto) {
+    try {
+      const checkEmail = await this.userRepository.findOneBy({
+        email: createUser.email
+      })
+      if (checkEmail) {
+        throw new ConflictException('Email address is already registered')
+      }
+      const hashPassword = Hash.generateHash(createUser.password)
+      const roleCustomer = await this.roleService.getRoleByName(role.USER)
+
+      const dataUser = {
+        ...createUser,
+        password: hashPassword,
+        role: roleCustomer
+      }
+      const newUser = this.userRepository.create(dataUser)
+      await this.userRepository.save(newUser)
+      delete newUser.password
+
+      return newUser
+    } catch (e) {
       throw e
     }
   }

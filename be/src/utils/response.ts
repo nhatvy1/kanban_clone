@@ -1,4 +1,4 @@
-import { HttpStatus } from "@nestjs/common"
+import { HttpStatus } from '@nestjs/common'
 
 interface Response<T> {
   message: string
@@ -6,11 +6,7 @@ interface Response<T> {
   result?: T
 }
 
-export const Response = <T>({
-  message,
-  statusCode,
-  result
-}: Response<T>)=> {
+export const Response = <T>({ message, statusCode, result }: Response<T>) => {
   return {
     statusCode: statusCode,
     message: message,
