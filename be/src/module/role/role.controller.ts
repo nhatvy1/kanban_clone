@@ -40,4 +40,13 @@ export class RoleController {
       throw e
     }
   }
+
+  @Post('check-permission')
+  checkRoleAndPermission() {
+    try {
+      const result = 1
+    } catch(e) {
+      throw e
+    }
+  }
 }

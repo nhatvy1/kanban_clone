@@ -10,6 +10,7 @@ import { RegisterDto } from '../auth/dto/register.dto'
 import { Role, role } from '../role/role.entity'
 import { RoleService } from '../role/role.service'
 import { Hash } from 'src/utils/hash'
+import { UpdateUserDto } from './dto/update.user.dto'
 
 @Injectable()
 export class UserService {
@@ -66,6 +67,55 @@ export class UserService {
       delete newUser.password
 
       return newUser
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async getUserById(id: number) {
+    try {
+      const user = await this.userRepository.findOneBy({ id })
+      if (!user) {
+        throw new NotFoundException('User not found')
+      }
+      return user
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async deleteUserById(id: number) {
+    try {
+      const user = await this.userRepository.findOneBy({ id })
+      if (!user) {
+        throw new NotFoundException('User not found')
+      }
+      await this.userRepository.remove(user)
+      return user
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async updateUserDto(id: number, updateUser: UpdateUserDto) {
+    try {
+      const user = await this.userRepository.findOneBy({ id })
+      if (!user) {
+        throw new NotFoundException('User not found')
+      }
+
+      for (const key of Object.keys(updateUser)) {
+        if (key !== 'email' && key !== 'password' && key !== 'role') {
+          user[key] = updateUser[key]
+        }
+      }
+
+      if (updateUser.role) {
+        const role = await this.roleService.getRoleById(updateUser.role)
+        user.role = role
+      }
+
+      await this.userRepository.update(id, user)
     } catch (e) {
       throw e
     }

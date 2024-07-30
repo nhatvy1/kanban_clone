@@ -1,16 +1,22 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-import { Role } from "../role/role.entity"
-import { Team } from "../team/team.entity"
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm'
+import { Role } from '../role/role.entity'
+import { Team } from '../team/team.entity'
 
 export enum Status {
   ACTIVE = 1,
   INACTIVE = 0,
-  BLOCK = -1,
+  BLOCK = -1
 }
 
 @Entity()
 export class User {
-
   @PrimaryGeneratedColumn()
   id: number
 
@@ -25,7 +31,7 @@ export class User {
 
   @Column({
     default:
-      'https://res.cloudinary.com/metavere/image/upload/v1695267123/ConBo_eij0q0.png',
+      'https://res.cloudinary.com/metavere/image/upload/v1695267123/ConBo_eij0q0.png'
   })
   avatar: string
 
@@ -34,12 +40,12 @@ export class User {
 
   @Column({ type: Number, default: Status.INACTIVE })
   status: number
-  
-  @ManyToOne(()=> Role, (role)=> role.id)
+
+  @ManyToOne(() => Role, (role) => role.id)
   @JoinColumn({ name: 'role' })
   role: Role
 
-  @ManyToOne(()=> Team, (team)=> team.user)
+  @ManyToOne(() => Team, (team) => team.user, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'team' })
   team: Team
 }

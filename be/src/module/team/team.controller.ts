@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -16,12 +17,12 @@ import { Response } from 'src/utils/response'
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
-  @Post('create')
+  @Post('')
   async createTeam(@Body() createTeam: CreateTeamDto) {
     try {
       const result = await this.teamService.createTeam(createTeam)
       return Response({
-        message: 'Tạo mới team thành cồng',
+        message: 'success',
         statusCode: HttpStatus.OK,
         result
       })
@@ -49,7 +50,7 @@ export class TeamController {
     try {
       const result = await this.teamService.getTeamById(id)
       return Response({
-        message: 'Thành công',
+        message: 'success',
         statusCode: HttpStatus.OK,
         result
       })
@@ -59,8 +60,31 @@ export class TeamController {
   }
 
   @Put(':id')
-  updateTeamById(@Param('id', ParseIntPipe) id: number) {
+  async updateTeamById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateTeam: CreateTeamDto
+  ) {
     try {
+      const result = await this.teamService.updateTeamName(id, updateTeam)
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  @Delete(':id')
+  async deleteTeamById(@Param('id', ParseIntPipe) id: number) {
+    try {
+      const result = await this.teamService.deleteTeamById(id)
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
+      })
     } catch (e) {
       throw e
     }

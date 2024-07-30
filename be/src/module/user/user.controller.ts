@@ -1,7 +1,20 @@
-import { Controller, Delete, Get, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Put
+} from '@nestjs/common'
 import { UserService } from './user.service'
+import { Authentication } from 'src/decorators/authentication.decorator'
+import { Response } from 'src/utils/response'
+import { UpdateUserDto } from './dto/update.user.dto'
 
 @Controller('user')
+@Authentication()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -11,17 +24,47 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserById() {
-    return 1
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
+    try {
+      const result = await this.userService.getUserById(id)
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
+      })
+    } catch (e) {
+      throw e
+    }
   }
 
-  @Delete()
-  deleteUserById() {
-    return 1
+  @Delete(':id')
+  async deleteUserById(@Param('id', ParseIntPipe) id: number) {
+    try {
+      const result = await this.userService.getUserById(id)
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
+      })
+    } catch (e) {
+      throw e
+    }
   }
 
-  @Put()
-  async updateUserById() {
-    return 1
+  @Put(':id')
+  async updateUserById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
+    try {
+      const result = await this.userService.updateUserDto(id, updateUserDto)
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
+      })
+    } catch(e) {
+      throw e
+    }
   }
 }
