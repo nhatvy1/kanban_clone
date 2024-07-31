@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { Role } from '../role/role.entity'
 import { Team } from '../team/team.entity'
+import { Project } from '../project/project.entity'
 
 export enum Status {
   ACTIVE = 1,
@@ -48,4 +51,10 @@ export class User {
   @ManyToOne(() => Team, (team) => team.user, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'team' })
   team: Team
+
+  @OneToMany(() => Project, (project) => project.creators)
+  projects: Project[]
+
+  @ManyToMany(() => Project, (project) => project.participants)
+  participatedProjects: Project[]
 }
