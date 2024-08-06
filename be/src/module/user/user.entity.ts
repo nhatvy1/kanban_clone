@@ -54,7 +54,4 @@ export class User {
 
   @OneToMany(() => Project, (project) => project.creators)
   projects: Project[]
-
-  @ManyToMany(() => Project, (project) => project.participants)
-  participatedProjects: Project[]
 }

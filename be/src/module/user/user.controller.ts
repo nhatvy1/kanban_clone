@@ -67,4 +67,13 @@ export class UserController {
       throw e
     }
   }
+
+  @Get('/demo/abc')
+  async getDemo() {
+    try {
+      return { msg: 'dasds ' }
+    } catch(e) {
+      throw e
+    }
+  }
 }
