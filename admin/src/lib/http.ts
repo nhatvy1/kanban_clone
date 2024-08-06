@@ -1,8 +1,22 @@
+import { error } from 'console'
+
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined
 }
 
-const BACKEND_URL = 'http://localhost:5001/api/v1'
+class HttpError extends Error {
+  payload: {
+    message: string
+    [key: string]: any
+  }
+
+  constructor({ payload }: { payload: any }) {
+    super(payload?.message || 'Hệ thống bảo trì', { cause: payload })
+    this.payload = payload
+  }
+}
+
+const BACKEND_URL = 'http://localhost:5000/api/v1'
 
 const request = async <Response>(
   method: 'POST' | 'PUT' | 'GET' | 'DELETE' | 'PATCH',
@@ -27,10 +41,12 @@ const request = async <Response>(
     method
   })
 
-  if (!res.ok) {
-    throw new Error('An error occur')
-  }
   const payload: Response = await res.json()
+
+  if (!res.ok) {
+    throw new HttpError({ payload })
+  }
+
   return payload
 }
 

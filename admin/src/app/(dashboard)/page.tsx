@@ -1,6 +1,6 @@
 const DashboardPage = ()=> {
   return (
-    <div>XIn chao</div>
+    <div>Xin chào, Tôi là Son Goku Bot 🐲Dragon Ball 🏀</div>
   )
 }
 

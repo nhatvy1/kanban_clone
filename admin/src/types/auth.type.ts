@@ -6,7 +6,23 @@ export interface IFormLogin {
 export interface IResponseLogin {
   message: string
   statusCode: number
-  result: any
+  result: {
+    user: {
+      id: number,
+      email: string
+    },
+    access_token: string
+    refresh_token: string
+  }
+}
+
+export interface IResponseRefreshToken {
+  message: string,
+  statusCode: number,
+  result: {
+    access_token: string,
+    refresh_token: string
+  }
 }
 
 export interface IFormRegister {

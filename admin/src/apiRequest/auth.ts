@@ -1,0 +1,43 @@
+import http from '@/lib/http'
+import {
+  IFormLogin,
+  IFormRegister,
+  IResponseLogin,
+  IResponseRefreshToken
+} from '@/types/auth.type'
+
+const auth = {
+  login: (data: IFormLogin) => http.post<IResponseLogin>('/auth/login', data),
+  authSetCookie: async ({
+    accessToken,
+    refreshToken
+  }: {
+    accessToken: string
+    refreshToken: string
+  }) => {
+    const body = { accessToken, refreshToken }
+
+    const res = await http.post('api/auth', body, {
+      baseUrl: 'http://localhost:3000'
+    })
+    return res
+  },
+  setNewAccessToken: async ({
+    refreshToken = ''
+  }: {
+    refreshToken: string
+  }) => {
+    const res = await http.post<IResponseRefreshToken>(
+      'auth/refresh-token',
+      null,
+      {
+        headers: { Authorization: `Bearer ${refreshToken}` }
+      }
+    )
+    return res
+  },
+  logoutNextClientToNextServer: async () =>
+    http.post('api/auth/logout', null, { baseUrl: '' })
+}
+
+export default auth

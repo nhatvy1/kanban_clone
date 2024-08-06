@@ -22,6 +22,8 @@ const config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        'blue-bold': '#003bd0',
+        'blue-light': '#006df9',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
@@ -73,7 +75,16 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out'
       },
       backgroundImage: {
-        'login-page': 'url(/background.svg)'
+        'login-page': 'url(/background.svg)',
+        'login': 'url(/login/login.jpg)'
+      },
+      boxShadow: {
+        'custom-1': 'rgb(255, 255, 255) 0px 0px 6px 0px',
+        headerLogin: 'rgba(0, 0, 0, 0.25) 0px 2px 3px',
+        formLogin: 'rgba(11, 43, 158, 0.15) 0px 6px 20px -6px'
+      },
+      height: {
+        headerLogin: '65px'
       }
     }
   },
