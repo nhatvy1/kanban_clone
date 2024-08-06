@@ -5,6 +5,7 @@ import { IFormLogin } from '@/types/auth.type'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 const FormLogin = () => {
   const router = useRouter()
@@ -17,14 +18,14 @@ const FormLogin = () => {
   const onSubmit: SubmitHandler<IFormLogin> = async (data: IFormLogin) => {
     try {
       const response = await auth.login(data)
-      const { access_token, refresh_token } = response.result
+      const { access_token } = response.result
       await auth.authSetCookie({
         accessToken: access_token,
-        refreshToken: refresh_token
       })
       router.push('/')
-    } catch (e) {
-      console.log('Check e: ', e)
+      toast.success('Login successfully')
+    } catch (e: any) {
+      toast.error(e?.message)
     }
   }
 

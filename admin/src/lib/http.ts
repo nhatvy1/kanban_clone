@@ -1,4 +1,7 @@
+import { IResponseLogin } from '@/types/auth.type'
 import { error } from 'console'
+import { normalizePath } from './normalize'
+import auth from '@/apiRequest/auth'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined
@@ -7,6 +10,7 @@ type CustomOptions = Omit<RequestInit, 'method'> & {
 class HttpError extends Error {
   payload: {
     message: string
+    statusCode: number
     [key: string]: any
   }
 
@@ -16,6 +20,9 @@ class HttpError extends Error {
   }
 }
 
+let clientLogoutRequest: null | Promise<any> = null
+export const isClient = () => typeof window !== 'undefined'
+
 const BACKEND_URL = 'http://localhost:5000/api/v1'
 
 const request = async <Response>(
@@ -24,9 +31,18 @@ const request = async <Response>(
   options?: CustomOptions
 ) => {
   const body = options?.body ? JSON.stringify(options.body) : undefined
-  const baseHeaders = {
+  const baseHeaders: {
+    [key: string]: string
+  } = {
     'Content-Type': 'application/json'
   }
+  if (isClient()) {
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken) {
+      baseHeaders.Authorization = `Bearer ${accessToken}`
+    }
+  }
+
   const baseUrl = options?.baseUrl === undefined ? BACKEND_URL : options.baseUrl
   // validate url
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`
@@ -44,7 +60,35 @@ const request = async <Response>(
   const payload: Response = await res.json()
 
   if (!res.ok) {
-    throw new HttpError({ payload })
+    if (res.status === 401) {
+      if (
+        isClient() &&
+        !['auth/login'].some((item) => item === normalizePath(url))
+      ) {
+        try {
+          await auth.logoutNextClientToNextServer()
+        } catch (e) {
+        } finally {
+          localStorage.removeItem('accessToken')
+          clientLogoutRequest = null
+          location.href = '/login'
+        }
+      } else {
+        throw new HttpError({ payload })
+      }
+    } else {
+      throw new HttpError({ payload })
+    }
+  }
+
+  // Ensure logic only runs on the client side (browser)
+  if (isClient()) {
+    if (['auth/login'].some((item) => item === normalizePath(url))) {
+      const access_token = (payload as IResponseLogin).result.access_token
+      localStorage.setItem('accessToken', access_token)
+    } else if ('api/auth/logout' === normalizePath(url)) {
+      localStorage.removeItem('accessToken')
+    }
   }
 
   return payload
