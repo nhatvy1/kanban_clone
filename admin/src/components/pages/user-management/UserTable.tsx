@@ -12,8 +12,12 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
+import { useState } from 'react'
+import Modal from '@/components/commons/Modal'
 
 const UserTable = ({ data }: { data: IUser[] }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
   const columns: ColumnDef<IUser>[] = [
     {
       accessorKey: 'id',
@@ -30,7 +34,7 @@ const UserTable = ({ data }: { data: IUser[] }) => {
     {
       accessorKey: 'avatar',
       header: 'Avatar',
-      cell: ({ row }) => {
+      cell: () => {
         return (
           <Image
             src='https://github.com/shadcn.png'
@@ -65,7 +69,7 @@ const UserTable = ({ data }: { data: IUser[] }) => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Pencil size={16} className='cursor-pointer' />
+                  <Pencil size={16} className='cursor-pointer' onClick={()=> setIsOpenModal(true)}/>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Edit user</p>
@@ -91,6 +95,10 @@ const UserTable = ({ data }: { data: IUser[] }) => {
   return (
     <div>
       <NextTable data={data} columns={columns} />
+
+      <Modal open={isOpenModal} setIsOpenModal={setIsOpenModal}>
+        <h3>Xin chao</h3>
+      </Modal>
     </div>
   )
 }
