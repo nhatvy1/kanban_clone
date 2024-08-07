@@ -1,18 +1,17 @@
-import { columns, Payment } from "@/components/pages/user-management/columns"
-import { UserTable } from "@/components/pages/user-management/UserTable"
+import user from '@/apiRequest/user'
+import UserTable from '@/components/pages/user-management/UserTable'
+import { cookies } from 'next/headers'
 
-const UserManagementPage = () => {
-  const data: Payment[] = [
-    {
-      id: 1,
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    }
-  ]
+const UserManagementPage = async () => {
+  const cookieStore = cookies()
+  const accessToken = cookieStore.get('accessToken')?.value
+  
+  const res = await user.getListUser({ accessToken })
+  const { result, limit, page, totalResults } = res.result
+
   return (
     <div>
-      <UserTable data={data} columns={columns}/>
+      <UserTable data={result}/>
     </div>
   )
 }

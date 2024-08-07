@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from '@/components/providers/provider'
-import { cookies } from 'next/headers'
 import { Toaster } from '@/components/ui/sonner'
 import { Open_Sans, Roboto_Mono } from 'next/font/google'
 

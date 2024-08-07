@@ -1,80 +1,98 @@
-"use client"
- 
+'use client'
+
+import NextTable from '@/components/commons/NextTable'
+import { IUser } from '@/types/user.type'
+import { ColumnDef } from '@tanstack/react-table'
+import Image from 'next/image'
+import momemt from 'moment'
+import { BadgeX, Pencil } from 'lucide-react'
 import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
- 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
- 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
- 
-export function UserTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
- 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
+
+const UserTable = ({ data }: { data: IUser[] }) => {
+  const columns: ColumnDef<IUser>[] = [
+    {
+      accessorKey: 'id',
+      header: 'ID'
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email'
+    },
+    {
+      accessorKey: 'fullName',
+      header: 'Fullname'
+    },
+    {
+      accessorKey: 'avatar',
+      header: 'Avatar',
+      cell: ({ row }) => {
+        return (
+          <Image
+            src='https://github.com/shadcn.png'
+            alt='Loi anh'
+            width={40}
+            height={40}
+            className='rounded-full'
+          />
+        )
+      }
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status'
+    },
+    {
+      accessorKey: 'createdAt',
+      header: 'Created At',
+      cell: ({ row }) => {
+        const createdAt = momemt(row.original.createdAt).format(
+          'hh:mm DD/MM/YYYY'
+        )
+        return <span>{createdAt}</span>
+      }
+    },
+    {
+      accessorKey: '',
+      header: 'Action',
+      cell: ({ row }) => {
+        return (
+          <div className='flex items-center gap-x-4'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Pencil size={16} className='cursor-pointer' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edit user</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <BadgeX size={16} className='cursor-pointer' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete user</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )
+      }
+    }
+  ]
+
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+    <div>
+      <NextTable data={data} columns={columns} />
     </div>
   )
 }
+
+export default UserTable
