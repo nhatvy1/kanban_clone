@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
+import ButtonLogout from './button.logout'
 
 const User = () => {
   const user = {
@@ -36,9 +37,7 @@ const User = () => {
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <form>
-            <button type='submit'>Sign Out</button>
-          </form>
+          <ButtonLogout />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
