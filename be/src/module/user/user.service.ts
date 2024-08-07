@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from './user.entity'
-import { Repository } from 'typeorm'
+import { ILike, Repository } from 'typeorm'
 import { RegisterDto } from '../auth/dto/register.dto'
-import { Role, role } from '../role/role.entity'
+import { role } from '../role/role.entity'
 import { RoleService } from '../role/role.service'
 import { Hash } from 'src/utils/hash'
 import { UpdateUserDto } from './dto/update.user.dto'
+import { FilterUserDto } from './dto/search.user.dto'
 
 @Injectable()
 export class UserService {
@@ -116,6 +117,31 @@ export class UserService {
       }
 
       await this.userRepository.update(id, user)
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async getUsers(filterUser: FilterUserDto) {
+    try {
+      const { limit, page, search } = filterUser
+      const skip = (page - 1) * limit
+
+      const [list, totalResults] = await this.userRepository.findAndCount({
+        order: { createdAt: 'DESC' },
+        take: limit,
+        skip: skip,
+        where: [
+          { fullName: ILike(`%${search}%`) },
+          { email: ILike(`%${search}%`) }
+        ]
+      })
+      return {
+        result: list,
+        totalResults: totalResults,
+        limit: limit,
+        page: page
+      }
     } catch (e) {
       throw e
     }
