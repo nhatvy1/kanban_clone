@@ -3,7 +3,6 @@
 import NextTable from '@/components/commons/NextTable'
 import { IUser } from '@/types/user.type'
 import { ColumnDef } from '@tanstack/react-table'
-import Image from 'next/image'
 import momemt from 'moment'
 import { BadgeX, Pencil } from 'lucide-react'
 import {
@@ -13,10 +12,11 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useState } from 'react'
-import Modal from '@/components/commons/Modal'
+import UpdateUser from './UpdateUser'
 
 const UserTable = ({ data }: { data: IUser[] }) => {
-  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isOpenEdit, setIsOpenEdit] = useState(false)
+  const [currentUser, setCurrentUser] = useState<IUser | undefined>(undefined)
 
   const columns: ColumnDef<IUser>[] = [
     {
@@ -30,21 +30,6 @@ const UserTable = ({ data }: { data: IUser[] }) => {
     {
       accessorKey: 'fullName',
       header: 'Fullname'
-    },
-    {
-      accessorKey: 'avatar',
-      header: 'Avatar',
-      cell: () => {
-        return (
-          <Image
-            src='https://github.com/shadcn.png'
-            alt='Loi anh'
-            width={40}
-            height={40}
-            className='rounded-full'
-          />
-        )
-      }
     },
     {
       accessorKey: 'status',
@@ -69,7 +54,11 @@ const UserTable = ({ data }: { data: IUser[] }) => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Pencil size={16} className='cursor-pointer' onClick={()=> setIsOpenModal(true)}/>
+                  <Pencil
+                    size={16}
+                    className='cursor-pointer'
+                    onClick={() => handleEditUser(row.original)}
+                  />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Edit user</p>
@@ -92,13 +81,25 @@ const UserTable = ({ data }: { data: IUser[] }) => {
     }
   ]
 
+  const handleEditUser = (data: IUser) => {
+    setIsOpenEdit(true)
+    setCurrentUser(data)
+  }
+
+  const handleCloseEditUser = () => {
+    setIsOpenEdit(false)
+    setCurrentUser(undefined)
+  }
+
   return (
     <div>
       <NextTable data={data} columns={columns} />
 
-      <Modal open={isOpenModal} setIsOpenModal={setIsOpenModal}>
-        <h3>Xin chao</h3>
-      </Modal>
+      <UpdateUser
+        data={currentUser}
+        open={isOpenEdit}
+        onClose={handleCloseEditUser}
+      />
     </div>
   )
 }
