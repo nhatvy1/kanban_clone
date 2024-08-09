@@ -1,16 +1,21 @@
 'use server'
 
-import http from "@/lib/http"
-import { cookies } from "next/headers"
+import http from '@/lib/http'
+import { revalidateTag } from 'next/cache'
+import { cookies } from 'next/headers'
 
-export const updateUser = async()=> {
-  const  cookieStore = cookies()
+export const updateUser = async (
+  userId: number | undefined,
+  dataUpdate: any
+) => {
+  const cookieStore = cookies()
   const accessToken = cookieStore.get('accessToken')?.value
 
-  const res = await http.put('user/1', null, {
+  const res = await http.put(`user/${userId}`, dataUpdate, {
     headers: {
       Authorization: `Bearer ${accessToken}`
     }
   })
+  revalidateTag('list-users')
   return res
 }

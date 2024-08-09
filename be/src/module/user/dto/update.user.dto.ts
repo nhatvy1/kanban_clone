@@ -4,6 +4,9 @@ export class UpdateUserDto {
   @IsOptional({ message: 'Please enter your fullname' })
   fullName: string
 
+  @IsOptional({ message: 'Please select a status' })
+  status: number
+
   @IsOptional({ message: 'Please select a role' })
   role: number
 }

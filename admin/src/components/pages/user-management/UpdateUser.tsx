@@ -51,10 +51,13 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
     }
   }, [data])
 
-  const onSubmit: SubmitHandler<IUser> = async (data: IUser) => {
+  const onSubmit: SubmitHandler<IUser> = async (dataUpdate: IUser) => {
     try {
-      console.log('Check data: ', data)
+      const res = await updateUser(data?.id, dataUpdate)
+      onClose()
+      toast.success('Update user successfully')
     } catch (e: any) {
+      console.log(e)
       toast.error(e?.message)
     }
   }

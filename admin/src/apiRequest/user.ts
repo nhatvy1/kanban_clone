@@ -10,7 +10,8 @@ const user = {
     const res = await http.get<IResponseListUser>('user', {
       headers: {
         Authorization: `Bearer ${accessToken}`
-      }
+      },
+      next: { tags: ['list-users'] }
     })
     return res
   }

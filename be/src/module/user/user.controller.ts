@@ -68,11 +68,11 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto
   ) {
     try {
-      // const result = await this.userService.updateUserDto(id, updateUserDto)
+      const result = await this.userService.updateUserDto(id, updateUserDto)
       return Response({
         message: 'success',
         statusCode: HttpStatus.OK,
-        result: 'dsda'
+        result: result
       })
     } catch(e) {
       throw e

@@ -1,4 +1,10 @@
-import { ConflictException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  OnModuleInit
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { role, Role } from './role.entity'
 import { Repository } from 'typeorm'
@@ -9,33 +15,82 @@ import { UpdateRoleDto } from './dto/update.role.dto'
 import { CreateRoleDto } from './dto/create.role.dto'
 
 @Injectable()
-export class RoleService {
+export class RoleService implements OnModuleInit {
   constructor(
     @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
-    private readonly permissionService: PermissionService,
+    private readonly permissionService: PermissionService
   ) {}
+
+  async onModuleInit() {
+    try {
+      const checkRoleUser = await this.roleRepository.findOneBy({
+        slug: role.USER
+      })
+      if (!checkRoleUser) {
+        const user = this.roleRepository.create({
+          name: 'Người dùng',
+          slug: role.USER
+        })
+        await this.roleRepository.save(user)
+      }
+
+      const checkRoleAdmin = await this.roleRepository.findOneBy({
+        slug: role.ADMIN
+      })
+      if (!checkRoleAdmin) {
+        const admin = this.roleRepository.create({
+          name: 'Quản trị viên',
+          slug: role.ADMIN
+        })
+        await this.roleRepository.save(admin)
+        await this.permissionService.createPermission({
+          subject: 'all',
+          action: actionEnum.MANAGE,
+          role: admin
+        })
+      }
+
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK
+      })
+    } catch (e) {
+      throw e
+    }
+  }
 
   async initRole() {
     try {
-      const user = this.roleRepository.create({
-        name: 'Người dùng',
-        slug: role.USER,
+      const checkRoleUser = await this.roleRepository.findOneBy({
+        slug: role.USER
       })
-      await this.roleRepository.save(user)
+      if (!checkRoleUser) {
+        const user = this.roleRepository.create({
+          name: 'Người dùng',
+          slug: role.USER
+        })
+        await this.roleRepository.save(user)
+      }
 
-      const admin = this.roleRepository.create({
-        name: 'Quản trị viên',
-        slug: role.ADMIN,
+      const checkRoleAdmin = await this.roleRepository.findOneBy({
+        slug: role.USER
       })
-      await this.roleRepository.save(admin)
-      await this.permissionService.createPermission({
-        subject: 'all',
-        action: actionEnum.MANAGE,
-        role: admin,
-      })
+      if (!checkRoleAdmin) {
+        const admin = this.roleRepository.create({
+          name: 'Quản trị viên',
+          slug: role.ADMIN
+        })
+        await this.roleRepository.save(admin)
+        await this.permissionService.createPermission({
+          subject: 'all',
+          action: actionEnum.MANAGE,
+          role: admin
+        })
+      }
+
       return Response({
         message: 'success',
-        statusCode: HttpStatus.OK,
+        statusCode: HttpStatus.OK
       })
     } catch (e) {
       throw e
@@ -47,8 +102,8 @@ export class RoleService {
       const { name, slug, permissions } = createRole
       const checkRole = await this.roleRepository.findOne({
         where: {
-          slug: createRole.slug,
-        },
+          slug: createRole.slug
+        }
       })
       if (checkRole) {
         throw new ConflictException('Role existed')
@@ -81,7 +136,7 @@ export class RoleService {
     try {
       const role = await this.roleRepository.findOneBy({ id })
       return role
-    } catch(e) {
+    } catch (e) {
       throw e
     }
   }
@@ -89,11 +144,11 @@ export class RoleService {
   async getRoleByName(name: string) {
     try {
       const role = await this.roleRepository.findOneBy({ slug: name })
-      if(!name) {
+      if (!name) {
         throw new NotFoundException('Role not found')
       }
       return role
-    } catch(e) {
+    } catch (e) {
       throw e
     }
   }

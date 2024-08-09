@@ -5,6 +5,11 @@ export interface IUser {
   avatar: string
   createdAt: string
   status: number
+  role: {
+    id: number
+    name: string
+    slug: string
+  }
 }
 
 export default interface IResponseListUser  {

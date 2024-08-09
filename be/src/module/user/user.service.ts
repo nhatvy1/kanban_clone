@@ -131,6 +131,7 @@ export class UserService {
         order: { createdAt: 'DESC' },
         take: limit,
         skip: skip,
+        relations: { role: true },
         where: [
           { fullName: ILike(`%${search}%`) },
           { email: ILike(`%${search}%`) }

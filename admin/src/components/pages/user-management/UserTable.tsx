@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/tooltip'
 import { useState } from 'react'
 import UpdateUser from './UpdateUser'
+import ChipUserRole from '@/components/commons/ChipUserRole'
+import ChipUserStatus from '@/components/commons/ChipUserStatus'
 
 const UserTable = ({ data }: { data: IUser[] }) => {
   const [isOpenEdit, setIsOpenEdit] = useState(false)
@@ -33,7 +35,10 @@ const UserTable = ({ data }: { data: IUser[] }) => {
     },
     {
       accessorKey: 'status',
-      header: 'Status'
+      header: 'Status',
+      cell: ({ row }) => {
+        return <ChipUserStatus status={row.original.status} />
+      }
     },
     {
       accessorKey: 'createdAt',
@@ -43,6 +48,14 @@ const UserTable = ({ data }: { data: IUser[] }) => {
           'hh:mm DD/MM/YYYY'
         )
         return <span>{createdAt}</span>
+      }
+    },
+    {
+      accessorKey: 'role',
+      header: 'Role',
+      cell: ({ row }) => {
+        const role = row.original.role.name
+        return <ChipUserRole content={role} />
       }
     },
     {
