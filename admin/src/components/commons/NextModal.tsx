@@ -33,7 +33,7 @@ interface Props {
     | 'full'
 }
 
-const NextModal = ({ open, onClose, children, size = 'md' }: Props) => {
+const NextModal = ({ open, onClose, children, size = 'sm' }: Props) => {
   if (!open) return null
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -49,7 +49,7 @@ const NextModal = ({ open, onClose, children, size = 'md' }: Props) => {
       onClick={handleClickOutside}
     >
       <div
-        className={`relative ${modalSizes[size]} w-full bg-white/85 rounded-md 
+        className={`relative ${modalSizes[size]} bg-white/85 rounded-md 
         p-5 `}
       >
         <div className=''>
