@@ -1,6 +1,5 @@
 'use client'
 
-import { updateUser } from '@/actions/user.actions'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,17 +13,17 @@ import {
 } from '@/components/ui/select'
 import { STATUS_OPTIONS } from '@/lib/variable'
 import { IUser } from '@/types/user.type'
-import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-interface Props {
-  open: boolean
-  data: IUser | undefined
-  onClose: () => void
-}
+const CreateUser = () => {
+  const router = useRouter()
 
-const UpdateUser = ({ open, data, onClose }: Props) => {
+  const handleClose = () => {
+    router.back()
+  }
+
   const {
     register,
     handleSubmit,
@@ -39,19 +38,9 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
     }
   })
 
-  useEffect(() => {
-    if (data) {
-      setValue('email', data.email)
-      setValue('fullName', data.fullName)
-      setValue('status', data.status)
-    }
-  }, [data])
-
   const onSubmit: SubmitHandler<IUser> = async (dataUpdate: IUser) => {
     try {
-      const res = await updateUser(data?.id, dataUpdate)
-      onClose()
-      toast.success('Update user successfully')
+      console.log(dataUpdate)
     } catch (e: any) {
       console.log(e)
       toast.error(e?.message)
@@ -59,7 +48,7 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
   }
 
   return (
-    <NextModal open={open} onClose={onClose} size='xs'>
+    <NextModal open={true} onClose={handleClose}>
       <form
         className='flex flex-col gap-2 mt-2'
         onSubmit={handleSubmit(onSubmit)}
@@ -120,4 +109,4 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
   )
 }
 
-export default UpdateUser
+export default CreateUser

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Post,
   Put,
   Query
 } from '@nestjs/common'
@@ -14,11 +15,26 @@ import { Authentication } from 'src/decorators/authentication.decorator'
 import { Response } from 'src/utils/response'
 import { UpdateUserDto } from './dto/update.user.dto'
 import { FilterUserDto } from './dto/search.user.dto'
+import { CreateUserDto } from './dto/create.user.dto'
 
 @Controller('user')
 @Authentication()
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Post('')
+  async createUser(@Body() body: CreateUserDto) {
+    try {
+      const result = await this.userService.checkEmail
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
+      })
+    } catch (e) {
+      throw e
+    }
+  }
 
   @Get()
   async getListUser(@Query() filterUser: FilterUserDto) {
@@ -29,7 +45,7 @@ export class UserController {
         statusCode: HttpStatus.OK,
         result
       })
-    } catch(e) {
+    } catch (e) {
       throw e
     }
   }
@@ -74,7 +90,7 @@ export class UserController {
         statusCode: HttpStatus.OK,
         result: result
       })
-    } catch(e) {
+    } catch (e) {
       throw e
     }
   }

@@ -4,7 +4,7 @@ import {
   NotFoundException
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { User } from './user.entity'
+import { Status, User } from './user.entity'
 import { ILike, Repository } from 'typeorm'
 import { RegisterDto } from '../auth/dto/register.dto'
 import { role } from '../role/role.entity'
@@ -12,6 +12,7 @@ import { RoleService } from '../role/role.service'
 import { Hash } from 'src/utils/hash'
 import { UpdateUserDto } from './dto/update.user.dto'
 import { FilterUserDto } from './dto/search.user.dto'
+import { CreateUserDto } from './dto/create.user.dto'
 
 @Injectable()
 export class UserService {
@@ -143,6 +144,32 @@ export class UserService {
         limit: limit,
         page: page
       }
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async createUser(createUser: CreateUserDto) {
+    try {
+      const checkEmail = await this.userRepository.findOneBy({
+        email: createUser.email
+      })
+      if(!checkEmail) {
+        throw new ConflictException('Email address is already registered')
+      }
+
+      const hashPassword = Hash.generateHash(createUser.password)
+      const role = await this.roleService.getRoleById(createUser.role)
+      const status = Status[createUser.status] ?? Status.BLOCK
+
+      const dataNewUser = {
+        ...createUser,
+        password: hashPassword,
+        role: role,
+        status: status
+      }
+      const newUser = this.userRepository.create(dataNewUser)
+      await this.userRepository.save(newUser)
     } catch (e) {
       throw e
     }
