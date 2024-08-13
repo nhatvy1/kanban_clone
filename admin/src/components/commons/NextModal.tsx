@@ -1,6 +1,7 @@
 'use client'
 
 import { X } from 'lucide-react'
+import { title } from 'process'
 import { MouseEvent, ReactNode } from 'react'
 
 const modalSizes = {
@@ -20,6 +21,7 @@ interface Props {
   open: boolean
   onClose: () => void
   children: ReactNode
+  title?: string
   size?:
     | 'xs'
     | 'sm'
@@ -33,7 +35,7 @@ interface Props {
     | 'full'
 }
 
-const NextModal = ({ open, onClose, children, size = 'sm' }: Props) => {
+const NextModal = ({ open, onClose, children, size = 'sm', title }: Props) => {
   if (!open) return null
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -57,7 +59,7 @@ const NextModal = ({ open, onClose, children, size = 'sm' }: Props) => {
             className='flex justify-between
           items-center'
           >
-            <p>Update user</p>
+            <p>{title ? title : 'Next Modal'}</p>
             <button onClick={() => onClose()}>
               <X size={30} />
             </button>

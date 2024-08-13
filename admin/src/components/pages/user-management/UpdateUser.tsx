@@ -39,13 +39,13 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
     }
   })
 
-  useEffect(() => {
-    if (data) {
-      setValue('email', data.email)
-      setValue('fullName', data.fullName)
-      setValue('status', data.status)
-    }
-  }, [data])
+  // useEffect(() => {
+  if (data) {
+    setValue('email', data.email)
+    setValue('fullName', data.fullName)
+    setValue('status', data.status)
+  }
+  // }, [open])
 
   const onSubmit: SubmitHandler<IUser> = async (dataUpdate: IUser) => {
     try {

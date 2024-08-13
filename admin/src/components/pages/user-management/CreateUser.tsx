@@ -1,5 +1,6 @@
 'use client'
 
+import { createUser } from '@/actions/user.actions'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,36 +12,48 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { STATUS_OPTIONS } from '@/lib/variable'
-import { IUser } from '@/types/user.type'
-import { useRouter } from 'next/navigation'
+import { USERS_STATUS_OPTIONS } from '@/lib/variable'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-const CreateUser = () => {
-  const router = useRouter()
+interface Props {
+  open: boolean
+  onClose: () => void
+}
 
-  const handleClose = () => {
-    router.back()
-  }
+interface INewUser {
+  email: string
+  fullName: string
+  status: string
+  password: string
+}
 
+const CreateUser = ({ open, onClose }: Props) => {
   const {
     register,
     handleSubmit,
-    setValue,
     control,
+    reset,
     formState: { errors }
-  } = useForm<IUser>({
+  } = useForm<INewUser>({
     defaultValues: {
       email: '',
       fullName: '',
-      status: 0
+      password: '',
+      status: ''
     }
   })
 
-  const onSubmit: SubmitHandler<IUser> = async (dataUpdate: IUser) => {
+  const handleClose = () => {
+    onClose()
+    reset()
+  }
+
+  const onSubmit: SubmitHandler<INewUser> = async (dataUpdate: INewUser) => {
     try {
-      console.log(dataUpdate)
+      const res = await createUser(dataUpdate)
+      handleClose()
+      toast.success('Add a new user successfully')
     } catch (e: any) {
       console.log(e)
       toast.error(e?.message)
@@ -48,7 +61,7 @@ const CreateUser = () => {
   }
 
   return (
-    <NextModal open={true} onClose={handleClose}>
+    <NextModal open={open} onClose={handleClose} size='xs' title='Create User'>
       <form
         className='flex flex-col gap-2 mt-2'
         onSubmit={handleSubmit(onSubmit)}
@@ -57,15 +70,71 @@ const CreateUser = () => {
           <label htmlFor='email'>Email</label>
           <Input
             placeholder='Enter your email'
-            {...register('email')}
-            disabled
+            {...register('email', {
+              required: 'Vui lòng nhập email',
+              pattern: {
+                value:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'Email không đúng định dạng'
+              }
+            })}
           />
+          {errors.email?.message && (
+            <p className='text-sm mt-1 text-pink-500'>
+              {errors.email?.message}
+            </p>
+          )}
         </div>
         <div>
           <label htmlFor='fullName'>Fullname</label>
-          <Input placeholder='Enter your fullname' {...register('fullName')} />
+          <Input
+            placeholder='Enter your fullname'
+            {...register('fullName', {
+              required: {
+                value: true,
+                message: 'Please enter your fullname'
+              },
+              minLength: {
+                value: 4,
+                message: 'Minimum 2 characters required'
+              },
+              maxLength: {
+                value: 50,
+                message: 'Maximum 50 characters required'
+              }
+            })}
+          />
+          {errors.fullName?.message && (
+            <p className='text-sm mt-1 text-pink-500'>
+              {errors.fullName?.message}
+            </p>
+          )}
         </div>
-
+        <div>
+          <label htmlFor='password'>Password</label>
+          <Input
+            placeholder='Enter your password'
+            {...register('password', {
+              required: {
+                value: true,
+                message: 'Please enter your password'
+              },
+              minLength: {
+                value: 1,
+                message: 'Minimum 1 characters required'
+              },
+              maxLength: {
+                value: 50,
+                message: 'Maximum 20 characters required'
+              }
+            })}
+          />
+          {errors.password?.message && (
+            <p className='text-sm mt-1 text-pink-500'>
+              {errors.password?.message}
+            </p>
+          )}
+        </div>
         <div>
           <label htmlFor='status'>Status</label>
           <Controller
@@ -83,11 +152,11 @@ const CreateUser = () => {
                   ref={field.ref}
                   aria-invalid={fieldState['invalid']}
                 >
-                  <SelectValue placeholder={JSON.stringify(field.value)} />
+                  <SelectValue placeholder='Select a role' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup defaultValue='1'>
-                    {STATUS_OPTIONS.map((option) => (
+                    {USERS_STATUS_OPTIONS.map((option) => (
                       <SelectItem
                         key={option.value}
                         value={option.value?.toString()}

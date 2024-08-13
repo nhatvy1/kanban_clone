@@ -25,7 +25,7 @@ export class UserController {
   @Post('')
   async createUser(@Body() body: CreateUserDto) {
     try {
-      const result = await this.userService.checkEmail
+      const result = await this.userService.createUser(body)
       return Response({
         message: 'success',
         statusCode: HttpStatus.OK,

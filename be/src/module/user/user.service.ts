@@ -154,18 +154,18 @@ export class UserService {
       const checkEmail = await this.userRepository.findOneBy({
         email: createUser.email
       })
-      if(!checkEmail) {
+      if (checkEmail) {
         throw new ConflictException('Email address is already registered')
       }
 
       const hashPassword = Hash.generateHash(createUser.password)
-      const role = await this.roleService.getRoleById(createUser.role)
+      const roleCustomer = await this.roleService.getRoleByName(role.USER)
       const status = Status[createUser.status] ?? Status.BLOCK
 
       const dataNewUser = {
         ...createUser,
         password: hashPassword,
-        role: role,
+        role: roleCustomer,
         status: status
       }
       const newUser = this.userRepository.create(dataNewUser)

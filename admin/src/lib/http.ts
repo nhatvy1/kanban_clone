@@ -1,7 +1,7 @@
 import { IResponseLogin } from '@/types/auth.type'
-import { error } from 'console'
 import { normalizePath } from './normalize'
 import auth from '@/apiRequest/auth'
+import { API_URL, ERROR_STATUS } from './variable'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined
@@ -23,8 +23,6 @@ class HttpError extends Error {
 let clientLogoutRequest: null | Promise<any> = null
 export const isClient = () => typeof window !== 'undefined'
 
-const BACKEND_URL = 'http://localhost:5000/api/v1'
-
 const request = async <Response>(
   method: 'POST' | 'PUT' | 'GET' | 'DELETE' | 'PATCH',
   url: string,
@@ -43,7 +41,7 @@ const request = async <Response>(
     }
   }
 
-  const baseUrl = options?.baseUrl === undefined ? BACKEND_URL : options.baseUrl
+  const baseUrl = options?.baseUrl === undefined ? API_URL : options.baseUrl
   // validate url
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`
 
@@ -60,7 +58,7 @@ const request = async <Response>(
   const payload: Response = await res.json()
 
   if (!res.ok) {
-    if (res.status === 401) {
+    if (res.status === ERROR_STATUS.AUTHENTICATION) {
       if (
         isClient() &&
         !['auth/login'].some((item) => item === normalizePath(url))

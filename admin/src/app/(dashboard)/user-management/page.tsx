@@ -1,10 +1,8 @@
 import user from '@/apiRequest/user'
-import ButtonCreate from '@/components/pages/user-management/ButtonCreate'
+import ButtonCreateUser from '@/components/pages/user-management/ButtonCreateUser'
 import UserFilter from '@/components/pages/user-management/UserFilter'
 import UserTable from '@/components/pages/user-management/UserTable'
-import { Button } from '@/components/ui/button'
 import { cookies } from 'next/headers'
-import Link from 'next/link'
 import queryString from 'query-string'
 
 const UserManagementPage = async ({
@@ -29,7 +27,7 @@ const UserManagementPage = async ({
     <div>
       <div className='mb-3 flex items-center gap-x-2'>
         <UserFilter />
-        <ButtonCreate />
+        <ButtonCreateUser />
       </div>
       <UserTable data={result} />
     </div>

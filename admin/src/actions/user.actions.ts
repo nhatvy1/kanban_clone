@@ -19,3 +19,16 @@ export const updateUser = async (
   revalidateTag('list-users')
   return res
 }
+
+export const createUser = async(data: any)=> {
+  const cookieStore = cookies()
+  const accessToken = cookieStore.get('accessToken')?.value
+
+  const res = await http.post(`user`, data, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+  revalidateTag('list-users')
+  return res
+}
