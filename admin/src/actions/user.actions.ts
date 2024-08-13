@@ -20,15 +20,22 @@ export const updateUser = async (
   return res
 }
 
-export const createUser = async(data: any)=> {
-  const cookieStore = cookies()
-  const accessToken = cookieStore.get('accessToken')?.value
-
-  const res = await http.post(`user`, data, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`
+export const createUser = async (data: any) => {
+  try {
+    const cookieStore = cookies()
+    const accessToken = cookieStore.get('accessToken')?.value
+    
+    const res = await http.post<any>(`user`, data, {
+      headers: {
+        Authorization: `Bearer ${'sdaf'}`
+      }
+    })
+    revalidateTag('list-users')
+    return res
+  } catch (e: any) {
+    return {
+      message: e?.payload?.message,
+      statusCode: e?.payload?.statusCode
     }
-  })
-  revalidateTag('list-users')
-  return res
+  }
 }

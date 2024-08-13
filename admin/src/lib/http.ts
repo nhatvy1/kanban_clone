@@ -2,12 +2,13 @@ import { IResponseLogin } from '@/types/auth.type'
 import { normalizePath } from './normalize'
 import auth from '@/apiRequest/auth'
 import { API_URL, ERROR_STATUS } from './variable'
+import { toast } from 'sonner'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined
 }
 
-class HttpError extends Error {
+export class HttpError extends Error {
   payload: {
     message: string
     statusCode: number
@@ -65,11 +66,15 @@ const request = async <Response>(
       ) {
         try {
           await auth.logoutNextClientToNextServer()
+          console.log('LOi 401')
         } catch (e) {
         } finally {
-          localStorage.removeItem('accessToken')
-          clientLogoutRequest = null
-          location.href = '/login'
+          if (isClient()) {
+            localStorage.removeItem('accessToken')
+            clientLogoutRequest = null
+            location.href = '/login'
+            toast.info('Phiên đăng nhập hết hạn')
+          }
         }
       } else {
         throw new HttpError({ payload })

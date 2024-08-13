@@ -7,8 +7,14 @@ import {
 
 const auth = {
   login: (data: IFormLogin) => http.post<IResponseLogin>('/auth/login', data),
-  authSetCookie: async ({ accessToken }: { accessToken: string }) => {
-    const body = { accessToken }
+  authSetCookie: async ({
+    accessToken,
+    refreshToken
+  }: {
+    accessToken: string
+    refreshToken: string
+  }) => {
+    const body = { accessToken, refreshToken }
 
     const res = await http.post('api/auth', body, {
       baseUrl: ''

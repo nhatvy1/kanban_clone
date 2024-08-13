@@ -8,14 +8,14 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Query
+  Query,
 } from '@nestjs/common'
 import { UserService } from './user.service'
-import { Authentication } from 'src/decorators/authentication.decorator'
 import { Response } from 'src/utils/response'
 import { UpdateUserDto } from './dto/update.user.dto'
 import { FilterUserDto } from './dto/search.user.dto'
 import { CreateUserDto } from './dto/create.user.dto'
+import { Authentication } from 'src/decorators/authentication.decorator'
 
 @Controller('user')
 @Authentication()

@@ -14,5 +14,6 @@ export const API_URL = 'http://localhost:5000/api/v1'
 
 export const ERROR_STATUS = {
   AUTHENTICATION: 401,
-  FORBIDDEN: 403
+  FORBIDDEN: 403,
+  SUCCESS: 200
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { createUser } from '@/actions/user.actions'
+import auth from '@/apiRequest/auth'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { USERS_STATUS_OPTIONS } from '@/lib/variable'
+import { ERROR_STATUS, USERS_STATUS_OPTIONS } from '@/lib/variable'
+import { useRouter } from 'next/navigation'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -29,6 +31,7 @@ interface INewUser {
 }
 
 const CreateUser = ({ open, onClose }: Props) => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -52,10 +55,19 @@ const CreateUser = ({ open, onClose }: Props) => {
   const onSubmit: SubmitHandler<INewUser> = async (dataUpdate: INewUser) => {
     try {
       const res = await createUser(dataUpdate)
-      handleClose()
-      toast.success('Add a new user successfully')
+      if(res?.statusCode !== ERROR_STATUS.AUTHENTICATION) {
+        if(res?.statusCode !== ERROR_STATUS.SUCCESS) {
+          toast.error(res?.message || 'Hệ thống bảo trì')
+        } else {
+          toast.success('Add a new user successfully')
+        }
+        handleClose()
+      } else {
+        toast.info('Phiên đăng nhập hết hạn')
+        await auth.logoutNextClientToNextServer()
+        router.push('/login')
+      }
     } catch (e: any) {
-      console.log(e)
       toast.error(e?.message)
     }
   }
