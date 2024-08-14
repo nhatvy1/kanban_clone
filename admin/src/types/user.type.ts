@@ -22,3 +22,15 @@ export default interface IResponseListUser  {
     page: number
   }
 }
+
+export interface IResponseCreate {
+  message: string
+  statusCode: number
+  result?: any
+}
+
+export interface IResponseUpdate {
+  message: string
+  statusCode: number
+  result?: any
+}

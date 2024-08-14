@@ -31,6 +31,14 @@ export const config = {
     '/team-management',
     '/user-management',
     '/login',
-    '/profile'
+    '/profile',
+    {
+      source:
+        '/((?!api|_next/static|_next/image|media|fonts|favicon.ico|favicon.png).*)',
+      missing: [
+        // Exclude Server Actions
+        { type: 'header', key: 'next-action' }
+      ]
+    }
   ]
 }

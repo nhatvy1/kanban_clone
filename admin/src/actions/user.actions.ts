@@ -1,17 +1,15 @@
 'use server'
 
 import http from '@/lib/http'
+import { IResponseCreate, IResponseUpdate } from '@/types/user.type'
 import { revalidateTag } from 'next/cache'
-import { cookies } from 'next/headers'
 
 export const updateUser = async (
+  accessToken: string,
   userId: number | undefined,
   dataUpdate: any
 ) => {
-  const cookieStore = cookies()
-  const accessToken = cookieStore.get('accessToken')?.value
-
-  const res = await http.put(`user/${userId}`, dataUpdate, {
+  const res = await http.put<IResponseUpdate>(`user/${userId}`, dataUpdate, {
     headers: {
       Authorization: `Bearer ${accessToken}`
     }
@@ -20,14 +18,11 @@ export const updateUser = async (
   return res
 }
 
-export const createUser = async (data: any) => {
+export const createUser = async (accessToken: string, data: any) => {
   try {
-    const cookieStore = cookies()
-    const accessToken = cookieStore.get('accessToken')?.value
-    
-    const res = await http.post<any>(`user`, data, {
+    const res = await http.post<IResponseCreate>(`user`, data, {
       headers: {
-        Authorization: `Bearer ${'sdaf'}`
+        Authorization: `Bearer ${accessToken}`
       }
     })
     revalidateTag('list-users')

@@ -1,7 +1,7 @@
 'use client'
 
 import { createUser } from '@/actions/user.actions'
-import auth from '@/apiRequest/auth'
+import { getSession } from '@/apiRequest/session'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -54,17 +54,24 @@ const CreateUser = ({ open, onClose }: Props) => {
 
   const onSubmit: SubmitHandler<INewUser> = async (dataUpdate: INewUser) => {
     try {
-      const res = await createUser(dataUpdate)
-      if(res?.statusCode !== ERROR_STATUS.AUTHENTICATION) {
-        if(res?.statusCode !== ERROR_STATUS.SUCCESS) {
-          toast.error(res?.message || 'Hệ thống bảo trì')
+      const { cookies } = await getSession()
+      if (!cookies) {
+        toast.info('Login session expired')
+        router.push('/login')
+        return
+      }
+
+      const res = await createUser(cookies, dataUpdate)
+
+      if (res?.statusCode !== ERROR_STATUS.AUTHENTICATION) {
+        if (res?.statusCode !== ERROR_STATUS.SUCCESS) {
+          toast.error(res?.message || 'Please try again later')
         } else {
           toast.success('Add a new user successfully')
         }
         handleClose()
       } else {
-        toast.info('Phiên đăng nhập hết hạn')
-        await auth.logoutNextClientToNextServer()
+        toast.info('Login session expired')
         router.push('/login')
       }
     } catch (e: any) {
@@ -168,7 +175,7 @@ const CreateUser = ({ open, onClose }: Props) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup defaultValue='1'>
-                    {USERS_STATUS_OPTIONS.map((option) => (
+                    {USERS_STATUS_OPTIONS.map((option: any) => (
                       <SelectItem
                         key={option.value}
                         value={option.value?.toString()}

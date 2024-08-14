@@ -18,10 +18,9 @@ const FormLogin = () => {
   const onSubmit: SubmitHandler<IFormLogin> = async (data: IFormLogin) => {
     try {
       const response = await auth.login(data)
-      const { access_token, refresh_token } = response.result
+      const { access_token } = response.result
       await auth.authSetCookie({
-        accessToken: access_token,
-        refreshToken: refresh_token
+        accessToken: access_token
       })
       router.push('/')
       toast.success('Login successfully')

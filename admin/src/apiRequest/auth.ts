@@ -2,19 +2,16 @@ import http from '@/lib/http'
 import {
   IFormLogin,
   IResponseLogin,
-  IResponseRefreshToken
 } from '@/types/auth.type'
 
 const auth = {
   login: (data: IFormLogin) => http.post<IResponseLogin>('/auth/login', data),
   authSetCookie: async ({
     accessToken,
-    refreshToken
   }: {
     accessToken: string
-    refreshToken: string
   }) => {
-    const body = { accessToken, refreshToken }
+    const body = { accessToken }
 
     const res = await http.post('api/auth', body, {
       baseUrl: ''

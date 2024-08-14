@@ -1,6 +1,8 @@
 'use client'
 
 import { updateUser } from '@/actions/user.actions'
+import auth from '@/apiRequest/auth'
+import { getSession } from '@/apiRequest/session'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,8 +14,9 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { STATUS_OPTIONS } from '@/lib/variable'
+import { ERROR_STATUS, STATUS_OPTIONS } from '@/lib/variable'
 import { IUser } from '@/types/user.type'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -25,6 +28,7 @@ interface Props {
 }
 
 const UpdateUser = ({ open, data, onClose }: Props) => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -49,9 +53,26 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
 
   const onSubmit: SubmitHandler<IUser> = async (dataUpdate: IUser) => {
     try {
-      const res = await updateUser(data?.id, dataUpdate)
-      onClose()
-      toast.success('Update user successfully')
+      const { cookies } = await getSession()
+      if (!cookies) {
+        toast.info('Login session expired')
+        router.push('/login')
+        return
+      }
+
+      const res = await updateUser(cookies, data?.id, dataUpdate)
+
+      if (res?.statusCode !== ERROR_STATUS.AUTHENTICATION) {
+        if (res?.statusCode !== ERROR_STATUS.SUCCESS) {
+          toast.error(res?.message || 'Please try again later')
+        } else {
+          toast.success('Update user successfully')
+        }
+        onClose()
+      } else {
+        toast.info('Login session expired')
+        router.push('/login')
+      }
     } catch (e: any) {
       console.log(e)
       toast.error(e?.message)
