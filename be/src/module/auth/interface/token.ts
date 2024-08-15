@@ -5,6 +5,7 @@ export interface Tokens {
 
 export interface TokenVerify {
   userId: number
+  role: string
   iat: number
   exp: number
   refreshToken: string

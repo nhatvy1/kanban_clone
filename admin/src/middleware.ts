@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import user from './apiRequest/user'
+import { jwtDecode } from 'jwt-decode'
 
 const privatePaths = [
   '/',
@@ -18,6 +19,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
+  if (isPrivatePath && accessToken) {
+    const decodedAccessToken: any = jwtDecode(accessToken)
+    if (decodedAccessToken?.role.includes('admin')) {
+      return NextResponse.next()
+    } else {
+      return NextResponse.redirect(new URL('/unauthorization', request.url))
+    }
+  }
+
   if (accessToken && (pathname === '/login' || pathname === '/register')) {
     return NextResponse.redirect(new URL('/', request.url))
   }
@@ -32,6 +42,7 @@ export const config = {
     '/team-management',
     '/user-management',
     '/login',
-    '/profile'
+    '/profile',
+    '/unauthorization'
   ]
 }

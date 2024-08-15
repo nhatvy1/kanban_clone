@@ -13,8 +13,8 @@ const ButtonLogout = () => {
     } catch (e: any) {
       toast.error(e?.message)
     } finally {
-      // localStorage.removeItem('accessToken')
-      router.refresh()
+      localStorage.removeItem('accessToken')
+      router.push('/')
     }
   }
 
