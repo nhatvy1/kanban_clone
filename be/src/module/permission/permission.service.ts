@@ -58,4 +58,20 @@ export class PermissionService {
       throw e
     }
   }
+
+  async getPermissionByRole(id: number) {
+    try {
+      const rolePermission = await this.permissionRepository.find({
+        where: {
+          role: {
+            id
+          }
+        }
+      })
+
+      return rolePermission
+    } catch (e) {
+      throw e
+    }
+  }
 }

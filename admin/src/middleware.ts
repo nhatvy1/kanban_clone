@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import user from './apiRequest/user'
 
 const privatePaths = [
   '/',

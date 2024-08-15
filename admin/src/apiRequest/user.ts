@@ -16,6 +16,18 @@ const user = {
       next: { tags: ['list-users'] }
     })
     return res
+  },
+  getRolePermission: async ({
+    accessToken = ''
+  }: {
+    accessToken: string | undefined
+  }) => {
+    const res = await http.get<any>(`user/get/role-permission`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    return res
   }
 }
 

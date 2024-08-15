@@ -13,12 +13,16 @@ import { Hash } from 'src/utils/hash'
 import { UpdateUserDto } from './dto/update.user.dto'
 import { FilterUserDto } from './dto/search.user.dto'
 import { CreateUserDto } from './dto/create.user.dto'
+import { PermissionService } from '../permission/permission.service'
+import { mapPermission } from 'src/utils/permission'
+import { find } from 'rxjs'
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly roleService: RoleService
+    private readonly roleService: RoleService,
+    private readonly permissionService: PermissionService
   ) {}
 
   async checkEmail(email: string) {
@@ -37,12 +41,17 @@ export class UserService {
     try {
       const user = await this.userRepository.findOne({
         where: { email: email },
-        select: ['id', 'email', 'password']
+        select: ['id', 'email', 'password'],
+        relations: ['role']
       })
       if (!user) {
-        throw new NotFoundException(`Email hoặc mật khẩu không chính xác`)
+        throw new NotFoundException(`Email address or password incorrect`)
       }
-      return user
+      const findPermission = await this.permissionService.getPermissionByRole(
+        user.role.id
+      )
+      const permissions = mapPermission(findPermission)
+      return { ...user, permissions}
     } catch (e) {
       throw e
     }
@@ -170,6 +179,25 @@ export class UserService {
       }
       const newUser = this.userRepository.create(dataNewUser)
       await this.userRepository.save(newUser)
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async getUserRolePermission(id: number) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id },
+        relations: { role: true }
+      })
+      if (!user) {
+        throw new NotFoundException('User not found')
+      }
+      const findPermission = await this.permissionService.getPermissionByRole(
+        user.role.id
+      )
+      const permissions = mapPermission(findPermission)
+      return { ...user, permissions}
     } catch (e) {
       throw e
     }

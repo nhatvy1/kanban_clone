@@ -59,44 +59,6 @@ export class RoleService implements OnModuleInit {
     }
   }
 
-  async initRole() {
-    try {
-      const checkRoleUser = await this.roleRepository.findOneBy({
-        slug: role.USER
-      })
-      if (!checkRoleUser) {
-        const user = this.roleRepository.create({
-          name: 'Người dùng',
-          slug: role.USER
-        })
-        await this.roleRepository.save(user)
-      }
-
-      const checkRoleAdmin = await this.roleRepository.findOneBy({
-        slug: role.USER
-      })
-      if (!checkRoleAdmin) {
-        const admin = this.roleRepository.create({
-          name: 'Quản trị viên',
-          slug: role.ADMIN
-        })
-        await this.roleRepository.save(admin)
-        await this.permissionService.createPermission({
-          subject: 'all',
-          action: actionEnum.MANAGE,
-          role: admin
-        })
-      }
-
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK
-      })
-    } catch (e) {
-      throw e
-    }
-  }
-
   async createRole(createRole: CreateRoleDto) {
     try {
       const { name, slug, permissions } = createRole

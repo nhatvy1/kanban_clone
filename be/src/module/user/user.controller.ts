@@ -16,6 +16,8 @@ import { UpdateUserDto } from './dto/update.user.dto'
 import { FilterUserDto } from './dto/search.user.dto'
 import { CreateUserDto } from './dto/create.user.dto'
 import { Authentication } from 'src/decorators/authentication.decorator'
+import { ReqUser } from 'src/decorators/user.decorator'
+import { JwtPayload } from '../auth/interface/jwt.payload'
 
 @Controller('user')
 @Authentication()
@@ -89,6 +91,20 @@ export class UserController {
         message: 'success',
         statusCode: HttpStatus.OK,
         result: result
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  @Get('get/role-permission')
+  async getUserRolePermission(@ReqUser() reqUser: JwtPayload) {
+    try {
+      const result = await this.userService.getUserRolePermission(reqUser.userId)
+      return Response({
+        message: 'success',
+        statusCode: HttpStatus.OK,
+        result
       })
     } catch (e) {
       throw e
