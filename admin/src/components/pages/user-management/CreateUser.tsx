@@ -1,6 +1,7 @@
 'use client'
 
 import { createUser } from '@/actions/user.actions'
+import auth from '@/apiRequest/auth'
 import { getSession } from '@/apiRequest/session'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
@@ -58,6 +59,7 @@ const CreateUser = ({ open, onClose }: Props) => {
       if (!cookies) {
         toast.info('Login session expired')
         router.push('/login')
+        await auth.logoutNextClientToNextServer()
         return
       }
 
@@ -72,6 +74,7 @@ const CreateUser = ({ open, onClose }: Props) => {
         handleClose()
       } else {
         toast.info('Login session expired')
+        await auth.logoutNextClientToNextServer()
         router.push('/login')
       }
     } catch (e: any) {
