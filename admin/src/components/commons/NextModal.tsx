@@ -1,8 +1,7 @@
 'use client'
 
 import { X } from 'lucide-react'
-import { title } from 'process'
-import { MouseEvent, ReactNode } from 'react'
+import { memo, MouseEvent, ReactNode } from 'react'
 
 const modalSizes = {
   xs: 'w-4/12',
@@ -71,4 +70,4 @@ const NextModal = ({ open, onClose, children, size = 'sm', title }: Props) => {
   )
 }
 
-export default NextModal
+export default memo(NextModal)

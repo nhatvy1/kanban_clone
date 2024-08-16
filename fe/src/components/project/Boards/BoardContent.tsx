@@ -5,7 +5,6 @@ import { mapOrder } from '~/utils/sorts'
 import {
   DndContext,
   DragEndEvent,
-  PointerSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
@@ -15,9 +14,9 @@ import { arrayMove } from '@dnd-kit/sortable'
 import ListColumns from '../columns/ListColumns'
 
 const BoardContent = ({ board }: any) => {
-  const pointerSensor = useSensor(PointerSensor, {
-    activationConstraint: { distance: 10 }
-  })
+  // const pointerSensor = useSensor(PointerSensor, {
+  //   activationConstraint: { distance: 10 }
+  // })
 
   // Yếu cầu di chuyển chuột 10px thù mới kích hoạt event, fix trường hợp click bị gọi event
   const mouseSensor = useSensor(MouseSensor, {

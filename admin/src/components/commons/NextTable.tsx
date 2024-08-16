@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { memo } from "react"
  
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -79,4 +80,4 @@ const NextTable = <TData, TValue>({
   )
 }
 
-export default NextTable
+export default memo(NextTable)
