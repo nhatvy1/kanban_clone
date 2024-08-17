@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import UpdateUser from './UpdateUser'
 import ChipUserRole from '@/components/commons/ChipUserRole'
 import ChipUserStatus from '@/components/commons/ChipUserStatus'
@@ -20,79 +20,83 @@ const UserTable = ({ data }: { data: IUser[] }) => {
   const [isOpenEdit, setIsOpenEdit] = useState(false)
   const [currentUser, setCurrentUser] = useState<IUser | undefined>(undefined)
 
-  const columns: ColumnDef<IUser>[] = [
-    {
-      accessorKey: 'id',
-      header: 'ID'
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email'
-    },
-    {
-      accessorKey: 'fullName',
-      header: 'Fullname'
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => {
-        return <ChipUserStatus status={row.original.status} />
+  const columns: ColumnDef<IUser>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'id',
+        header: 'ID'
+      },
+      {
+        accessorKey: 'email',
+        header: 'Email'
+      },
+      {
+        accessorKey: 'fullName',
+        header: 'Fullname'
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => {
+          return <ChipUserStatus status={row.original.status} />
+        }
+      },
+      {
+        accessorKey: 'createdAt',
+        header: 'Created At',
+        cell: ({ row }) => {
+          const createdAt = momemt(row.original.createdAt).format(
+            'hh:mm DD/MM/YYYY'
+          )
+          return <span>{createdAt}</span>
+        }
+      },
+      {
+        accessorKey: 'role',
+        header: 'Role',
+        cell: ({ row }) => {
+          const role = row.original.role.name
+          return <ChipUserRole content={role} />
+        }
+      },
+      {
+        id: 'ds',
+        enableHiding: false,
+        header: 'Action',
+        cell: ({ row }) => {
+          return (
+            <div className='flex items-center gap-x-4'>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Pencil
+                      size={16}
+                      className='cursor-pointer'
+                      onClick={() => handleEditUser(row.original)}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Edit user</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <BadgeX size={16} className='cursor-pointer' />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Delete user</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )
+        }
       }
-    },
-    {
-      accessorKey: 'createdAt',
-      header: 'Created At',
-      cell: ({ row }) => {
-        const createdAt = momemt(row.original.createdAt).format(
-          'hh:mm DD/MM/YYYY'
-        )
-        return <span>{createdAt}</span>
-      }
-    },
-    {
-      accessorKey: 'role',
-      header: 'Role',
-      cell: ({ row }) => {
-        const role = row.original.role.name
-        return <ChipUserRole content={role} />
-      }
-    },
-    {
-      accessorKey: '',
-      header: 'Action',
-      cell: ({ row }) => {
-        return (
-          <div className='flex items-center gap-x-4'>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Pencil
-                    size={16}
-                    className='cursor-pointer'
-                    onClick={() => handleEditUser(row.original)}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Edit user</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <BadgeX size={16} className='cursor-pointer' />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete user</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        )
-      }
-    }
-  ]
+    ],
+    []
+  )
 
   const handleEditUser = (data: IUser) => {
     setIsOpenEdit(true)

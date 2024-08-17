@@ -17,7 +17,7 @@ import {
 import { ERROR_STATUS, STATUS_OPTIONS } from '@/lib/variable'
 import { IUser } from '@/types/user.type'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { memo } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -141,4 +141,4 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
   )
 }
 
-export default UpdateUser
+export default memo(UpdateUser)

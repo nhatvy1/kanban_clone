@@ -1,39 +1,40 @@
-"use client"
- 
+'use client'
+
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
- 
+  useReactTable
+} from '@tanstack/react-table'
+
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { memo } from "react"
- 
+  TableRow
+} from '@/components/ui/table'
+import { memo } from 'react'
+
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+  columns: any // ColumnDef<TData, TValue>[]
   data: TData[]
 }
- 
+
 const NextTable = <TData, TValue>({
   columns,
-  data,
-}: DataTableProps<TData, TValue>)=> {
+  data
+}: DataTableProps<TData, TValue>) => {
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    getCoreRowModel: getCoreRowModel()
   })
- 
+
+  console.log('re-render table')
+
   return (
-    <div className="border-y">
+    <div className='border-y'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -58,10 +59,10 @@ const NextTable = <TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="h-12">
+                  <TableCell key={cell.id} className='h-12'>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -69,7 +70,7 @@ const NextTable = <TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length} className='h-24 text-center'>
                 No results.
               </TableCell>
             </TableRow>
