@@ -18,6 +18,8 @@ import { CreateUserDto } from './dto/create.user.dto'
 import { Authentication } from 'src/decorators/authentication.decorator'
 import { ReqUser } from 'src/decorators/user.decorator'
 import { JwtPayload } from '../auth/interface/jwt.payload'
+import { Authorization } from 'src/decorators/authorization.decorator'
+import { actionEnum } from '../permission/permission.entity'
 
 @Controller('user')
 @Authentication()
@@ -25,6 +27,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('')
+  @Authorization('user', actionEnum.CREATE)
   async createUser(@Body() body: CreateUserDto) {
     try {
       const result = await this.userService.createUser(body)
@@ -39,6 +42,7 @@ export class UserController {
   }
 
   @Get()
+  @Authorization('user', actionEnum.READ)
   async getListUser(@Query() filterUser: FilterUserDto) {
     try {
       const result = await this.userService.getUsers(filterUser)

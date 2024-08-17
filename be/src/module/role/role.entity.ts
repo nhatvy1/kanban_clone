@@ -1,14 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Permission } from "../permission/permission.entity"
 
-export enum actionEnum {
-  CREATE = 'create',
-  READ = 'read',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  MANAGE = 'manage',
-}
-
 export const role =  {
   USER: 'user',
   ADMIN: 'admin'

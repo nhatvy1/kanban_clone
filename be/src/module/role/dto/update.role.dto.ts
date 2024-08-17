@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional } from "class-validator";
-import { actionEnum } from "../role.entity";
+import { actionEnum } from "src/module/permission/permission.entity";
 
 export class UpdateRoleDto {
   @IsNotEmpty()

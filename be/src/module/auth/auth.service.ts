@@ -24,7 +24,8 @@ export class AuthService {
       }
       const { access_token, refresh_token }: Tokens = await this.generateToken(
         user.id,
-        user.role.slug
+        user.role.slug,
+        user.permissions
       )
 
       delete user.password
@@ -43,8 +44,12 @@ export class AuthService {
     }
   }
 
-  async generateToken(userId: number, role: string): Promise<Tokens> {
-    const payload: JwtPayload = { userId, role }
+  async generateToken(
+    userId: number,
+    role: string,
+    permissions: any
+  ): Promise<Tokens> {
+    const payload: JwtPayload = { userId, role, permissions }
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.JWT_SECRET,
@@ -62,7 +67,8 @@ export class AuthService {
   async refreshToken(tokenVerify: TokenVerify) {
     const { access_token, refresh_token } = await this.generateToken(
       tokenVerify.userId,
-      tokenVerify.role
+      tokenVerify.role,
+      tokenVerify.permission
     )
     return { access_token, refresh_token }
   }
