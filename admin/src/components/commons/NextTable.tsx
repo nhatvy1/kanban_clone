@@ -31,8 +31,6 @@ const NextTable = <TData, TValue>({
     getCoreRowModel: getCoreRowModel()
   })
 
-  console.log('re-render table')
-
   return (
     <div className='border-y'>
       <Table>

@@ -1,7 +1,6 @@
 'use client'
 
 import { updateUser } from '@/actions/user.actions'
-import auth from '@/apiRequest/auth'
 import { getSession } from '@/apiRequest/session'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
@@ -14,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { ERROR_STATUS, STATUS_OPTIONS } from '@/lib/variable'
+import { ERROR_STATUS, USERS_STATUS_OPTIONS } from '@/lib/variable'
 import { IUser } from '@/types/user.type'
 import { useRouter } from 'next/navigation'
 import { memo } from 'react'
@@ -119,10 +118,10 @@ const UpdateUser = ({ open, data, onClose }: Props) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup defaultValue='1'>
-                    {STATUS_OPTIONS.map((option) => (
+                    {USERS_STATUS_OPTIONS.map((option) => (
                       <SelectItem
-                        key={option.value}
-                        value={option.value?.toString()}
+                        key={option.status}
+                        value={option.status?.toString()}
                       >
                         {option.label}
                       </SelectItem>

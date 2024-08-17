@@ -2,6 +2,7 @@
 
 import { createUser } from '@/actions/user.actions'
 import auth from '@/apiRequest/auth'
+import role from '@/apiRequest/role'
 import { getSession } from '@/apiRequest/session'
 import NextModal from '@/components/commons/NextModal'
 import { Button } from '@/components/ui/button'
@@ -14,8 +15,10 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { ERROR_STATUS, USERS_STATUS_OPTIONS } from '@/lib/variable'
+import { USERS_STATUS_OPTIONS } from '@/lib/variable'
+import { IRole } from '@/types/role'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -29,9 +32,11 @@ interface INewUser {
   fullName: string
   status: string
   password: string
+  role: number
 }
 
 const CreateUser = ({ open, onClose }: Props) => {
+  const [dataRole, setDataRole] = useState<IRole[] | []>([])
   const router = useRouter()
   const {
     register,
@@ -53,30 +58,46 @@ const CreateUser = ({ open, onClose }: Props) => {
     reset()
   }
 
+  const handleGetRoles = async () => {
+    try {
+      const res = await role.getRoles()
+      setDataRole(res?.result)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      handleGetRoles()
+    }
+  }, [open])
+
   const onSubmit: SubmitHandler<INewUser> = async (dataUpdate: INewUser) => {
     try {
-      const { cookies } = await getSession()
-      if (!cookies) {
-        toast.info('Login session expired')
-        router.push('/login')
-        await auth.logoutNextClientToNextServer()
-        return
-      }
+      console.log('Check dataUpdate: ', dataUpdate)
+      // const { cookies } = await getSession()
+      // if (!cookies) {
+      //   toast.info('Login session expired')
+      //   router.push('/login')
+      //   await auth.logoutNextClientToNextServer()
+      //   return
+      // }
 
-      const res = await createUser(cookies, dataUpdate)
+      // const res = await createUser(cookies, dataUpdate)
 
-      if (res?.statusCode !== ERROR_STATUS.AUTHENTICATION) {
-        if (res?.statusCode !== ERROR_STATUS.SUCCESS) {
-          toast.error(res?.message || 'Please try again later')
-        } else {
-          toast.success('Add a new user successfully')
-        }
-        handleClose()
-      } else {
-        toast.info('Login session expired')
-        await auth.logoutNextClientToNextServer()
-        router.push('/login')
-      }
+      // if (res?.statusCode !== ERROR_STATUS.AUTHENTICATION) {
+      //   if (res?.statusCode !== ERROR_STATUS.SUCCESS) {
+      //     toast.error(res?.message || 'Please try again later')
+      //   } else {
+      //     toast.success('Add a new user successfully')
+      //   }
+      //   handleClose()
+      // } else {
+      //   toast.info('Login session expired')
+      //   await auth.logoutNextClientToNextServer()
+      //   router.push('/login')
+      // }
     } catch (e: any) {
       toast.error(e?.message)
     }
@@ -160,7 +181,10 @@ const CreateUser = ({ open, onClose }: Props) => {
         <div>
           <label htmlFor='status'>Status</label>
           <Controller
-            name='status'
+            // name='status'
+            {...register('status', {
+              required: 'dsdasdas'
+            })}
             control={control}
             render={({ field, fieldState }) => (
               <Select
@@ -184,6 +208,46 @@ const CreateUser = ({ open, onClose }: Props) => {
                         value={option.value?.toString()}
                       >
                         {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.status?.message && (
+            <p className='text-sm mt-1 text-pink-500'>
+              {errors.status?.message}
+            </p>
+          )}
+        </div>
+        <div>
+          <label htmlFor='status'>Role</label>
+          <Controller
+            name='role'
+            control={control}
+            render={({ field, fieldState }) => (
+              <Select
+                key={field.value}
+                value={field.value?.toString()}
+                defaultValue={field.value?.toString()}
+                onValueChange={field.onChange}
+              >
+                <SelectTrigger
+                  className='w-[180px]'
+                  ref={field.ref}
+                  aria-invalid={fieldState['invalid']}
+                >
+                  <SelectValue placeholder='Select a role' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup defaultValue='1'>
+                    {dataRole.map((option) => (
+                      <SelectItem
+                        key={option.id}
+                        value={option.id?.toString()}
+                      >
+                        {option.name}
                       </SelectItem>
                     ))}
                   </SelectGroup>

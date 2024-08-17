@@ -114,4 +114,13 @@ export class RoleService implements OnModuleInit {
       throw e
     }
   }
+
+  async getRole() {
+    try {
+      const listRoles = await this.roleRepository.find()
+      return listRoles
+    } catch(e) {
+      throw e
+    }
+  }
 }
