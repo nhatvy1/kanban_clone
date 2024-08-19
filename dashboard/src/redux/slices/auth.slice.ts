@@ -25,17 +25,18 @@ const authSlice = createSlice({
     logout() {
       console.log('logout')
     },
-    login(state, payload: any) {
-      state.loading = false
-      state.accessToken = payload?.result.access_token
-      state.refreshToken = payload?.result.refresh_token
-      state.roles = payload?.result.user.role.slug
-      state.permissions = payload?.result.user.permissions
-      state.isLoggedIn = true
+    login(state, payload) {
+      console.log('Check: ', payload)
+      // state.loading = false
+      // state.accessToken = payload?.result.access_token
+      // state.refreshToken = payload?.result.refresh_token
+      // state.roles = payload?.result.user.role.slug
+      // state.permissions = payload?.result.user.permissions
+      // state.isLoggedIn = true
     }
   }
 })
 
-export const { logout } = authSlice.actions
+export const { logout, login } = authSlice.actions
 const authReducer = authSlice.reducer
 export default authReducer
