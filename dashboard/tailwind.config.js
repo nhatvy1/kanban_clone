@@ -20,6 +20,15 @@ export default {
         primary: '#3b5286',
         grayNormal: '#878a99'
       },
+      width: {
+        'navbar': '250px'
+      },
+      height: {
+        'header': '70px'
+      },
+      boxShadow: {
+        'header': '0 1px 2px rgba(56, 65, 74, .15)'
+      }
     }
   },
   plugins: [nextui()]

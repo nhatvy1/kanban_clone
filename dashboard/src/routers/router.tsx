@@ -1,19 +1,25 @@
 import { createBrowserRouter } from 'react-router-dom'
 import LoginPage from '../pages/login/login.page'
 import ProtectedRoute from '../providers/protected.route'
+import PrivateRoute from '../providers/private.router'
+import Layout from '../components/layout/layout'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
       <ProtectedRoute allowedRoles={['admin']}>
-        <h1>Home admin</h1>
+        <Layout />
       </ProtectedRoute>
     )
   },
   {
     path: '/login',
-    element: <LoginPage />
+    element: (
+      <PrivateRoute>
+        <LoginPage />
+      </PrivateRoute>
+    )
   }
 ])
 

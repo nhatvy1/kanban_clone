@@ -7,7 +7,7 @@ import { IFormLogin } from '../../../types/auth.type'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import auth from '../../../apiRequest/auth'
-import { login } from '../../../redux/slices/auth.slice'
+import { handleLogin } from '../../../redux/slices/auth.slice'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 const FormLogin = () => {
@@ -27,7 +27,7 @@ const FormLogin = () => {
     try {
       const res = await auth.login(data)
       dispatch(
-        login({
+        handleLogin({
           user: res.result.user,
           accessToken: res.result.access_token,
           refreshToken: res.result.refresh_token
