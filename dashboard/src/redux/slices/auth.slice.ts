@@ -1,28 +1,22 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import instanceNonAuth from '../../configs/axios.non.auth'
+import { createSlice } from '@reduxjs/toolkit'
 
 interface AuthSliceState {
   isLoggedIn: boolean
-  token: string | null
+  accessToken: string | undefined
+  refreshToken: string | undefined
+  roles: string | undefined
+  permissions: { [key: string]: string[] } | undefined
+  loading: boolean
 }
 
 const initialState: AuthSliceState = {
   isLoggedIn: false,
-  token: null
+  accessToken: undefined,
+  refreshToken: undefined,
+  roles: undefined,
+  permissions: undefined,
+  loading: false
 }
-
-export const login = createAsyncThunk(
-  'auth/login',
-  async (login: any, { rejectWithValue }) => {
-    try {
-      const response = await instanceNonAuth.post('auth/login', login)
-      return response
-    } catch (e) {
-      rejectWithValue(e)
-    }
-  }
-)
-
 
 const authSlice = createSlice({
   name: 'auth',
@@ -30,6 +24,14 @@ const authSlice = createSlice({
   reducers: {
     logout() {
       console.log('logout')
+    },
+    login(state, payload: any) {
+      state.loading = false
+      state.accessToken = payload?.result.access_token
+      state.refreshToken = payload?.result.refresh_token
+      state.roles = payload?.result.user.role.slug
+      state.permissions = payload?.result.user.permissions
+      state.isLoggedIn = true
     }
   }
 })

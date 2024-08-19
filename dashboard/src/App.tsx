@@ -1,10 +1,9 @@
-import useRouteElements from "./routers/useRouteElement";
+import { RouterProvider } from "react-router-dom";
+import router from "./routers/router";
 
 function App() {
-  const routeElements = useRouteElements()
-
   return (
-    <>{routeElements}</>
+    <RouterProvider router={router}/>
   )
 }
 
