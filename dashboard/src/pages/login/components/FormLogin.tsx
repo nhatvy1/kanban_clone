@@ -7,16 +7,15 @@ import { IFormLogin } from '../../../types/auth.type'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import auth from '../../../apiRequest/auth'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { login } from '../../../redux/slices/auth.slice'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 const FormLogin = () => {
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const {
     register,
@@ -27,9 +26,16 @@ const FormLogin = () => {
   const onSubmit: SubmitHandler<IFormLogin> = async (data: IFormLogin) => {
     try {
       const res = await auth.login(data)
-      console.log(res)
-      // dispatch(login(res.data))
-    } catch(e: any) {
+      dispatch(
+        login({
+          user: res.result.user,
+          accessToken: res.result.access_token,
+          refreshToken: res.result.refresh_token
+        })
+      )
+      toast.success('Login successfully')
+      navigate('/')
+    } catch (e: any) {
       toast.error(e?.message)
     }
   }
@@ -51,6 +57,11 @@ const FormLogin = () => {
           {...register('email')}
           placeholder='Enter your email'
         />
+        {errors.email?.message && (
+            <p className='text-sm mt-1 text-pink-500'>
+              {errors.email?.message}
+            </p>
+          )}
       </div>
       <div className=''>
         <NextInput
@@ -73,6 +84,11 @@ const FormLogin = () => {
           }
           type={isVisible ? 'text' : 'password'}
         />
+        {errors.password?.message && (
+            <p className='text-sm mt-1 text-pink-500'>
+              {errors.password?.message}
+            </p>
+          )}
       </div>
       <div className='flex items-center justify-between'>
         <Checkbox defaultSelected size='sm'>

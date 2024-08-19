@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { IUser } from '../../types/auth.type'
 
 interface AuthSliceState {
   isLoggedIn: boolean
@@ -25,14 +26,12 @@ const authSlice = createSlice({
     logout() {
       console.log('logout')
     },
-    login(state, payload) {
-      console.log('Check: ', payload)
-      // state.loading = false
-      // state.accessToken = payload?.result.access_token
-      // state.refreshToken = payload?.result.refresh_token
-      // state.roles = payload?.result.user.role.slug
-      // state.permissions = payload?.result.user.permissions
-      // state.isLoggedIn = true
+    login(state, payload: PayloadAction<any>) {
+      state.accessToken = payload?.payload.accessToken
+      state.refreshToken = payload?.payload.refresh_token
+      state.roles = payload.payload.user.role.slug
+      state.permissions = payload.payload.user.permissions
+      state.isLoggedIn = true
     }
   }
 })

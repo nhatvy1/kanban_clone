@@ -10,7 +10,7 @@ const instanceNonAuth = axios.create({
 
 instanceNonAuth.interceptors.response.use(
   function (response: AxiosResponse) {
-    return response.data
+    return response
   },
   function (error: AxiosError) {
     return Promise.reject(error?.response?.data)
