@@ -6,27 +6,27 @@ import { VscDashboard } from "react-icons/vsc";
 export const LIST_NAV_ITEM = [
   {
     name: 'Dashboard',
-    href: '/admin',
+    href: '/',
     icon: VscDashboard,
   },
   {
     name: 'User Management',
-    href: '/admin/user-management',
+    href: '/user-management',
     icon: PiUserSwitchThin,
   },
   {
     name: 'Team Management',
-    href: '/admin/team-management',
+    href: '/team-management',
     icon: PiUsersThin,
   },
   {
     name: 'Project Management',
-    href: '/admin/project-management',
+    href: '/project-management',
     icon: CiViewBoard,
   },
   {
     name: 'Role Management',
-    href: '/admin/role-management',
+    href: '/role-management',
     icon: AiOutlineSecurityScan,
   }
 ]

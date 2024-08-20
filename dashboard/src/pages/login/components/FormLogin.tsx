@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { PiEyeLight, PiEyeSlash } from 'react-icons/pi'
-import NextInput from '../../../components/ui/NextInput'
+import NextInput from '@/components/ui/NextInput'
 import { Button, Checkbox } from '@nextui-org/react'
 import { Link, useNavigate } from 'react-router-dom'
-import { IFormLogin } from '../../../types/auth.type'
+import { IFormLogin } from '@/types/auth.type'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import auth from '../../../apiRequest/auth'
-import { handleLogin } from '../../../redux/slices/auth.slice'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import auth from '@/apiRequest/auth'
+import { handleLogin } from '@/redux/slices/auth.slice'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
 
 const FormLogin = () => {
   const [isVisible, setIsVisible] = useState(false)

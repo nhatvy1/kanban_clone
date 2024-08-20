@@ -1,26 +1,50 @@
+import Layout from '@/components/layout/layout'
+import LoginPage from '@/pages/login/login.page'
+import UnauthorizationPage from '@/pages/unauthorization/unauthorization.page'
+import AuthenticationRoute from '@/providers/authentication.route'
+import LoginRoute from '@/providers/login.route'
 import { createBrowserRouter } from 'react-router-dom'
-import LoginPage from '../pages/login/login.page'
-import ProtectedRoute from '../providers/protected.route'
-import PrivateRoute from '../providers/private.router'
-import Layout from '../components/layout/layout'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <ProtectedRoute allowedRoles={['admin']}>
+      <AuthenticationRoute>
         <Layout />
-      </ProtectedRoute>
-    )
+      </AuthenticationRoute>
+    ),
+    children: [
+      {
+        path: '/user-management',
+        element: <h2>user management</h2>
+      },
+      {
+        path: '/team-management',
+        element: <h2>team management</h2>
+      },
+      {
+        path: '/project-management',
+        element: <h2>project management</h2>
+      },
+      {
+        path: '/role-management',
+        element: <h2>roles management</h2>
+      },
+      {
+        path: '/unauthorization',
+        element: <UnauthorizationPage />
+      }
+    ]
   },
   {
     path: '/login',
     element: (
-      <PrivateRoute>
+      <LoginRoute>
         <LoginPage />
-      </PrivateRoute>
+      </LoginRoute>
     )
-  }
+  },
+  
 ])
 
 export default router

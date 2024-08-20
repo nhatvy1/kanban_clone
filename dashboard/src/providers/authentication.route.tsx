@@ -1,28 +1,24 @@
+import { RootState } from '@/redux/store'
 import { ReactNode } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
 import { Navigate } from 'react-router-dom'
 
 interface Props {
-  allowedRoles: string[]
-  allowedPermissions?: string[]
   children: ReactNode
 }
 
-const ProtectedRoute = ({
-  allowedRoles,
-  allowedPermissions,
+const AuthenticationRoute = ({
   children
 }: Props) => {
-  const { accessToken, isLoggedIn, role } = useSelector(
+  const { isLoggedIn, } = useSelector(
     (state: RootState) => state.auth
   )
 
-  if (!isLoggedIn || !allowedRoles.includes(role || '')) {
+  if (!isLoggedIn) {
     return <Navigate to='/login' replace />
   }
 
   return children
 }
 
-export default ProtectedRoute
+export default AuthenticationRoute
