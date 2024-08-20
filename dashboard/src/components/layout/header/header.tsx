@@ -1,5 +1,4 @@
 import ButtonHideSidebar from '../sidebar/button.hide.sidebar'
-import ButtonFullscreen from './button.fullscreen'
 import ModeColor from './mode.color'
 import UserDropdown from './user.dropdown'
 
@@ -10,7 +9,6 @@ const Header = () => {
         <ButtonHideSidebar />
       </div>
       <div className='flex items-center gap-x-2'>
-        <ButtonFullscreen />
         <ModeColor />
         <UserDropdown />
       </div>
