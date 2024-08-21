@@ -1,7 +1,6 @@
 import Layout from '@/components/layout/layout'
 import LoginPage from '@/pages/login/login.page'
 import UnauthorizationPage from '@/pages/unauthorization/unauthorization.page'
-import UserManagement from '@/pages/user/user.page'
 import AuthenticationRoute from '@/providers/authentication.route'
 import LoginRoute from '@/providers/login.route'
 import { createBrowserRouter } from 'react-router-dom'
@@ -17,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/user-management',
-        element: <UserManagement />
+        element: <h2>user management</h2>
       },
       {
         path: '/team-management',
@@ -26,6 +25,14 @@ const router = createBrowserRouter([
       {
         path: '/project-management',
         element: <h2>project management</h2>
+      },
+      {
+        path: '/reminato/user-management',
+        element: <h2>Reminato user management</h2>
+      },
+      {
+        path: '/reminato/api-key-management',
+        element: <h2>Reminato api key management</h2>
       },
       {
         path: '/role-management',
@@ -44,8 +51,7 @@ const router = createBrowserRouter([
         <LoginPage />
       </LoginRoute>
     )
-  },
-  
+  }
 ])
 
 export default router

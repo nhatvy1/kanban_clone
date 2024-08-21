@@ -12,29 +12,19 @@ const Sidebar = () => {
     <div
       className={`${
         isOpenSidebar ? 'w-navbar' : 'w-[80px]'
-      } overflow-x-hidden duration-200 min-h-dvh overflow-auto bg-primary`}
+      } duration-200 min-h-dvh overflow-y-auto bg-primary`}
     >
       <div>
         <Link
           to='/'
-          className='sticky top-0 bg-primary z-50 flex text-white uppercase font-bold justify-center py-5 w-full'
+          className='sticky top-0 bg-primary z-50 flex text-white font-bold justify-center py-5 w-full'
         >
-          {isOpenSidebar ? (
-            <span>DASHBOARD</span>
-          ) : (
-            <img src='/vite.svg' alt='Loi anh' />
-          )}
+          <img src='/vite.svg' alt='Loi anh' />
         </Link>
-        <ul>
+        <ul className=''>
           <MenuTitle>Menu</MenuTitle>
           {LIST_NAV_ITEM.map((item, index) => (
-            <NavItem
-              title={item.name}
-              Icon={item.icon}
-              key={index}
-              href={item.href}
-              showTitle={isOpenSidebar}
-            />
+            <NavItem item={item} key={index} showTitle={isOpenSidebar} />
           ))}
         </ul>
       </div>
