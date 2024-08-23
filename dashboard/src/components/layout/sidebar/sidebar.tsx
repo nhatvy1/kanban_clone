@@ -15,7 +15,7 @@ const Sidebar = () => {
       } overflow-x-hidden duration-200 min-h-dvh overflow-auto bg-primary`}
     >
       <div>
-      <Link
+        <Link
           to='/'
           className='sticky top-0 bg-primary z-50 flex text-white uppercase font-bold justify-center py-5 w-full'
         >

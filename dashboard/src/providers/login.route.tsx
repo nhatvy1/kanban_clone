@@ -1,13 +1,13 @@
 import { useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
 import { Navigate } from 'react-router-dom'
 import { ReactNode } from 'react'
+import { RootState } from '@/redux/store'
 
 
 interface Props {
   children: ReactNode
 }
-const PrivateRoute = ({ children }: Props) => {
+const LoginRoute = ({ children }: Props) => {
   const { isLoggedIn } = useSelector((state: RootState) => state.auth)
 
   if (isLoggedIn) {
@@ -16,4 +16,4 @@ const PrivateRoute = ({ children }: Props) => {
   return children
 }
 
-export default PrivateRoute
+export default LoginRoute

@@ -4,7 +4,7 @@ import UserDropdown from './user.dropdown'
 
 const Header = () => {
   return (
-    <div className='flex items-center justify-between w-full h-header bg-white shadow-header px-5'>
+    <div className='sticky top-0 flex items-center justify-between w-full h-header bg-white shadow-header px-5'>
       <div>
         <ButtonHideSidebar />
       </div>

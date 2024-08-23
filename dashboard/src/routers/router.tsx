@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
+const LoginRoute = lazy(()=> import('@/providers/login.route'))
 const ProjectManagementPage = lazy(
   () => import('@/pages/project-management/project.management')
 )
 const ProtectedRoute = lazy(() => import('@/providers/protected.route'))
 const Layout = lazy(() => import('@/components/layout/layout'))
 const LoginPage = lazy(() => import('@/pages/login/login.page'))
-const PrivateRoute = lazy(() => import('@/providers/private.router'))
 const SkeletonPage = lazy(() => import('@/components/skeleton/skeleton.page'))
 const UserManagementPage = lazy(
   () => import('@/pages/user-management/user.management.page')
@@ -56,9 +56,9 @@ const router = createBrowserRouter([
     path: '/login',
     element: (
       <Suspense fallback={<SkeletonPage />}>
-        <PrivateRoute>
+        <LoginRoute>
           <LoginPage />
-        </PrivateRoute>
+        </LoginRoute>
       </Suspense>
     )
   }
