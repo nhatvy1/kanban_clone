@@ -32,8 +32,16 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    handleLogout() {
-      console.log('logout')
+    handleLogout(state) {
+      state.accessToken = null
+      state.permissions = null
+      state.role = null
+      state.isLoggedIn = false
+
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('permissions')
+      localStorage.removeItem('role')
+      localStorage.removeItem('isLoggedIn')
     },
     handleLogin(state, action: PayloadAction<any>) {
       state.accessToken = action?.payload.accessToken

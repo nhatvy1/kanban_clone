@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { PiEyeLight, PiEyeSlash } from 'react-icons/pi'
-import NextInput from '../../../components/ui/NextInput'
 import { Button, Checkbox } from '@nextui-org/react'
-import { Link, useNavigate } from 'react-router-dom'
-import { IFormLogin } from '../../../types/auth.type'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import auth from '../../../apiRequest/auth'
-import { handleLogin } from '../../../redux/slices/auth.slice'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import { IFormLogin } from '@/types/auth.type'
+import auth from '@/apiRequest/auth'
+import { handleLogin } from '@/redux/slices/auth.slice'
+import NextInput from '@/components/ui/NextInput'
 
 const FormLogin = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -58,10 +58,8 @@ const FormLogin = () => {
           placeholder='Enter your email'
         />
         {errors.email?.message && (
-            <p className='text-sm mt-1 text-pink-500'>
-              {errors.email?.message}
-            </p>
-          )}
+          <p className='text-sm mt-1 text-pink-500'>{errors.email?.message}</p>
+        )}
       </div>
       <div className=''>
         <NextInput
@@ -85,10 +83,10 @@ const FormLogin = () => {
           type={isVisible ? 'text' : 'password'}
         />
         {errors.password?.message && (
-            <p className='text-sm mt-1 text-pink-500'>
-              {errors.password?.message}
-            </p>
-          )}
+          <p className='text-sm mt-1 text-pink-500'>
+            {errors.password?.message}
+          </p>
+        )}
       </div>
       <div className='flex items-center justify-between'>
         <Checkbox defaultSelected size='sm'>

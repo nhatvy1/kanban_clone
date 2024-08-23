@@ -1,4 +1,4 @@
-import ButtonHideSidebar from './button.hide.sidebar'
+import ButtonHideSidebar from '../sidebar/button.hide.sidebar'
 import ModeColor from './mode.color'
 import UserDropdown from './user.dropdown'
 

@@ -1,32 +1,43 @@
-import { AiOutlineSecurityScan } from "react-icons/ai";
-import { CiViewBoard } from "react-icons/ci";
-import { PiUsersThin, PiUserSwitchThin } from "react-icons/pi";
-import { VscDashboard } from "react-icons/vsc";
+import { AiOutlineSecurityScan } from 'react-icons/ai'
+import { IoSettingsOutline } from 'react-icons/io5'
+import { PiCarProfileThin, PiUsersThin, PiUserSwitchThin } from 'react-icons/pi'
 
 export const LIST_NAV_ITEM = [
   {
-    name: 'Dashboard',
-    href: '/admin',
-    icon: VscDashboard,
-  },
-  {
     name: 'User Management',
-    href: '/admin/user-management',
-    icon: PiUserSwitchThin,
+    href: '/user-management',
+    icon: PiUserSwitchThin
   },
   {
     name: 'Team Management',
-    href: '/admin/team-management',
     icon: PiUsersThin,
+    href: '/team-management',
   },
   {
     name: 'Project Management',
-    href: '/admin/project-management',
-    icon: CiViewBoard,
+    icon: PiUserSwitchThin,
+    subMenu: [
+      {
+        name: 'Task Management',
+        href: '/reminato/user-management',
+        icon: PiCarProfileThin
+      },
+      {
+        name: 'Policy',
+        href: '/reminato/api-key-management',
+        icon: PiCarProfileThin
+      }
+    ]
   },
   {
     name: 'Role Management',
-    href: '/admin/role-management',
-    icon: AiOutlineSecurityScan,
+    href: '/role-management',
+    icon: AiOutlineSecurityScan
+  },
+  {
+    name: 'Settings',
+    href: '/role-management',
+    icon: IoSettingsOutline
+
   }
 ]

@@ -14,7 +14,7 @@ const ProtectedRoute = ({
   allowedPermissions,
   children
 }: Props) => {
-  const { accessToken, isLoggedIn, role } = useSelector(
+  const { isLoggedIn, role } = useSelector(
     (state: RootState) => state.auth
   )
 
