@@ -1,7 +1,7 @@
 import { handleLogout } from '@/redux/slices/auth.slice'
 import { store } from '@/redux/store'
 import { HttpStatusEnum } from '@/utils/constant'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { toast } from 'react-toastify'
 
 export const API_URL = 'http://localhost:5000/api/v1'
@@ -26,14 +26,13 @@ instance.interceptors.request.use(
     return config
   },
   function (error) {
-    console.log('Check error: ', error)
     return Promise.reject(error)
   }
 )
 
 // Add a response interceptor
 instance.interceptors.response.use(
-  function (response: any) {
+  function (response) {
     return response
   },
   function (error) {
