@@ -13,6 +13,7 @@ import { TeamService } from './team.service'
 import { CreateTeamDto } from './dto/create.team.dto'
 import { Response } from 'src/utils/response'
 import { Authentication } from 'src/decorators/authentication.decorator'
+import { UpdateTeamDto } from './dto/update.team.dto'
 
 @Controller('team')
 @Authentication()
@@ -64,7 +65,7 @@ export class TeamController {
   @Put('update/:id')
   async updateTeamById(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateTeam: CreateTeamDto
+    @Body() updateTeam: UpdateTeamDto
   ) {
     try {
       const result = await this.teamService.updateTeamName(id, updateTeam)

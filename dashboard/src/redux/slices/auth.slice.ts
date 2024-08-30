@@ -1,3 +1,4 @@
+import { IUser } from '@/types/auth.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initial_state_localstorage = (key: string) => {
@@ -11,7 +12,6 @@ const initial_state_isLoggedIn = (key: string) => {
 }
 
 interface AuthSliceState {
-  isLoggedIn: boolean
   accessToken: string | null
   refreshToken: string | null
   role: string | null
@@ -19,8 +19,13 @@ interface AuthSliceState {
   loading: boolean
 }
 
+interface PayloadLogin {
+  user: IUser
+  access_token: string
+  refresh_token: string
+}
+
 const initialState: AuthSliceState = {
-  isLoggedIn: initial_state_isLoggedIn('isLoggedIn'),
   accessToken: initial_state_localstorage('accessToken'),
   refreshToken: initial_state_localstorage('refreshToken'),
   role: initial_state_localstorage('role'),
@@ -36,27 +41,21 @@ const authSlice = createSlice({
       state.accessToken = null
       state.permissions = null
       state.role = null
-      state.isLoggedIn = false
 
       localStorage.removeItem('accessToken')
       localStorage.removeItem('permissions')
       localStorage.removeItem('role')
-      localStorage.removeItem('isLoggedIn')
     },
-    handleLogin(state, action: PayloadAction<any>) {
-      state.accessToken = action?.payload.accessToken
-      state.refreshToken = action?.payload.refreshToken
+    handleLogin(state, action: PayloadAction<PayloadLogin>) {
+      state.accessToken = action.payload.access_token
+      state.refreshToken = action.payload.refresh_token
       state.role = action.payload.user.role.slug
       state.permissions = action.payload.user.permissions
-      state.isLoggedIn = true
 
-      localStorage.setItem(
-        'accessToken',
-        JSON.stringify(action.payload.accessToken)
-      )
+      localStorage.setItem('accessToken', action.payload.access_token)
       localStorage.setItem(
         'refreshToken',
-        JSON.stringify(action.payload.refreshToken)
+        JSON.stringify(action.payload.refresh_token)
       )
       localStorage.setItem(
         'role',
@@ -66,7 +65,6 @@ const authSlice = createSlice({
         'permissions',
         JSON.stringify(action.payload.user.permissions)
       )
-      localStorage.setItem('isLoggedIn', JSON.stringify('true'))
     }
   }
 })

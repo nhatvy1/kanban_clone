@@ -12,6 +12,7 @@ import NextInput from '@/components/ui/NextInput'
 
 const FormLogin = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isloading, setIsLoading] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
 
   const navigate = useNavigate()
@@ -25,6 +26,7 @@ const FormLogin = () => {
 
   const onSubmit: SubmitHandler<IFormLogin> = async (data: IFormLogin) => {
     try {
+      setIsLoading(true)
       const res = await auth.login(data)
       dispatch(
         handleLogin({
@@ -36,7 +38,9 @@ const FormLogin = () => {
       toast.success('Login successfully')
       navigate('/')
     } catch (e: any) {
-      toast.error(e?.message)
+      toast.error(e)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -101,6 +105,7 @@ const FormLogin = () => {
           fullWidth
           type='submit'
           className='rounded-md text-white font-medium bg-[#0ab39c]'
+          isLoading={isloading}
         >
           Sign In
         </Button>

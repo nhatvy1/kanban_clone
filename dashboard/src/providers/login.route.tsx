@@ -8,9 +8,9 @@ interface Props {
   children: ReactNode
 }
 const LoginRoute = ({ children }: Props) => {
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth)
+  const { accessToken } = useSelector((state: RootState) => state.auth)
 
-  if (isLoggedIn) {
+  if (accessToken) {
     return <Navigate to='/' />
   }
   return children

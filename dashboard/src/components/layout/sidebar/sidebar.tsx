@@ -3,7 +3,7 @@ import MenuTitle from './menu.title'
 import NavItem from './nav.item'
 import { RootState } from '@/redux/store'
 import { useSelector } from 'react-redux'
-import { LIST_NAV_ITEM } from '@/routers/links'
+import { LIST_NAV_ITEM } from './data.sidebar'
 
 const Sidebar = () => {
   const { isOpenSidebar } = useSelector((state: RootState) => state.layout)

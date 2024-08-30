@@ -3,11 +3,12 @@ import instanceNonAuth from '../configs/axios.non.auth'
 import { IFormLogin, IResLogin } from '../types/auth.type'
 import { handleLogout } from '@/redux/slices/auth.slice'
 import { toast } from 'react-toastify'
+import { http } from '@/configs/http'
 
 const auth = {
   login: async (data: IFormLogin) => {
-    const res = await instanceNonAuth.post<IResLogin>('auth/login', data)
-    return res.data
+    const res = await http.post<IFormLogin, IResLogin>('auth/login', data)
+    return res
   },
   logout: ()=> {
     store.dispatch(handleLogout())

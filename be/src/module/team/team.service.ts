@@ -9,6 +9,7 @@ import { Team } from './team.entity'
 import { Repository } from 'typeorm'
 import { CreateTeamDto } from './dto/create.team.dto'
 import { UserService } from '../user/user.service'
+import { UpdateTeamDto } from './dto/update.team.dto'
 
 @Injectable()
 export class TeamService {
@@ -55,7 +56,7 @@ export class TeamService {
     }
   }
 
-  async updateTeamName(id: number, updateTeam: CreateTeamDto) {
+  async updateTeamName(id: number, updateTeam: UpdateTeamDto) {
     try {
       const team = await this.teamRepository.findOneBy({ id })
       if (!team) {

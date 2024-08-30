@@ -4,17 +4,17 @@ import { PiCarProfileThin, PiUsersThin, PiUserSwitchThin } from 'react-icons/pi'
 
 export const LIST_NAV_ITEM = [
   {
-    name: 'User Management',
+    name: 'Quản lý người dùng',
     href: '/user-management',
     icon: PiUserSwitchThin
   },
   {
-    name: 'Team Management',
+    name: 'Quản lý team',
     icon: PiUsersThin,
     href: '/team-management',
   },
   {
-    name: 'Project Management',
+    name: 'Quản lý dự án',
     icon: PiUserSwitchThin,
     subMenu: [
       {
@@ -30,12 +30,12 @@ export const LIST_NAV_ITEM = [
     ]
   },
   {
-    name: 'Role Management',
+    name: 'Phân quyền',
     href: '/role-management',
     icon: AiOutlineSecurityScan
   },
   {
-    name: 'Settings',
+    name: 'Cấu hình cài đặt',
     href: '/role-management',
     icon: IoSettingsOutline
 

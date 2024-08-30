@@ -14,11 +14,11 @@ const ProtectedRoute = ({
   allowedPermissions,
   children
 }: Props) => {
-  const { isLoggedIn, role } = useSelector(
+  const { accessToken, role } = useSelector(
     (state: RootState) => state.auth
   )
 
-  if (!isLoggedIn || !allowedRoles.includes(role || '')) {
+  if (!accessToken || !allowedRoles.includes(role || '')) {
     return <Navigate to='/login' replace />
   }
 
