@@ -12,12 +12,14 @@ import {
 import { TeamService } from './team.service'
 import { CreateTeamDto } from './dto/create.team.dto'
 import { Response } from 'src/utils/response'
+import { Authentication } from 'src/decorators/authentication.decorator'
 
 @Controller('team')
+@Authentication()
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
-  @Post('')
+  @Post('create')
   async createTeam(@Body() createTeam: CreateTeamDto) {
     try {
       const result = await this.teamService.createTeam(createTeam)
@@ -31,12 +33,12 @@ export class TeamController {
     }
   }
 
-  @Get('')
+  @Get('get')
   async getTeam() {
     try {
       const result = await this.teamService.getTeam()
       return Response({
-        message: 'Lấy danh sách team thành công',
+        message: 'Get teams successfully',
         statusCode: HttpStatus.OK,
         result
       })
@@ -45,7 +47,7 @@ export class TeamController {
     }
   }
 
-  @Get(':id')
+  @Get('get/:id')
   async getTeamById(@Param('id', ParseIntPipe) id: number) {
     try {
       const result = await this.teamService.getTeamById(id)
@@ -59,7 +61,7 @@ export class TeamController {
     }
   }
 
-  @Put(':id')
+  @Put('update/:id')
   async updateTeamById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTeam: CreateTeamDto
@@ -76,7 +78,7 @@ export class TeamController {
     }
   }
 
-  @Delete(':id')
+  @Delete('delete:id')
   async deleteTeamById(@Param('id', ParseIntPipe) id: number) {
     try {
       const result = await this.teamService.deleteTeamById(id)

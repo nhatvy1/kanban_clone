@@ -17,7 +17,7 @@ import { ProjectModule } from './module/project/project.module'
     UserModule,
     AuthModule,
     RoleModule,
-    ProjectModule,
+    // ProjectModule,
     PermissionModule,
     TeamModule
   ],

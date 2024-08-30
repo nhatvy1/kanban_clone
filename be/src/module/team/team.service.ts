@@ -8,11 +8,13 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Team } from './team.entity'
 import { Repository } from 'typeorm'
 import { CreateTeamDto } from './dto/create.team.dto'
+import { UserService } from '../user/user.service'
 
 @Injectable()
 export class TeamService {
   constructor(
-    @InjectRepository(Team) private readonly teamRepository: Repository<Team>
+    @InjectRepository(Team) private readonly teamRepository: Repository<Team>,
+    private readonly userService: UserService
   ) {}
 
   async createTeam(createTeam: CreateTeamDto) {
@@ -25,7 +27,7 @@ export class TeamService {
       }
 
       const newTeam = this.teamRepository.create({ name: createTeam.name })
-      await this.teamRepository.save(teamName)
+      await this.teamRepository.save(newTeam)
       return newTeam
     } catch (e) {
       throw e
@@ -55,13 +57,19 @@ export class TeamService {
 
   async updateTeamName(id: number, updateTeam: CreateTeamDto) {
     try {
-      const checkTeam = await this.teamRepository.findOneBy({ id })
-      if (!checkTeam) {
+      const team = await this.teamRepository.findOneBy({ id })
+      if (!team) {
         throw new NotFoundException('Team not found')
       }
-      const team = await this.teamRepository.update(id, {
-        name: updateTeam.name
-      })
+
+      team.name = updateTeam.name
+      if (updateTeam.users) {
+        const listUser = await this.userService.getUserByArrayId(
+          updateTeam.users
+        )
+        team.users = listUser
+      }
+      await this.teamRepository.save(team)
       return team
     } catch (e) {
       throw e

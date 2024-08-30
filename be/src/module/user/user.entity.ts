@@ -47,7 +47,7 @@ export class User {
   @JoinColumn({ name: 'role' })
   role: Role
 
-  @ManyToOne(() => Team, (team) => team.user, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Team, (team) => team.users, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'team' })
   team: Team
 

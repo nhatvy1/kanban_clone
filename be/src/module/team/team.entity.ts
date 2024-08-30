@@ -9,6 +9,6 @@ export class Team {
   @Column({ type: String, nullable: false })
   name: string
 
-  @OneToMany(()=> User, (user)=> user.team)
-  user: User[]
+  @OneToMany(()=> User, (user)=> user.team, { nullable: true })
+  users: User[]
 }

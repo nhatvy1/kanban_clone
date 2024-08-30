@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Status, User } from './user.entity'
-import { ILike, Repository } from 'typeorm'
+import { ILike, In, Repository } from 'typeorm'
 import { RegisterDto } from '../auth/dto/register.dto'
 import { role } from '../role/role.entity'
 import { RoleService } from '../role/role.service'
@@ -15,7 +15,6 @@ import { FilterUserDto } from './dto/search.user.dto'
 import { CreateUserDto } from './dto/create.user.dto'
 import { PermissionService } from '../permission/permission.service'
 import { mapPermission } from 'src/utils/permission'
-import { find } from 'rxjs'
 
 @Injectable()
 export class UserService {
@@ -91,6 +90,19 @@ export class UserService {
       }
       return user
     } catch (e) {
+      throw e
+    }
+  }
+
+  async getUserByArrayId(users: number[]) {
+    try {
+      const listUsers = await this.userRepository.find({
+        where: {
+          id: In(users)
+        }
+      })
+      return listUsers
+    } catch(e) {
       throw e
     }
   }
