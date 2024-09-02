@@ -6,11 +6,6 @@ const initial_state_localstorage = (key: string) => {
   return item ? JSON.parse(item) : null
 }
 
-const initial_state_isLoggedIn = (key: string) => {
-  const item = window.localStorage.getItem(key)
-  return item ? !!item : false
-}
-
 interface AuthSliceState {
   accessToken: string | null
   refreshToken: string | null
@@ -20,7 +15,7 @@ interface AuthSliceState {
 }
 
 interface PayloadLogin {
-  user: IUser
+  user: any
   access_token: string
   refresh_token: string
 }
@@ -52,7 +47,10 @@ const authSlice = createSlice({
       state.role = action.payload.user.role.slug
       state.permissions = action.payload.user.permissions
 
-      localStorage.setItem('accessToken', action.payload.access_token)
+      localStorage.setItem(
+        'accessToken',
+        JSON.stringify(action.payload.access_token)
+      )
       localStorage.setItem(
         'refreshToken',
         JSON.stringify(action.payload.refresh_token)

@@ -31,8 +31,8 @@ const FormLogin = () => {
       dispatch(
         handleLogin({
           user: res.result.user,
-          accessToken: res.result.access_token,
-          refreshToken: res.result.refresh_token
+          access_token: res.result.access_token,
+          refresh_token: res.result.refresh_token
         })
       )
       toast.success('Login successfully')
