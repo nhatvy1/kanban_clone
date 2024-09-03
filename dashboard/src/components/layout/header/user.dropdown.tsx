@@ -1,4 +1,5 @@
 import auth from '@/apiRequest/auth'
+import { RootState } from '@/redux/store'
 import {
   Avatar,
   Dropdown,
@@ -6,26 +7,37 @@ import {
   DropdownMenu,
   DropdownTrigger
 } from '@nextui-org/react'
+import { useSelector } from 'react-redux'
 
 const UserDropdown = () => {
+  const { user } = useSelector((state: RootState)=> state.auth)
+
   return (
     <Dropdown>
       <DropdownTrigger>
-        <button>
-          <Avatar isDisabled name='Joe' className='h-[42px] w-[42px]' />
-        </button>
+        <div className='flex gap-x-3 p-2 cursor-pointer items-center justify-between max-w-[200px] h-header bg-slate-50 hover:bg-slate-100'>
+          <div>
+            <Avatar
+              isDisabled
+              name={user?.fullName || ''}
+              className='h-[35px] w-[35px]'
+            />
+          </div>
+          <div>
+            <p className='line-clamp-1 text-xs'>{user?.fullName}</p>
+            <p className='line-clamp-1 text-xs'>{user?.email}</p>
+          </div>
+        </div>
       </DropdownTrigger>
       <DropdownMenu aria-label='Static Actions'>
-        <DropdownItem key='new'>New file</DropdownItem>
-        <DropdownItem key='copy'>Copy link</DropdownItem>
-        <DropdownItem key='edit'>Edit file</DropdownItem>
+        <DropdownItem key='new'>Trang cá nhân</DropdownItem>
         <DropdownItem
           key='delete'
           className='text-danger'
           color='danger'
           onClick={() => auth.logout()}
         >
-          Delete file
+          Đăng xuất
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

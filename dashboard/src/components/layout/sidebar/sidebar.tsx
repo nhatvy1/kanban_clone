@@ -12,8 +12,10 @@ const Sidebar = () => {
   return (
     <div
       className={`${
-        isOpenSidebar ? 'w-navbar' : 'w-[80px]'
-      } overflow-x-hidden duration-200 min-h-dvh overflow-auto bg-primary`}
+        isOpenSidebar
+          ? 'w-sidebar-open h-screen overflow-auto'
+          : 'w-sidebar-close min-h-dvh'
+      } duration-200 bg-primary max-md:hidden`}
     >
       <div>
         <Link

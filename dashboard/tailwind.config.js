@@ -21,7 +21,8 @@ export default {
         grayNormal: '#878a99'
       },
       width: {
-        'navbar': '250px'
+        'sidebar-open': '250px',
+        'sidebar-close': '80px'
       },
       height: {
         'header': '70px'

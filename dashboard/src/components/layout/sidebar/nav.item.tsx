@@ -16,7 +16,7 @@ const NavItem = ({ item, showTitle }: Props) => {
   return (
     <li>
       {item.subMenu ? (
-        <div className={`${!showTitle && 'justify-center'}`}>
+        <div className={`relative group ${!showTitle && 'justify-center'}`}>
           <Link
             to='#'
             className={`flex items-center ${
@@ -39,13 +39,16 @@ const NavItem = ({ item, showTitle }: Props) => {
             </p>
           </Link>
           <div
-            className={`grid overflow-hidden transition-all duration-300 ease-in-out text-slate-600 text-sm ${
-              isOpenSubMenu
-                ? 'grid-rows-[1fr] opacity-100'
-                : 'grid-rows-[0fr] opacity-0'
-            }`}
+            className={`grid overflow-hidden transition-all duration-300 ease-in-out text-slate-600 text-sm bg-primary
+              ${
+                showTitle
+                  ? isOpenSubMenu
+                    ? 'grid-rows-[1fr] opacity-100'
+                    : 'grid-rows-[0fr] opacity-0'
+                  : 'hidden group-hover:block group-hover:absolute top-0 left-full w-sidebar-open'
+              }`}
           >
-            <ul className={`pl-5 ${!showTitle && ('hidden')} overflow-hidden`}>
+            <ul className={`pl-5 overflow-hidden`}>
               {item.subMenu.map((sub: any, index: any) => (
                 <li key={index}>
                   <Link
@@ -68,10 +71,18 @@ const NavItem = ({ item, showTitle }: Props) => {
             !showTitle && 'justify-center'
           } gap-x-2 ${
             pathname === item.href ? 'text-white' : 'text-[#abb9e8]'
-          } py-3 px-5`}
+          } py-3 px-5 group relative`}
         >
           <item.icon className='text-xl' />
-          <span className={showTitle ? 'block' : 'hidden'}>{item?.name}</span>
+          <span
+            className={
+              showTitle
+                ? 'block'
+                : 'hidden group-hover:block group-hover:absolute top-0 left-full w-sidebar-open text-nowrap py-3 px-5 bg-primary z-50'
+            }
+          >
+            {item?.name}
+          </span>
         </Link>
       )}
     </li>

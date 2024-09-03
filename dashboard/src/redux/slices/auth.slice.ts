@@ -11,6 +11,7 @@ interface AuthSliceState {
   refreshToken: string | null
   role: string | null
   permissions: { [key: string]: string[] } | null
+  user: any
   loading: boolean
 }
 
@@ -25,6 +26,7 @@ const initialState: AuthSliceState = {
   refreshToken: initial_state_localstorage('refreshToken'),
   role: initial_state_localstorage('role'),
   permissions: initial_state_localstorage('permissions'),
+  user: initial_state_localstorage('user'),
   loading: false
 }
 
@@ -37,16 +39,22 @@ const authSlice = createSlice({
       state.permissions = null
       state.role = null
       state.refreshToken = null
+      state.user = null
 
       localStorage.removeItem('accessToken')
       localStorage.removeItem('permissions')
       localStorage.removeItem('role')
-      localStorage.removeItem('rorefreshTokenle')
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('user')
     },
     handleLogin(state, action: PayloadAction<PayloadLogin>) {
       state.accessToken = action.payload.access_token
       state.refreshToken = action.payload.refresh_token
       state.role = action.payload.user.role.slug
+      state.user = {
+        fullName: action.payload.user?.fullName,
+        email: action.payload.user?.email
+      }
       state.permissions = action.payload.user.permissions
 
       localStorage.setItem(
@@ -64,6 +72,10 @@ const authSlice = createSlice({
       localStorage.setItem(
         'permissions',
         JSON.stringify(action.payload.user.permissions)
+      )
+      localStorage.setItem(
+        'user',
+        JSON.stringify(state.user)
       )
     }
   }

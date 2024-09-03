@@ -6,13 +6,10 @@ const Layout = () => {
   return (
     <div className='flex'>
       <Sidebar />
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1'>
         <Header />
-        <div className='p-5 h-[calc(100vh_-_80px)] max-[1200px]:w-[1200px]'>
+        <div className='p-5'>
           <Outlet />
-          <div className='h-[10px]'>
-            Fix layout
-          </div>
         </div>
       </div>
     </div>

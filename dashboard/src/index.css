@@ -7,13 +7,14 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  padding: 0 2px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
   background-color: transparent;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: red;
+  background-color: lightgray;
+  border-radius: 4px;
 }
 
