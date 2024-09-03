@@ -18,7 +18,7 @@ const ProtectedRoute = ({
     (state: RootState) => state.auth
   )
 
-  if (!accessToken || !allowedRoles.includes(role || '')) {
+  if (!accessToken) {
     return <Navigate to='/login' replace />
   }
 

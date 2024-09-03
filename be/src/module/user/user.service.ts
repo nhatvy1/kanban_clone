@@ -49,6 +49,7 @@ export class UserService {
       const findPermission = await this.permissionService.getPermissionByRole(
         user.role.id
       )
+      console.log('Check: ', findPermission)
       const permissions = mapPermission(findPermission)
       return { ...user, permissions}
     } catch (e) {
