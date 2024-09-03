@@ -6,16 +6,22 @@ export const LIST_NAV_ITEM = [
   {
     name: 'Quản lý người dùng',
     href: '/user-management',
-    icon: PiUserSwitchThin
+    icon: PiUserSwitchThin,
+    module: 'user',
+    permission: 'read'
   },
   {
     name: 'Quản lý team',
     icon: PiUsersThin,
     href: '/team-management',
+    module: 'team',
+    permission: 'read'
   },
   {
     name: 'Quản lý dự án',
     icon: PiUserSwitchThin,
+    module: 'project',
+    permission: 'read',
     subMenu: [
       {
         name: 'Task Management',
@@ -32,12 +38,15 @@ export const LIST_NAV_ITEM = [
   {
     name: 'Phân quyền',
     href: '/role-management',
-    icon: AiOutlineSecurityScan
+    icon: AiOutlineSecurityScan,
+    module: 'role',
+    permission: 'read'
   },
   {
     name: 'Cấu hình cài đặt',
     href: '/role-management',
-    icon: IoSettingsOutline
-
+    icon: IoSettingsOutline,
+    module: 'setting',
+    permission: 'read'
   }
 ]

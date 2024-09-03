@@ -4,6 +4,7 @@ import NavItem from './nav.item'
 import { RootState } from '@/redux/store'
 import { useSelector } from 'react-redux'
 import { LIST_NAV_ITEM } from './data.sidebar'
+import Authorization from '@/components/permissions/authorization'
 
 const Sidebar = () => {
   const { isOpenSidebar } = useSelector((state: RootState) => state.layout)
@@ -28,7 +29,13 @@ const Sidebar = () => {
         <ul>
           <MenuTitle>Menu</MenuTitle>
           {LIST_NAV_ITEM.map((item, index) => (
-            <NavItem item={item} key={index} showTitle={isOpenSidebar} />
+            <Authorization
+              key={index}
+              module={item.module}
+              permission={item.permission}
+            >
+              <NavItem item={item} showTitle={isOpenSidebar} />
+            </Authorization>
           ))}
         </ul>
       </div>
