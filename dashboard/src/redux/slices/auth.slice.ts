@@ -36,10 +36,12 @@ const authSlice = createSlice({
       state.accessToken = null
       state.permissions = null
       state.role = null
+      state.refreshToken = null
 
       localStorage.removeItem('accessToken')
       localStorage.removeItem('permissions')
       localStorage.removeItem('role')
+      localStorage.removeItem('rorefreshTokenle')
     },
     handleLogin(state, action: PayloadAction<PayloadLogin>) {
       state.accessToken = action.payload.access_token
