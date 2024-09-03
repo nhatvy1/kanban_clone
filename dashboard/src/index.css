@@ -3,5 +3,17 @@
 @tailwind utilities;
 
 body {
-  font-family: "Poppins",sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  padding: 0 2px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: red;
+}
+

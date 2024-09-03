@@ -10,7 +10,9 @@ const Layout = () => {
         <Header />
         <div className='p-5 h-[calc(100vh_-_80px)] max-[1200px]:w-[1200px]'>
           <Outlet />
-          <div className='h-[10px]'></div>
+          <div className='h-[10px]'>
+            Fix layout
+          </div>
         </div>
       </div>
     </div>

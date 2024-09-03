@@ -1,5 +1,4 @@
 import axios, {
-  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse
