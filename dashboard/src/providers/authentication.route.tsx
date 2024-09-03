@@ -1,24 +1,24 @@
-import { RootState } from '@/redux/store'
 import { ReactNode } from 'react'
 import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 import { Navigate } from 'react-router-dom'
 
 interface Props {
   children: ReactNode
 }
 
-const AuthenticationRoute = ({
+const Authentication = ({
   children
 }: Props) => {
-  const { isLoggedIn, } = useSelector(
+  const { accessToken, role } = useSelector(
     (state: RootState) => state.auth
   )
 
-  if (!isLoggedIn) {
+  if (!accessToken) {
     return <Navigate to='/login' replace />
   }
 
   return children
 }
 
-export default AuthenticationRoute
+export default Authentication

@@ -1,11 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import ErrorPage from '@/pages/error/error.page'
-const LoginRoute = lazy(()=> import('@/providers/login.route'))
+import AuthorizationRoute from '@/providers/authorization.route'
+const LoginRoute = lazy(() => import('@/providers/login.route'))
 const ProjectManagementPage = lazy(
   () => import('@/pages/project-management/project.management')
 )
-const ProtectedRoute = lazy(() => import('@/providers/protected.route'))
+const Authentication = lazy(() => import('@/providers/authentication.route'))
 const Layout = lazy(() => import('@/components/layout/layout'))
 const LoginPage = lazy(() => import('@/pages/login/login.page'))
 const SkeletonPage = lazy(() => import('@/components/skeleton/skeleton.page'))
@@ -21,9 +22,9 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <Suspense fallback={<SkeletonPage />}>
-        <ProtectedRoute allowedRoles={['admin']}>
+        <Authentication>
           <Layout />
-        </ProtectedRoute>
+        </Authentication>
       </Suspense>
     ),
     children: [
@@ -50,6 +51,18 @@ const router = createBrowserRouter([
             <ProjectManagementPage />
           </Suspense>
         )
+      },
+      {
+        path: '/test',
+        element: (
+          <AuthorizationRoute module='team' permission='read'>
+            <div>Test chức năng authorization route</div>
+          </AuthorizationRoute>
+        )
+      },
+      {
+        path: '/not-allowed-to-access-this-page',
+        element: <div>Bạn không có quyền truy cập</div>
       }
     ]
   },
