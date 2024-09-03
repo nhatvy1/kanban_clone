@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import ErrorPage from '@/pages/error/error.page'
 import AuthorizationRoute from '@/providers/authorization.route'
+import NotAccessPage from '@/pages/not-access-page/not.access.page'
 const LoginRoute = lazy(() => import('@/providers/login.route'))
 const ProjectManagementPage = lazy(
   () => import('@/pages/project-management/project.management')
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/not-allowed-to-access-this-page',
-        element: <div>Bạn không có quyền truy cập</div>
+        element: <NotAccessPage />
       }
     ]
   },

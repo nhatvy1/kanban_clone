@@ -1,10 +1,11 @@
+import usePushQueryString from '@/hooks/usePushQueryString'
 import useQueryString from '@/hooks/useQueryString'
 import { limit_pagination } from '@/pages/team-managment/components/data'
 import {
   Pagination,
   Select,
   SelectItem,
-  Skeleton,
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -12,7 +13,9 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
-import { Key, useMemo } from 'react'
+import { Key, useMemo, useState } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import qs from 'query-string'
 
 interface Props<T> {
   columns: { name: string; id: string }[]
@@ -32,9 +35,18 @@ const NextTable = ({
   isLoading = false
 }: Props<any>) => {
   const { page, limit } = useQueryString()
-  const onChangePage = () => {}
+  const pushQueryString = usePushQueryString()
+  const location = useLocation()
 
-  const onChangeSizePage = () => {}
+  const onChangePage = (page: number) => {
+    const locationSearch = qs.parse(location.search)
+    pushQueryString({ ...locationSearch, page: page, limit })
+  }
+
+  const onChangeSizePage = (limit: string) => {
+    const locationSearch = qs.parse(location.search)
+    pushQueryString({ ...locationSearch, page, limit: limit })
+  }
 
   const pagination = useMemo(() => {
     return (
@@ -42,29 +54,32 @@ const NextTable = ({
         <Select
           aria-label='Limit pagination'
           placeholder='Select a limit'
-          defaultSelectedKeys={['cat']}
+          defaultSelectedKeys={[limit?.toString() || '15']}
           className='max-w-[120px]'
           classNames={{
             mainWrapper: 'h-9 border !rounded-md',
             trigger:
               'bg-transparent data-[hover=true]:bg-transparent rounded-none'
           }}
+          onChange={(value) => onChangeSizePage(value.target.value)}
         >
           {limit_pagination.map((limit) => (
             <SelectItem key={limit.key}>{limit.label}</SelectItem>
           ))}
         </Select>
         <Pagination
-          total={2}
-          page={1}
+          total={10}
+          page={page ? parseInt(page.toString()) : 1}
           classNames={{
             wrapper: 'flex gap-2'
           }}
           radius='sm'
+          showControls
+          onChange={onChangePage}
         />
       </div>
     )
-  }, [])
+  }, [page, limit])
 
   return (
     <Table
@@ -82,7 +97,7 @@ const NextTable = ({
           <TableColumn key={columns.id}>{columns.name}</TableColumn>
         ))}
       </TableHeader>
-      {isLoading ? (
+      {/* {isLoading ? (
         <TableBody>
           {Array.from({ length: 10 }).map((_, index) => (
             <TableRow key={index}>
@@ -94,17 +109,22 @@ const NextTable = ({
             </TableRow>
           ))}
         </TableBody>
-      ) : (
-        <TableBody emptyContent='Không có dữ liệu' items={data}>
-          {(item: any) => (
-            <TableRow key={item?.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      )}
+      ) : ( */}
+      <TableBody
+        emptyContent='Không có dữ liệu'
+        items={data}
+        loadingContent={<Spinner size='lg' />}
+        isLoading={isLoading}
+      >
+        {(item: any) => (
+          <TableRow key={item?.id}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+      {/* )} */}
     </Table>
   )
 }

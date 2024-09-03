@@ -9,11 +9,19 @@ import moment from 'moment'
 import { Tooltip } from '@nextui-org/react'
 import { EditIcon } from '@/components/icons/edit.icon'
 import { DeleteIcon } from '@/components/icons/delete.icon'
+import NextInput from '@/components/ui/NextInput'
+import { CiSearch } from 'react-icons/ci'
+import useQueryString from '@/hooks/useQueryString'
+import usePushQueryString from '@/hooks/usePushQueryString'
+import { debounce } from 'lodash'
 
 const TeamManagementPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<ITeam[]>([])
   const [searchParams] = useSearchParams()
+
+  const { page, limit } = useQueryString()
+  const pushQueryString = usePushQueryString()
 
   const getTeams = async () => {
     try {
@@ -54,12 +62,28 @@ const TeamManagementPage = () => {
     }
   }, [])
 
+  const onChangeInput = debounce((valueInput: string) => {
+    pushQueryString({
+      page,
+      limit,
+      search: valueInput
+    })
+  }, 500)
+
   useEffect(() => {
     getTeams()
   }, [searchParams])
 
   return (
     <div>
+      <div className='mb-4 max-w-[300px]'>
+        <NextInput
+          placeholder='Tìm kiếm theo tên team'
+          aria-label='Tìm kiếm theo team'
+          onChange={(e) => onChangeInput(e.target.value)}
+          endContent={<CiSearch className='text-2xl' />}
+        />
+      </div>
       <NextTable
         columns={columns}
         data={data}

@@ -129,7 +129,7 @@ class Http {
       }
     }
 
-    return Promise.reject(error)
+    return Promise.reject(error.data)
   }
 }
 

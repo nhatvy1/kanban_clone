@@ -38,7 +38,8 @@ const FormLogin = () => {
       toast.success('Login successfully')
       navigate('/')
     } catch (e: any) {
-      toast.error(e)
+      console.log()
+      toast.error(e?.message)
     } finally {
       setIsLoading(false)
     }

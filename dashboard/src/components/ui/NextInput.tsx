@@ -2,8 +2,8 @@ import { forwardRef } from 'react'
 import { Input, InputProps } from '@nextui-org/react'
 
 interface CustomInputProps extends InputProps {
-  label: string
-  name: string
+  label?: string
+  name?: string
 }
 
 const NextInput = forwardRef<HTMLInputElement, CustomInputProps>(
@@ -19,7 +19,8 @@ const NextInput = forwardRef<HTMLInputElement, CustomInputProps>(
         fullWidth
         radius='none'
         classNames={{
-          inputWrapper: 'bg-transparent shadow-none hover:!bg-transparent border rounded-sm'
+          inputWrapper:
+            'bg-transparent shadow-none hover:!bg-transparent border rounded-sm'
         }}
       />
     )

@@ -5,8 +5,7 @@ const usePushQueryString = () => {
   let [searchParams, setSearchParams] = useSearchParams()
 
   function handlePushLocationSearch(data: any) {
-    // const locationSearch = qs.parse(location.search)
-    const filter = qs.stringify(data)
+    const filter = qs.stringify(data, { skipEmptyString: true })
     setSearchParams(filter)
   }
 
