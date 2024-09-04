@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <NextUIProvider>
         <App />
@@ -27,5 +27,5 @@ createRoot(document.getElementById('root')!).render(
         />
       </NextUIProvider>
     </Provider>
-  // </StrictMode>
+  </StrictMode>
 )

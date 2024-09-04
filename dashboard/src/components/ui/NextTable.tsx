@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
-import { Key, useMemo, useState } from 'react'
+import { Key, memo, useMemo, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import qs from 'query-string'
 
@@ -57,7 +57,7 @@ const NextTable = ({
           defaultSelectedKeys={[limit?.toString() || '15']}
           className='max-w-[120px]'
           classNames={{
-            mainWrapper: 'h-9 border !rounded-md',
+            mainWrapper: 'h-9 border !rounded-md p-0',
             trigger:
               'bg-transparent data-[hover=true]:bg-transparent rounded-none'
           }}
@@ -68,7 +68,7 @@ const NextTable = ({
           ))}
         </Select>
         <Pagination
-          total={10}
+          total={totalPages}
           page={page ? parseInt(page.toString()) : 1}
           classNames={{
             wrapper: 'flex gap-2'
@@ -97,19 +97,7 @@ const NextTable = ({
           <TableColumn key={columns.id}>{columns.name}</TableColumn>
         ))}
       </TableHeader>
-      {/* {isLoading ? (
-        <TableBody>
-          {Array.from({ length: 10 }).map((_, index) => (
-            <TableRow key={index}>
-              {columns.map((column) => (
-                <TableCell key={column.id}>
-                  <Skeleton className='w-full h-10 bg-default-100' />
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      ) : ( */}
+      
       <TableBody
         emptyContent='Không có dữ liệu'
         items={data}
@@ -124,9 +112,8 @@ const NextTable = ({
           </TableRow>
         )}
       </TableBody>
-      {/* )} */}
     </Table>
   )
 }
 
-export default NextTable
+export default memo(NextTable)

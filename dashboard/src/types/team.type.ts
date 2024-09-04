@@ -9,3 +9,13 @@ export interface IResponseGetTeam {
   statusCode: string
   result: ITeam[]
 }
+
+export interface IResponseCreateTeam {
+  message: string
+  statusCode: string
+  result: ITeam
+}
+
+export interface IFormTeam {
+  name: string
+}

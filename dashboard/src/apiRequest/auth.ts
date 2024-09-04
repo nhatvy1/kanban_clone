@@ -1,5 +1,4 @@
 import { store } from '@/redux/store'
-import instanceNonAuth from '../configs/axios.non.auth'
 import { IFormLogin, IResLogin } from '../types/auth.type'
 import { handleLogout } from '@/redux/slices/auth.slice'
 import { toast } from 'react-toastify'

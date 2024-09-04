@@ -1,10 +1,11 @@
+import { fetchTeams } from '@/apiRequest/team'
 import { http } from '@/configs/http'
 import { IResponseGetTeam, ITeam } from '@/types/team.type'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 interface TeamSliceState {
   loading: boolean
-  listTeams: any
+  listTeams: ITeam[]
 }
 
 const initialState: TeamSliceState = {
@@ -16,7 +17,7 @@ export const getListTeams = createAsyncThunk(
   'team/getListTeams',
   async (filter: string, { rejectWithValue }) => {
     try {
-      const response = await http.get<any, IResponseGetTeam>(`/team/get?${filter}`)
+      const response = await fetchTeams(`team/get?${filter}`)
       return response
     } catch (e) {
       console.log(e)
@@ -37,15 +38,11 @@ const teamSlice = createSlice({
     builder
       .addCase(getListTeams.pending, (state) => {
         state.loading = true
-        state.listTeams = [1, 2, 3]
       })
-      .addCase(
-        getListTeams.fulfilled,
-        (state, action) => {
-          state.loading = false
-          state.listTeams = action.payload.result
-        }
-      )
+      .addCase(getListTeams.fulfilled, (state, action) => {
+        state.loading = false
+        state.listTeams = action.payload.result
+      })
       .addCase(getListTeams.rejected, (state) => {
         state.loading = false
       })

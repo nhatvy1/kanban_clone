@@ -39,14 +39,14 @@ const NavItem = ({ item, showTitle }: Props) => {
             </p>
           </Link>
           <div
-            className={`grid overflow-hidden transition-all duration-300 ease-in-out text-slate-600 text-sm bg-primary
+            className={`grid overflow-hidden transition-all duration-300 ease-in-out text-slate-600 text-sm
               ${
                 showTitle
                   ? isOpenSubMenu
                     ? 'grid-rows-[1fr] opacity-100'
                     : 'grid-rows-[0fr] opacity-0'
-                  : 'hidden group-hover:block group-hover:absolute top-0 left-full w-sidebar-open'
-              }`}
+                  : 'hidden group-hover:block group-hover:absolute top-0 left-full w-sidebar-open bg-primary'
+              } z-50`}
           >
             <ul className={`pl-5 overflow-hidden`}>
               {item.subMenu.map((sub: any, index: any) => (
