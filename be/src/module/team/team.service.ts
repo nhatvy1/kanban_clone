@@ -10,6 +10,7 @@ import { Repository } from 'typeorm'
 import { CreateTeamDto } from './dto/create.team.dto'
 import { UserService } from '../user/user.service'
 import { UpdateTeamDto } from './dto/update.team.dto'
+import { User } from '../user/user.entity'
 
 @Injectable()
 export class TeamService {
@@ -27,7 +28,15 @@ export class TeamService {
         throw new ConflictException('Team name already exists')
       }
 
-      const newTeam = this.teamRepository.create({ name: createTeam.name })
+      const listUser = await this.userService.getUserByArrayId(
+        createTeam.users,
+        {}
+      )
+
+      const newTeam = this.teamRepository.create({
+        name: createTeam.name,
+        users: listUser
+      })
       await this.teamRepository.save(newTeam)
       return newTeam
     } catch (e) {

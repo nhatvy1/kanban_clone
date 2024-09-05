@@ -94,11 +94,11 @@ export class UserService {
     }
   }
 
-  async getUserByArrayId(users: number[]) {
+  async getUserByArrayId(users: number[], filter?: any) {
     try {
       const listUsers = await this.userRepository.find({
         where: {
-          id: In(users)
+          id: In(users),
         }
       })
       return listUsers

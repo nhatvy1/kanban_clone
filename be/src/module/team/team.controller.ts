@@ -16,7 +16,7 @@ import { Authentication } from 'src/decorators/authentication.decorator'
 import { UpdateTeamDto } from './dto/update.team.dto'
 
 @Controller('team')
-// @Authentication()
+@Authentication()
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
@@ -79,7 +79,7 @@ export class TeamController {
     }
   }
 
-  @Delete('delete:id')
+  @Delete('delete/:id')
   async deleteTeamById(@Param('id', ParseIntPipe) id: number) {
     try {
       const result = await this.teamService.deleteTeamById(id)

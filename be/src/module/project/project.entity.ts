@@ -13,5 +13,5 @@ export class Project {
   description: string
 
   @ManyToOne(() => User, (user) => user.projects)
-  creators: User
+  creator: User
 }

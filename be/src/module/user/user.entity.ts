@@ -51,6 +51,6 @@ export class User {
   @JoinColumn({ name: 'team' })
   team: Team
 
-  @OneToMany(() => Project, (project) => project.creators)
+  @OneToMany(() => Project, (project) => project.creator)
   projects: Project[]
 }
