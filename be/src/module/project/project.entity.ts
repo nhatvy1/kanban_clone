@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 import { User } from '../user/user.entity'
 
 @Entity()
@@ -14,4 +20,7 @@ export class Project {
 
   @ManyToOne(() => User, (user) => user.projects)
   creator: User
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date
 }

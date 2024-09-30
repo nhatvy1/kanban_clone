@@ -18,7 +18,7 @@ import { ReqUser } from 'src/decorators/user.decorator'
 import { JwtPayload } from '../auth/interface/jwt.payload'
 import { Authorization } from 'src/decorators/authorization.decorator'
 import { actionEnum } from '../permission/permission.entity'
-import { RessponseMessage } from 'src/decorators/response.message.decorator'
+import { ResponseMessage } from 'src/decorators/response.message.decorator'
 
 @Controller('user')
 // @Authentication()
@@ -27,27 +27,27 @@ export class UserController {
 
   @Post('')
   @Authorization('user', actionEnum.CREATE)
-  @RessponseMessage('Create user successfully')
+  @ResponseMessage('Create user successfully')
   createUser(@Body() body: CreateUserDto) {
     return this.userService.createUser(body)
   }
 
   @Get()
   @Authorization('user', actionEnum.READ)
-  @RessponseMessage('Get list user successfully')
+  @ResponseMessage('Get list user successfully')
   async getListUser(@Query() filterUser: FilterUserDto) {
     return this.userService.getUsers(filterUser)
   }
 
   @Get('/profile')
-  @RessponseMessage('Get profile successfully')
+  @ResponseMessage('Get profile successfully')
   getProfile() {
     const user = 213
     return 11
   }
 
   @Get(':id')
-  @RessponseMessage('success')
+  @ResponseMessage('success')
   getUserById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUserById(id)
   }
@@ -58,7 +58,7 @@ export class UserController {
   }
 
   @Put(':id')
-  @RessponseMessage('Update user successfully')
+  @ResponseMessage('Update user successfully')
   updateUserById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto

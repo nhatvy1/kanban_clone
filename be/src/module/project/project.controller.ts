@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -14,7 +15,7 @@ import { ReqUser } from 'src/decorators/user.decorator'
 import { JwtPayload } from '../auth/interface/jwt.payload'
 import { CreateProjectDto } from './dto/create.projectd.dto'
 import { UpdateProjectDto } from './dto/update.project.dto'
-import { Response } from 'src/utils/response'
+import { ResponseMessage } from 'src/decorators/response.message.decorator'
 
 @Controller('project')
 @Authentication()
@@ -22,53 +23,32 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Post('create')
+  @ResponseMessage('Create project successfully')
   async createProject(
     @ReqUser() reqUser: JwtPayload,
     @Body() createProject: CreateProjectDto
   ) {
-    try {
-      const result = await this.projectService.createProject(1, createProject)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+    return this.projectService.createProject(1, createProject)
+  }
+
+  @Get('/by-user')
+  @ResponseMessage('Get project by user')
+  getProjectByUser() {
+    return 1
   }
 
   @Put('update/:id')
+  @ResponseMessage('Update project successfully')
   async updateProjectById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProject: UpdateProjectDto
   ) {
-    try {
-      const result = await this.projectService.updateProjectById(
-        id,
-        updateProject
-      )
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+    return this.projectService.updateProjectById(id, updateProject)
   }
 
   @Delete('delete/:id')
+  @ResponseMessage('Delete project successfully')
   async deleteProjectById(@Param('id', ParseIntPipe) id: number) {
-    try {
-      const result = await this.projectService.deleteProjectById(id)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+    return this.projectService.deleteProjectById(id)
   }
 }

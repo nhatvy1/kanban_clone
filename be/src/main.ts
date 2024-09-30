@@ -12,11 +12,11 @@ async function bootstrap() {
     credentials: true
   })
 
-  const reflector = app.get(Reflector);
-  const httpAdapterHost = app.get(HttpAdapterHost);
+  const reflector = app.get(Reflector)
+  const httpAdapterHost = app.get(HttpAdapterHost)
 
-  app.useGlobalInterceptors(new TransformInterceptor(reflector));
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
+  app.useGlobalInterceptors(new TransformInterceptor(reflector))
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost))
 
   app.setGlobalPrefix('api/v1')
 
