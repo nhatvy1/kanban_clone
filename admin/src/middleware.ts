@@ -15,34 +15,42 @@ export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken')?.value
   const isPrivatePath = privatePaths.includes(pathname)
 
-  if (isPrivatePath && !accessToken) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+  // if (isPrivatePath && !accessToken) {
+  //   return NextResponse.redirect(new URL('/login', request.url))
+  // }
 
-  if (isPrivatePath && accessToken) {
-    const decodedAccessToken: any = jwtDecode(accessToken)
-    if (decodedAccessToken?.role.includes('admin')) {
-      return NextResponse.next()
-    } else {
-      return NextResponse.redirect(new URL('/unauthorization', request.url))
+  // if (isPrivatePath && accessToken) {
+  //   const decodedAccessToken: any = jwtDecode(accessToken)
+  //   if (decodedAccessToken?.role.includes('admin')) {
+  //     return NextResponse.next()
+  //   } else {
+  //     return NextResponse.redirect(new URL('/unauthorization', request.url))
+  //   }
+  // }
+
+  // if (accessToken && (pathname === '/login' || pathname === '/register')) {
+  //   return NextResponse.redirect(new URL('/', request.url))
+  // }
+
+  console.log('Check')
+  return NextResponse.redirect(new URL(pathname, request.nextUrl), {
+    headers: {
+      'Set-Cookie': `sessionid=${'dsadsadsadsa'}`
     }
-  }
-
-  if (accessToken && (pathname === '/login' || pathname === '/register')) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
+  })
 
   return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/',
-    '/project-management',
-    '/team-management',
-    '/user-management',
-    '/login',
-    '/profile',
-    '/unauthorization'
+    // '/',
+    // '/project-management',
+    // '/team-management',
+    // '/user-management',
+    // '/login',
+    // '/profile',
+    // '/unauthorization'
+    '/demo'
   ]
 }
