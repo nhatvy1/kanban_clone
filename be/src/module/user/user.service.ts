@@ -43,7 +43,6 @@ export class UserService implements OnModuleInit {
     //   const newUser = this.userRepository.create(dataNewUser)
     //   await this.userRepository.save(newUser)
     // }
-    console.log('init')
   }
 
   async checkEmail(email: string) {

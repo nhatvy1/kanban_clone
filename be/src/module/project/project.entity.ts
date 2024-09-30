@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { User } from '../user/user.entity'
+import { List } from '../list/list.entity'
 
 @Entity()
 export class Project {
@@ -20,6 +22,9 @@ export class Project {
 
   @ManyToOne(() => User, (user) => user.projects)
   creator: User
+
+  @OneToMany(()=> List, (list)=> list.project)
+  lists: List[]
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date

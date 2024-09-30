@@ -12,7 +12,7 @@ import { RESPONSE_MESSAGE } from 'src/decorators/response.message.decorator'
 export interface Response<T> {
   statusCode: number
   message?: string
-  data: T
+  result: T
 }
 
 @Injectable()
@@ -26,13 +26,13 @@ export class TransformInterceptor<T>
     next: CallHandler
   ): Observable<Response<T>> {
     return next.handle().pipe(
-      map((data) => ({
+      map((result) => ({
         statusCode: context.switchToHttp().getResponse().statusCode,
         message: this.reflector.get<string>(
           RESPONSE_MESSAGE,
           context.getHandler()
         ),
-        data
+        result
       }))
     )
   }

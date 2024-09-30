@@ -7,6 +7,7 @@ import { RoleModule } from './module/role/role.module'
 import { PermissionModule } from './module/permission/permission.module'
 import { AuthModule } from './module/auth/auth.module'
 import { ProjectModule } from './module/project/project.module'
+import { ListModule } from './module/list/list.module'
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -17,6 +18,7 @@ import { ProjectModule } from './module/project/project.module'
     AuthModule,
     RoleModule,
     ProjectModule,
+    ListModule,
     PermissionModule,
   ],
   controllers: [],

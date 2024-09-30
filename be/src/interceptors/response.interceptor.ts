@@ -12,7 +12,7 @@ import { catchError, map } from 'rxjs/operators'
 export interface Response<T> {
   statusCode: number
   message?: string
-  data: T
+  result: T
 }
 
 @Injectable()
@@ -50,9 +50,11 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     const response = ctx.getResponse()
     const statusCode = response.statusCode
 
+    console.log('Check')
+
     return {
       statusCode,
-      data: res
+      result: res || {}
     }
   }
 }

@@ -16,7 +16,7 @@ async function bootstrap() {
   const httpAdapterHost = app.get(HttpAdapterHost)
 
   app.useGlobalInterceptors(new TransformInterceptor(reflector))
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost))
+  app.useGlobalFilters(new AllExceptionsFilter())
 
   app.setGlobalPrefix('api/v1')
 

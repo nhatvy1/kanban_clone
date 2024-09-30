@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { List } from "src/module/list/list.entity";
 import { Permission } from "src/module/permission/permission.entity";
 import { Project } from "src/module/project/project.entity";
 import { Role } from "src/module/role/role.entity";
@@ -11,7 +12,7 @@ export default (): TypeOrmModuleOptions => ({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [User, Project, Role, Permission],
+  entities: [User, Project, List, Role, Permission],
   autoLoadEntities: true,
   synchronize: process.env.DB_SYNC === 'true',
 });

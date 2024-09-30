@@ -18,57 +18,68 @@ export class ProjectService {
     private readonly userService: UserService
   ) {}
 
-  async createProject(id: number, createProject: CreateProjectDto) {
-    try {
-      const checkProject = await this.projectRepository.findOneBy({
-        name: createProject.name
-      })
-      if (checkProject) {
-        throw new ConflictException('Project existed')
-      }
-      const user = await this.userService.getUserById(id)
-      if (!user) {
-        throw new NotFoundException('User not found')
-      }
-
-      const newProject = this.projectRepository.create({
-        ...createProject,
-        creator: user
-      })
-      await this.projectRepository.save(newProject)
-      return newProject
-    } catch (e) {
-      throw e
+  async createProject(userId: number, createProject: CreateProjectDto) {
+    const user = await this.userService.getUserById(userId)
+    if (!user) {
+      throw new NotFoundException('User not found')
     }
+
+    const newProject = this.projectRepository.create({
+      ...createProject,
+      creator: user
+    })
+    await this.projectRepository.save(newProject)
+    return newProject
   }
 
-  async updateProjectById(id: number, updateProject: UpdateProjectDto) {
-    try {
-      const project = await this.projectRepository.findOneBy({ id })
-      if(!project) {
-        throw new NotFoundException('Project not found')
+  async updateProjectById(
+    id: number,
+    updateProject: UpdateProjectDto,
+    userId: number
+  ) {
+    const project = await this.projectRepository.findOne({
+      where: {
+        id: id,
+        creator: { id: userId }
       }
-
-      for (const key of Object.keys(updateProject)) {
-        project[key] = updateProject[key] 
-      }
-      await this.projectRepository.save(project)
-      return project
-    } catch(e) {
-      throw e
+    })
+    if (!project) {
+      throw new NotFoundException('Project not found')
     }
+
+    for (const key of Object.keys(updateProject)) {
+      project[key] = updateProject[key]
+    }
+    await this.projectRepository.save(project)
+    return project
   }
 
-  async deleteProjectById(id: number) {
+  async deleteProjectById(projectId: number, userId: number) {
     try {
-      const project = await this.projectRepository.findOneBy({ id })
-      if(!project) {
+      const project = await this.projectRepository.findOne({
+        where: {
+          id: projectId,
+          creator: { id: userId }
+        }
+      })
+      if (!project) {
         throw new NotFoundException('Project not found')
       }
 
       await this.projectRepository.remove(project)
       return project
-    } catch(e) {
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async getAllProjectByUser(id: number) {
+    try {
+      return this.projectRepository.find({
+        where: { creator: { id: id } },
+        relations: ['creator']
+      })
+    } catch (e) {
       throw e
     }
   }

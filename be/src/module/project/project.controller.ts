@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -22,33 +21,41 @@ import { ResponseMessage } from 'src/decorators/response.message.decorator'
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Post('create')
+  @Post('')
   @ResponseMessage('Create project successfully')
   async createProject(
     @ReqUser() reqUser: JwtPayload,
     @Body() createProject: CreateProjectDto
   ) {
-    return this.projectService.createProject(1, createProject)
+    return this.projectService.createProject(reqUser.userId, createProject)
   }
 
   @Get('/by-user')
   @ResponseMessage('Get project by user')
-  getProjectByUser() {
-    return 1
+  getProjectByUser(@ReqUser() reqUser: JwtPayload) {
+    return this.projectService.getAllProjectByUser(reqUser.userId)
   }
 
-  @Put('update/:id')
+  @Put(':id')
   @ResponseMessage('Update project successfully')
   async updateProjectById(
     @Param('id', ParseIntPipe) id: number,
+    @ReqUser() reqUser: JwtPayload,
     @Body() updateProject: UpdateProjectDto
   ) {
-    return this.projectService.updateProjectById(id, updateProject)
+    return this.projectService.updateProjectById(
+      id,
+      updateProject,
+      reqUser.userId
+    )
   }
 
-  @Delete('delete/:id')
+  @Delete(':id')
   @ResponseMessage('Delete project successfully')
-  async deleteProjectById(@Param('id', ParseIntPipe) id: number) {
-    return this.projectService.deleteProjectById(id)
+  async deleteProjectById(
+    @Param('id', ParseIntPipe) projectId: number,
+    @ReqUser() reqUser: JwtPayload
+  ) {
+    return this.projectService.deleteProjectById(projectId, reqUser.userId)
   }
 }
