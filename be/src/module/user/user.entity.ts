@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { Role } from '../role/role.entity'
-import { Team } from '../team/team.entity'
 import { Project } from '../project/project.entity'
 
 export enum Status {
@@ -46,10 +45,6 @@ export class User {
   @ManyToOne(() => Role, (role) => role.id)
   @JoinColumn({ name: 'role' })
   role: Role
-
-  @ManyToOne(() => Team, (team) => team.users, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'team' })
-  team: Team
 
   @OneToMany(() => Project, (project) => project.creator)
   projects: Project[]

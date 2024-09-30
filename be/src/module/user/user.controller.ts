@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { Response } from 'src/utils/response'
@@ -20,9 +21,10 @@ import { ReqUser } from 'src/decorators/user.decorator'
 import { JwtPayload } from '../auth/interface/jwt.payload'
 import { Authorization } from 'src/decorators/authorization.decorator'
 import { actionEnum } from '../permission/permission.entity'
+import { RessponseMessage } from 'src/decorators/response.message.decorator'
 
 @Controller('user')
-@Authentication()
+// @Authentication()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -113,5 +115,12 @@ export class UserController {
     } catch (e) {
       throw e
     }
+  }
+
+  @Get('/demo/demo')
+  @RessponseMessage("Login successful")
+  async getDemo() {
+    throw new UnauthorizedException('Unauthorization')
+    return 1
   }
 }

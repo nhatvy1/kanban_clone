@@ -5,7 +5,6 @@ import typeormConfig from './database/typeorm.config'
 import { UserModule } from './module/user/user.module'
 import { RoleModule } from './module/role/role.module'
 import { PermissionModule } from './module/permission/permission.module'
-import { TeamModule } from './module/team/team.module'
 import { AuthModule } from './module/auth/auth.module'
 import { ProjectModule } from './module/project/project.module'
 @Module({
@@ -17,11 +16,10 @@ import { ProjectModule } from './module/project/project.module'
     UserModule,
     AuthModule,
     RoleModule,
-    // ProjectModule,
+    ProjectModule,
     PermissionModule,
-    TeamModule
   ],
   controllers: [],
-  providers: [{ provide: 'PORT', useValue: 5000 }]
+  providers: [{ provide: 'PORT', useValue:  5000 }]
 })
 export class AppModule {}
