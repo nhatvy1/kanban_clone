@@ -1,13 +1,14 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException
+  NotFoundException,
+  OnModuleInit
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Status, User } from './user.entity'
 import { ILike, In, Repository } from 'typeorm'
 import { RegisterDto } from '../auth/dto/register.dto'
-import { role } from '../role/role.entity'
+import { ROLE_DEFAULT } from '../role/role.entity'
 import { RoleService } from '../role/role.service'
 import { Hash } from 'src/utils/hash'
 import { UpdateUserDto } from './dto/update.user.dto'
@@ -17,12 +18,33 @@ import { PermissionService } from '../permission/permission.service'
 import { mapPermission } from 'src/utils/permission'
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly roleService: RoleService,
     private readonly permissionService: PermissionService
   ) {}
+
+  async onModuleInit() {
+    // await this.roleService.initRole()
+    // const checkUserAdmin = await this.userRepository.findOneBy({
+    //   email: 'admin@gmail.com'
+    // })
+    // if(!checkUserAdmin) {
+    //   const hashPassword = Hash.generateHash('1')
+    //   const roleAdmin = await this.roleService.getRoleByName(ROLE_DEFAULT.ADMIN)
+    //   const dataNewUser = {
+    //     email: 'admin@gmail.com',
+    //     fullName: 'Super Admin',
+    //     password: hashPassword,
+    //     role: roleAdmin,
+    //     status: 1
+    //   }
+    //   const newUser = this.userRepository.create(dataNewUser)
+    //   await this.userRepository.save(newUser)
+    // }
+    console.log('init')
+  }
 
   async checkEmail(email: string) {
     try {
@@ -50,7 +72,7 @@ export class UserService {
         user.role.id
       )
       const permissions = mapPermission(findPermission)
-      return { ...user, permissions}
+      return { ...user, permissions }
     } catch (e) {
       throw e
     }
@@ -65,7 +87,9 @@ export class UserService {
         throw new ConflictException('Email address is already registered')
       }
       const hashPassword = Hash.generateHash(createUser.password)
-      const roleCustomer = await this.roleService.getRoleByName(role.USER)
+      const roleCustomer = await this.roleService.getRoleByName(
+        ROLE_DEFAULT.USER
+      )
 
       const dataUser = {
         ...createUser,
@@ -83,26 +107,22 @@ export class UserService {
   }
 
   async getUserById(id: number) {
-    try {
-      const user = await this.userRepository.findOneBy({ id })
-      if (!user) {
-        throw new NotFoundException('User not found')
-      }
-      return user
-    } catch (e) {
-      throw e
+    const user = await this.userRepository.findOneBy({ id })
+    if (!user) {
+      throw new NotFoundException('User not found')
     }
+    return user
   }
 
   async getUserByArrayId(users: number[], filter?: any) {
     try {
       const listUsers = await this.userRepository.find({
         where: {
-          id: In(users),
+          id: In(users)
         }
       })
       return listUsers
-    } catch(e) {
+    } catch (e) {
       throw e
     }
   }
@@ -180,7 +200,9 @@ export class UserService {
       }
 
       const hashPassword = Hash.generateHash(createUser.password)
-      const roleCustomer = await this.roleService.getRoleByName(role.USER)
+      const roleCustomer = await this.roleService.getRoleByName(
+        ROLE_DEFAULT.USER
+      )
       const status = Status[createUser.status] ?? Status.BLOCK
 
       const dataNewUser = {
@@ -209,7 +231,7 @@ export class UserService {
         user.role.id
       )
       const permissions = mapPermission(findPermission)
-      return { ...user, permissions}
+      return { ...user, permissions }
     } catch (e) {
       throw e
     }

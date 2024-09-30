@@ -6,56 +6,46 @@ import {
   OnModuleInit
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { role, Role } from './role.entity'
+import { ROLE_DEFAULT, Role } from './role.entity'
 import { Repository } from 'typeorm'
 import { PermissionService } from '../permission/permission.service'
 import { actionEnum } from '../permission/permission.entity'
-import { Response } from 'src/utils/response'
 import { UpdateRoleDto } from './dto/update.role.dto'
 import { CreateRoleDto } from './dto/create.role.dto'
 
 @Injectable()
-export class RoleService implements OnModuleInit {
+export class RoleService {
   constructor(
     @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     private readonly permissionService: PermissionService
   ) {}
 
-  async onModuleInit() {
-    try {
-      const checkRoleUser = await this.roleRepository.findOneBy({
-        slug: role.USER
+  async initRole() {
+    const checkRoleUser = await this.roleRepository.findOneBy({
+      slug: ROLE_DEFAULT.USER
+    })
+    if (!checkRoleUser) {
+      const user = this.roleRepository.create({
+        name: 'Người dùng',
+        slug: ROLE_DEFAULT.USER
       })
-      if (!checkRoleUser) {
-        const user = this.roleRepository.create({
-          name: 'Người dùng',
-          slug: role.USER
-        })
-        await this.roleRepository.save(user)
-      }
+      await this.roleRepository.save(user)
+    }
 
-      const checkRoleAdmin = await this.roleRepository.findOneBy({
-        slug: role.ADMIN
+    const checkRoleAdmin = await this.roleRepository.findOneBy({
+      slug: ROLE_DEFAULT.ADMIN
+    })
+    if (!checkRoleAdmin) {
+      const admin = this.roleRepository.create({
+        name: 'Quản trị viên',
+        slug: ROLE_DEFAULT.ADMIN
       })
-      if (!checkRoleAdmin) {
-        const admin = this.roleRepository.create({
-          name: 'Quản trị viên',
-          slug: role.ADMIN
-        })
-        await this.roleRepository.save(admin)
-        await this.permissionService.createPermission({
-          subject: 'all',
-          action: actionEnum.MANAGE,
-          role: admin
-        })
-      }
-
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK
+      await this.roleRepository.save(admin)
+      await this.permissionService.createPermission({
+        subject: 'all',
+        action: actionEnum.MANAGE,
+        role: admin
       })
-    } catch (e) {
-      throw e
     }
   }
 
@@ -119,8 +109,16 @@ export class RoleService implements OnModuleInit {
     try {
       const listRoles = await this.roleRepository.find()
       return listRoles
-    } catch(e) {
+    } catch (e) {
       throw e
     }
+  }
+
+  checkRoleName(name: string) {
+    return this.roleRepository.findOne({
+      where: {
+        name
+      }
+    })
   }
 }

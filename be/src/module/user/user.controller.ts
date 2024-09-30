@@ -3,16 +3,13 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
   Put,
   Query,
-  UnauthorizedException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
-import { Response } from 'src/utils/response'
 import { UpdateUserDto } from './dto/update.user.dto'
 import { FilterUserDto } from './dto/search.user.dto'
 import { CreateUserDto } from './dto/create.user.dto'
@@ -30,97 +27,47 @@ export class UserController {
 
   @Post('')
   @Authorization('user', actionEnum.CREATE)
-  async createUser(@Body() body: CreateUserDto) {
-    try {
-      const result = await this.userService.createUser(body)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+  @RessponseMessage('Create user successfully')
+  createUser(@Body() body: CreateUserDto) {
+    return this.userService.createUser(body)
   }
 
   @Get()
   @Authorization('user', actionEnum.READ)
+  @RessponseMessage('Get list user successfully')
   async getListUser(@Query() filterUser: FilterUserDto) {
-    try {
-      const result = await this.userService.getUsers(filterUser)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+    return this.userService.getUsers(filterUser)
+  }
+
+  @Get('/profile')
+  @RessponseMessage('Get profile successfully')
+  getProfile() {
+    const user = 213
+    return 11
   }
 
   @Get(':id')
-  async getUserById(@Param('id', ParseIntPipe) id: number) {
-    try {
-      const result = await this.userService.getUserById(id)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+  @RessponseMessage('success')
+  getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUserById(id)
   }
 
   @Delete(':id')
-  async deleteUserById(@Param('id', ParseIntPipe) id: number) {
-    try {
-      const result = await this.userService.getUserById(id)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+  deleteUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUserById(id)
   }
 
   @Put(':id')
-  async updateUserById(
+  @RessponseMessage('Update user successfully')
+  updateUserById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto
   ) {
-    try {
-      const result = await this.userService.updateUserDto(id, updateUserDto)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result: result
-      })
-    } catch (e) {
-      throw e
-    }
+    return this.userService.updateUserDto(id, updateUserDto)
   }
 
   @Get('get/role-permission')
-  async getUserRolePermission(@ReqUser() reqUser: JwtPayload) {
-    try {
-      const result = await this.userService.getUserRolePermission(reqUser.userId)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
-  }
-
-  @Get('/demo/demo')
-  @RessponseMessage("Login successful")
-  async getDemo() {
-    throw new UnauthorizedException('Unauthorization')
-    return 1
+  getUserRolePermission(@ReqUser() reqUser: JwtPayload) {
+    return this.userService.getUserRolePermission(reqUser.userId)
   }
 }

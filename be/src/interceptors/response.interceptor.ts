@@ -52,7 +52,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
 
     return {
       statusCode,
-      data: res,
+      data: res
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Permission } from "../permission/permission.entity"
 
-export const role =  {
+export const ROLE_DEFAULT =  {
   USER: 'user',
   ADMIN: 'admin'
 }

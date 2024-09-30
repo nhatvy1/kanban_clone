@@ -1,7 +1,8 @@
-import { NestFactory, Reflector } from '@nestjs/core'
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { TransformInterceptor } from './transforms/transform.interceptor'
+import { AllExceptionsFilter } from './interceptors/all-exception.filter'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -12,8 +13,10 @@ async function bootstrap() {
   })
 
   const reflector = app.get(Reflector);
+  const httpAdapterHost = app.get(HttpAdapterHost);
 
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
   app.setGlobalPrefix('api/v1')
 
