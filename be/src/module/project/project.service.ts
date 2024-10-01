@@ -83,4 +83,8 @@ export class ProjectService {
       throw e
     }
   }
+
+  getProjectById(projectId: number) {
+    return this.projectRepository.findOneBy({ id: projectId })
+  }
 }
