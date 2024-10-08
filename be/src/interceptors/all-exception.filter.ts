@@ -10,19 +10,31 @@ import {
 export class AllExceptionsFilter implements ExceptionFilter {
   // private readonly logger = new Logger(AllExceptionsFilter.name);
 
-
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse()
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR
-
-    response.status(status).json({
-      statusCode: status,
-      message: exception.message,
-    })
+    if(exception instanceof HttpException) {
+      const status = exception.getStatus()
+      const errorResponse = {
+        statusCode: status,
+        message: exception.getResponse()
+      }
+      response.status(status).json(errorResponse.message)
+    } else if (exception instanceof HttpException) {
+      const status = exception.getStatus()
+      const errorResponse = {
+        statusCode: status,
+        message: exception.message
+      }
+      response.status(status).json(errorResponse)
+    } else {
+      const status = HttpStatus.INTERNAL_SERVER_ERROR
+      const errorResponse = {
+        statusCode: status,
+        message: exception?.message
+      }
+      response.status(status).json(errorResponse)
+    }
   }
 }
