@@ -9,6 +9,7 @@ import { Repository } from 'typeorm'
 import { CreateProjectDto } from './dto/create.projectd.dto'
 import { UserService } from '../user/user.service'
 import { UpdateProjectDto } from './dto/update.project.dto'
+import { DeleteProjectDto } from './dto/delete.project.dto'
 
 @Injectable()
 export class ProjectService {
@@ -20,9 +21,6 @@ export class ProjectService {
 
   async createProject(userId: number, createProject: CreateProjectDto) {
     const user = await this.userService.getUserById(userId)
-    if (!user) {
-      throw new NotFoundException('User not found')
-    }
 
     const newProject = this.projectRepository.create({
       ...createProject,
@@ -43,9 +41,6 @@ export class ProjectService {
         creator: { id: userId }
       }
     })
-    if (!project) {
-      throw new NotFoundException('Project not found')
-    }
 
     for (const key of Object.keys(updateProject)) {
       project[key] = updateProject[key]
@@ -54,37 +49,37 @@ export class ProjectService {
     return project
   }
 
-  async deleteProjectById(projectId: number, userId: number) {
-    try {
-      const project = await this.projectRepository.findOne({
-        where: {
-          id: projectId,
-          creator: { id: userId }
-        }
-      })
-      if (!project) {
-        throw new NotFoundException('Project not found')
-      }
-
-      await this.projectRepository.remove(project)
-      return project
-    } catch (e) {
-      throw e
-    }
+  async deleteProjectById(deleteProject: DeleteProjectDto) {
+    await this.projectRepository.delete(deleteProject.id)
+    return deleteProject.id
   }
 
   async getAllProjectByUser(id: number) {
-    try {
-      return this.projectRepository.find({
-        where: { creator: { id: id } },
-        relations: ['creator']
-      })
-    } catch (e) {
-      throw e
-    }
+    return this.projectRepository.find({
+      where: { creator: { id: id } },
+      relations: ['creator']
+    })
   }
 
-  getProjectById(projectId: number) {
-    return this.projectRepository.findOneBy({ id: projectId })
+  async checkProjectNameByUser(projectName: string, userId: number) {
+    return this.projectRepository.findOne({
+      where: {
+        name: projectName,
+        creator: { id: userId }
+      }
+    })
+  }
+
+  getProjectUserById(projectId: number, userId: number) {
+    return this.projectRepository.findOne({
+      where: {
+        id: projectId,
+        creator: { id: userId }
+      }
+    })
+  }
+
+  getProjectById(id: number) {
+    return this.projectRepository.findOneBy({ id })
   }
 }

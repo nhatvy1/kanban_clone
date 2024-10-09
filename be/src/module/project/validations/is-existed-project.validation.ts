@@ -1,4 +1,3 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
 import {
   registerDecorator,
   ValidationArguments,
@@ -8,10 +7,11 @@ import {
 } from 'class-validator'
 import { ProjectService } from '../project.service'
 import { UserService } from 'src/module/user/user.service'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 @ValidatorConstraint({ async: true })
 @Injectable()
-export class IsNotExistedProjectNameConstraint
+export class IsExistedProjectConstraint
   implements ValidatorConstraintInterface
 {
   constructor(
@@ -20,34 +20,30 @@ export class IsNotExistedProjectNameConstraint
   ) {}
 
   async validate(
-    value: string,
+    id: number,
     validationArguments?: ValidationArguments
   ): Promise<boolean> {
     const userId = (validationArguments.object as any).userId
-    console.log(validationArguments)
     const user = await this.userService.getUserById(userId)
-    if(!user) throw new BadRequestException('User not found')
+    if (!user) throw new BadRequestException('User not found')
 
-    const project = await this.projectService.checkProjectNameByUser(
-      value,
-      userId
-    )
-    if (project) throw new BadRequestException('Project name already exists')
+    const project = await this.projectService.getProjectUserById(id, userId)
+    if (!project) throw new BadRequestException('Project not found')
 
     return true
   }
   defaultMessage?(validationArguments?: ValidationArguments): string {
-    throw new Error('Project name already exists or user not found')
+    throw new Error('project not found or user not found')
   }
 }
 
-export function IsNotExistedProjectName(validationOptions?: ValidationOptions) {
+export function IsExistedProject(validationOptions?: ValidationOptions) {
   return (object: object, propertyName: string) => {
     registerDecorator({
       target: object.constructor,
       propertyName,
       options: validationOptions,
-      validator: IsNotExistedProjectNameConstraint
+      validator: IsExistedProjectConstraint
     })
   }
 }

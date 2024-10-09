@@ -6,7 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put
+  Put,
 } from '@nestjs/common'
 import { ProjectService } from './project.service'
 import { Authentication } from 'src/decorators/authentication.decorator'
@@ -15,6 +15,8 @@ import { JwtPayload } from '../auth/interface/jwt.payload'
 import { CreateProjectDto } from './dto/create.projectd.dto'
 import { UpdateProjectDto } from './dto/update.project.dto'
 import { ResponseMessage } from 'src/decorators/response.message.decorator'
+import { InjectUserId } from 'src/decorators/inject.user.id.decorator'
+import { DeleteProjectDto } from './dto/delete.project.dto'
 
 @Controller('project')
 @Authentication()
@@ -23,6 +25,7 @@ export class ProjectController {
 
   @Post('')
   @ResponseMessage('Create project successfully')
+  @InjectUserId()
   async createProject(
     @ReqUser() reqUser: JwtPayload,
     @Body() createProject: CreateProjectDto
@@ -38,6 +41,7 @@ export class ProjectController {
 
   @Put(':id')
   @ResponseMessage('Update project successfully')
+  @InjectUserId()
   async updateProjectById(
     @Param('id', ParseIntPipe) id: number,
     @ReqUser() reqUser: JwtPayload,
@@ -50,12 +54,10 @@ export class ProjectController {
     )
   }
 
-  @Delete(':id')
+  @Delete('')
   @ResponseMessage('Delete project successfully')
-  async deleteProjectById(
-    @Param('id', ParseIntPipe) projectId: number,
-    @ReqUser() reqUser: JwtPayload
-  ) {
-    return this.projectService.deleteProjectById(projectId, reqUser.userId)
+  @InjectUserId()
+  async deleteProjectById(@Body() deleteProject: DeleteProjectDto) {
+    return this.projectService.deleteProjectById(deleteProject)
   }
 }
