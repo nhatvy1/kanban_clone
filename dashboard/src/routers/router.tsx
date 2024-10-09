@@ -1,21 +1,21 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
-import ErrorPage from '@/pages/error/error.page'
-import AuthorizationRoute from '@/providers/authorization.route'
-import NotAccessPage from '@/pages/not-access-page/not.access.page'
-const LoginRoute = lazy(() => import('@/providers/login.route'))
+import ErrorPage from '@/pages/error/ErrorPage'
+import AuthorizationRoute from '@/providers/AuthorizationRoute'
+import NotAccessPage from '@/pages/not-access-page/NotAccessPage'
+const Layout = lazy (()=> import ('@/components/layout/layout'))
+const LoginRoute = lazy(() => import('@/providers/LoginRoute'))
 const ProjectManagementPage = lazy(
-  () => import('@/pages/project-management/project.management')
+  () => import('@/pages/project-management/ProjectManagementPage')
 )
-const Authentication = lazy(() => import('@/providers/authentication.route'))
-const Layout = lazy(() => import('@/components/layout/layout'))
-const LoginPage = lazy(() => import('@/pages/login/login.page'))
-const SkeletonPage = lazy(() => import('@/components/skeleton/skeleton.page'))
+const Authentication = lazy(() => import('@/providers/AuthenticationRoute'))
+const LoginPage = lazy(() => import('@/pages/login/LoginPage'))
+const SkeletonPage = lazy(() => import('@/components/skeleton/SkeletonPage'))
 const UserManagementPage = lazy(
-  () => import('@/pages/user-management/user.management.page')
+  () => import('@/pages/user-management/UserManagementPage')
 )
 const TeamManagementPage = lazy(
-  () => import('@/pages/team-managment/team.management.page')
+  () => import('@/pages/team-managment/TeamManagementPage')
 )
 
 const router = createBrowserRouter([

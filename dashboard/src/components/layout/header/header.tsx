@@ -1,6 +1,6 @@
-import ButtonHideSidebar from '../sidebar/button.hide.sidebar'
-import ModeColor from './mode.color'
-import UserDropdown from './user.dropdown'
+import ButtonHideSidebar from '../sidebar/BtnHideSidebar'
+import ModeColor from './ModeColor'
+import UserDropdown from './UserDropdown'
 
 const Header = () => {
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import MenuTitle from './menu.title'
-import NavItem from './nav.item'
+import MenuTitle from './MenuTitle'
+import NavItem from './NavItem'
 import { RootState } from '@/redux/store'
 import { useSelector } from 'react-redux'
 import { LIST_NAV_ITEM } from './data.sidebar'

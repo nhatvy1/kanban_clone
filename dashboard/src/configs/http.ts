@@ -103,11 +103,13 @@ class Http {
 
     switch (status) {
       case StatusCode.InternalServerError: {
-        toast.info('Internal server error')
+        // toast.info('Internal server error')
+        console.log(StatusCode.InternalServerError)
         break
       }
       case StatusCode.Forbidden: {
-        toast.info(`You don't access to api`)
+        console.log(StatusCode.Forbidden)
+        // toast.info(`You don't access to api`)
         break
       }
       case StatusCode.Unauthorized: {
