@@ -1,1 +1,0 @@
-https://gitlab.com/public-starter-projects1/03-nextjs-hot-topic-for-youtube/nextjs-hot-topic-starter/-/blob/final/src/actions/index.ts

@@ -1,16 +1,31 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import CssBaseline from '@mui/material/CssBaseline'
 import './index.css'
-import theme from './theme/theme.ts'
-import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles'
+import { NextUIProvider } from '@nextui-org/react'
+import { Provider } from 'react-redux'
+import { store } from './redux/store.ts'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <CssVarsProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </CssVarsProvider>
-  </React.StrictMode>
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Provider store={store}>
+      <NextUIProvider>
+        <App />
+        <ToastContainer
+          position='top-right'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
+      </NextUIProvider>
+    </Provider>
+  </StrictMode>
 )
