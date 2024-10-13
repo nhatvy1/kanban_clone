@@ -1,22 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import ErrorPage from '@/pages/error/ErrorPage'
-import AuthorizationRoute from '@/providers/AuthorizationRoute'
-const Layout = lazy (()=> import ('@/components/layout/layout'))
-
-const Authentication = lazy(() => import('@/providers/AuthenticationRoute'))
+import SkeletonPage from '@/components/skeleton/SkeletonPage'
+const LoginRoute = lazy(()=> import('@/providers/LoginRoute'))
+const HomePage = lazy(()=> import('@/pages/home-page'))
 const LoginPage = lazy(() => import('@/pages/login/LoginPage'))
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      // <Suspense fallback={<SkeletonPage />}>
-      //   <Authentication>
-          <Layout />
-      //   </Authentication>
-      // </Suspense>
-    ),
+    element: <HomePage />,
     children: [
     ]
   },

@@ -1,4 +1,4 @@
-const {nextui} = require("@nextui-org/react");
+const { nextui } = require('@nextui-org/react')
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -10,7 +10,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        login: 'url(/bg-login.jpg)'
+        login: 'url(/bg-login.jpg)',
+        hero: 'url(/home-page/banner-home.png)',
       },
       backgroundColor: {
         'over-lay': 'linear-gradient(to right, #364574, #405189)',
@@ -25,10 +26,10 @@ export default {
         'sidebar-close': '80px'
       },
       height: {
-        'header': '70px'
+        header: '70px'
       },
       boxShadow: {
-        'header': '0 1px 2px rgba(56, 65, 74, .15)'
+        header: '0 1px 2px rgba(56, 65, 74, .15)'
       }
     }
   },
