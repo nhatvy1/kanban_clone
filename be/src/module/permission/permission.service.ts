@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { actionEnum, Permission } from './permission.entity'
+import { ActionEnum, Permission } from './permission.entity'
 import { Repository } from 'typeorm'
 import { Role } from '../role/role.entity'
 
@@ -17,7 +17,7 @@ export class PermissionService {
     role
   }: {
     subject: string
-    action: actionEnum
+    action: ActionEnum
     role: Role
   }) {
     try {

@@ -1,6 +1,5 @@
 import {
   ConflictException,
-  HttpStatus,
   Injectable,
   NotFoundException,
   OnModuleInit
@@ -9,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { ROLE_DEFAULT, Role } from './role.entity'
 import { Repository } from 'typeorm'
 import { PermissionService } from '../permission/permission.service'
-import { actionEnum } from '../permission/permission.entity'
+import { ActionEnum } from '../permission/permission.entity'
 import { UpdateRoleDto } from './dto/update.role.dto'
 import { CreateRoleDto } from './dto/create.role.dto'
 
@@ -43,75 +42,79 @@ export class RoleService {
       await this.roleRepository.save(admin)
       await this.permissionService.createPermission({
         subject: 'all',
-        action: actionEnum.MANAGE,
+        action: ActionEnum.MANAGE,
         role: admin
       })
     }
   }
 
   async createRole(createRole: CreateRoleDto) {
-    try {
-      const { name, slug, permissions } = createRole
-      const checkRole = await this.roleRepository.findOne({
-        where: {
-          slug: createRole.slug
-        }
+    const { name, slug, permissions } = createRole
+    const checkRole = await this.roleRepository.findOne({
+      where: {
+        slug: createRole.slug
+      }
+    })
+    if (checkRole) {
+      throw new ConflictException('Role existed')
+    }
+
+    const result = this.roleRepository.create({ name, slug })
+    const role = await this.roleRepository.save(result)
+
+    for (const subject of Object.keys(permissions)) {
+      permissions[subject].forEach((action: ActionEnum) => {
+        this.permissionService.createPermission({ action, subject, role })
       })
-      if (checkRole) {
-        throw new ConflictException('Role existed')
-      }
+    }
+    return role
+  }
 
-      const result = this.roleRepository.create({ name, slug })
-      const role = await this.roleRepository.save(result)
+  async updateRole(id: number, { name, slug, permissions }: UpdateRoleDto) {
+    const result = await this.roleRepository.findOne({
+      where: { id },
+      relations: { permission: true }
+    })
 
-      for (const subject of Object.keys(permissions)) {
-        permissions[subject].forEach((action: actionEnum) => {
-          this.permissionService.createPermission({ action, subject, role })
+    let permissionCurrent = [...result.permission]
+
+    for (const subject of Object.keys(permissions)) {
+      permissions[subject].forEach((action: ActionEnum) => {
+        this.permissionService.createPermission({
+          action,
+          subject,
+          role: result
         })
-      }
-
-      return role
-    } catch (e) {
-      throw e
+        permissionCurrent = permissionCurrent.filter(
+          (p) => !(p.action === action && p.subject === subject)
+        )
+      })
     }
+
+    permissionCurrent.forEach(async (permission) => {
+      result.permission = result.permission.filter(
+        (p) => p.id !== permission.id
+      )
+      await this.roleRepository.save(result)
+    })
+
+    return result
   }
 
-  async updateRole(id: number, updateRole: UpdateRoleDto) {
-    try {
-      return 1
-    } catch (e) {
-      throw e
-    }
-  }
-
-  async getRoleById(id: number) {
-    try {
-      const role = await this.roleRepository.findOneBy({ id })
-      return role
-    } catch (e) {
-      throw e
-    }
+  getRoleById(id: number) {
+    return this.roleRepository.findOneBy({ id })
   }
 
   async getRoleByName(name: string) {
-    try {
-      const role = await this.roleRepository.findOneBy({ slug: name })
-      if (!name) {
-        throw new NotFoundException('Role not found')
-      }
-      return role
-    } catch (e) {
-      throw e
+    const role = await this.roleRepository.findOneBy({ slug: name })
+    if (!name) {
+      throw new NotFoundException('Role not found')
     }
+    return role
   }
 
   async getRole() {
-    try {
-      const listRoles = await this.roleRepository.find()
-      return listRoles
-    } catch (e) {
-      throw e
-    }
+    return this.roleRepository.find()
   }
 
   checkRoleName(name: string) {
