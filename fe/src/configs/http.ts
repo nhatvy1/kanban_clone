@@ -29,7 +29,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: 'http://localhost:5000/api/v1/',
+      baseURL: 'http://localhost:5000/api/',
       headers,
       withCredentials: true
     })

@@ -9,9 +9,7 @@ const initial_state_localstorage = (key: string) => {
 interface AuthSliceState {
   accessToken: string | null
   refreshToken: string | null
-  role: string | null
-  permissions: { [key: string]: string[] } | null
-  user: any
+  user: IUser | null | undefined
   loading: boolean
 }
 
@@ -24,8 +22,6 @@ interface PayloadLogin {
 const initialState: AuthSliceState = {
   accessToken: initial_state_localstorage('accessToken'),
   refreshToken: initial_state_localstorage('refreshToken'),
-  role: initial_state_localstorage('role'),
-  permissions: initial_state_localstorage('permissions'),
   user: initial_state_localstorage('user'),
   loading: false
 }
@@ -36,27 +32,19 @@ const authSlice = createSlice({
   reducers: {
     handleLogout(state) {
       state.accessToken = null
-      state.permissions = null
-      state.role = null
       state.refreshToken = null
       state.user = null
 
       localStorage.removeItem('accessToken')
-      localStorage.removeItem('permissions')
-      localStorage.removeItem('role')
       localStorage.removeItem('refreshToken')
       localStorage.removeItem('user')
     },
     handleLogin(state, action: PayloadAction<PayloadLogin>) {
+      console.log(action.payload)
       state.accessToken = action.payload.access_token
       state.refreshToken = action.payload.refresh_token
-      state.role = action.payload.user.role.slug
-      state.user = {
-        fullName: action.payload.user?.fullName,
-        email: action.payload.user?.email
-      }
-      state.permissions = action.payload.user.permissions
-
+      state.user = action.payload.user
+      
       localStorage.setItem(
         'accessToken',
         JSON.stringify(action.payload.access_token)
@@ -64,14 +52,6 @@ const authSlice = createSlice({
       localStorage.setItem(
         'refreshToken',
         JSON.stringify(action.payload.refresh_token)
-      )
-      localStorage.setItem(
-        'role',
-        JSON.stringify(action.payload.user.role.slug)
-      )
-      localStorage.setItem(
-        'permissions',
-        JSON.stringify(action.payload.user.permissions)
       )
       localStorage.setItem(
         'user',

@@ -1,6 +1,7 @@
 export interface IUser {
   id: number
   email: string
+  fullName: string
   role: {
     id: number
     name: string

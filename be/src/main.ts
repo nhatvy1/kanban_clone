@@ -17,7 +17,7 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix('api')
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }))
   app.useGlobalInterceptors(new TransformInterceptor(reflector))

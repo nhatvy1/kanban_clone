@@ -6,23 +6,16 @@ import { RegisterDto } from './dto/register.dto';
 import { ReqUser } from 'src/decorators/user.decorator';
 import { JwtRefreshGuard } from 'src/guards/jwt.refresh.auth.guard';
 import { TokenVerify } from './interface/token';
+import { ResponseMessage } from 'src/decorators/response.message.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
+  @ResponseMessage('Login successfully')
   async login(@Body() loginDto: LoginDto) {
-    try {
-      const result = await this.authService.login(loginDto)
-      return Response({
-        message: 'Login successfully',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch(e) {
-      throw e
-    }
+    return this.authService.login(loginDto)
   }
 
   @Post('register')

@@ -10,9 +10,11 @@ interface Props {
 const Authentication = ({
   children
 }: Props) => {
-  const { accessToken, role } = useSelector(
+  const { accessToken } = useSelector(
     (state: RootState) => state.auth
   )
+
+  console.log(accessToken)
 
   if (!accessToken) {
     return <Navigate to='/login' replace />

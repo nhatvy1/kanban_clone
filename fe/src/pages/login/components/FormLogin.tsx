@@ -36,7 +36,7 @@ const FormLogin = () => {
         })
       )
       toast.success('Login successfully')
-      navigate('/')
+      navigate('/userworkspace')
     } catch (e: any) {
       console.log()
       toast.error(e?.message)
@@ -48,7 +48,7 @@ const FormLogin = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='max-w-[460px] flex flex-col gap-3 w-full rounded-md bg-white shadow-lg p-8'
+      className='max-w-[460px] flex flex-col gap-3 w-full rounded-md bg-white shadow-lg p-8 border'
     >
       <div>
         <p className='text-primary font-semibold text-center'>Welcome Back!</p>

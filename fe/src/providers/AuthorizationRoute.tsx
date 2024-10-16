@@ -10,7 +10,9 @@ interface Props {
 }
 
 const AuthorizationRoute = ({ children, module, permission }: Props) => {
-  const { permissions } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.auth)
+  const permissions = user?.permissions
+  
   if (permissions) {
     const hasAdmin =
       Object.keys(permissions).includes('all') &&

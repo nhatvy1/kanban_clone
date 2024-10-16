@@ -11,7 +11,7 @@ const LoginRoute = ({ children }: Props) => {
   const { accessToken } = useSelector((state: RootState) => state.auth)
 
   if (accessToken) {
-    return <Navigate to='/' />
+    return <Navigate to='/userworkspace' />
   }
   return children
 }
