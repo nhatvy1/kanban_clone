@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
-import { actionEnum } from 'src/module/permission/permission.entity'
+import { ActionEnum } from 'src/module/permission/permission.entity'
+import { ValidateEnumRole } from '../validations/validate.enum.role.validation'
 
 export class CreateRoleDto {
   @IsNotEmpty()
@@ -9,5 +10,6 @@ export class CreateRoleDto {
   slug: string
 
   @IsOptional()
-  permissions?: { [key: string]: actionEnum[] }
+  @ValidateEnumRole()
+  permissions?: { [key: string]: string[] }
 }

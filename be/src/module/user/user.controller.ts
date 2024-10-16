@@ -17,7 +17,7 @@ import { Authentication } from 'src/decorators/authentication.decorator'
 import { ReqUser } from 'src/decorators/user.decorator'
 import { JwtPayload } from '../auth/interface/jwt.payload'
 import { Authorization } from 'src/decorators/authorization.decorator'
-import { actionEnum } from '../permission/permission.entity'
+import { ActionEnum } from '../permission/permission.entity'
 import { ResponseMessage } from 'src/decorators/response.message.decorator'
 
 @Controller('user')
@@ -26,14 +26,14 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('')
-  @Authorization('user', actionEnum.CREATE)
+  @Authorization('user', ActionEnum.CREATE)
   @ResponseMessage('Create user successfully')
   createUser(@Body() body: CreateUserDto) {
     return this.userService.createUser(body)
   }
 
   @Get()
-  @Authorization('user', actionEnum.READ)
+  @Authorization('user', ActionEnum.READ)
   @ResponseMessage('Get list user successfully')
   async getListUser(@Query() filterUser: FilterUserDto) {
     return this.userService.getUsers(filterUser)

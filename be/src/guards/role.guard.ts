@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Observable } from 'rxjs'
-import { actionEnum } from 'src/module/permission/permission.entity'
+import { ActionEnum } from 'src/module/permission/permission.entity'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -16,7 +16,7 @@ export class RolesGuard implements CanActivate {
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const action = this.reflector.getAllAndOverride<actionEnum>('action', [
+    const action = this.reflector.getAllAndOverride<ActionEnum>('action', [
       context.getHandler(),
       context.getClass()
     ])
@@ -41,11 +41,11 @@ export class RolesGuard implements CanActivate {
 
     for (const key of Object.keys(permissions)) {
       permissions[key].map((item: any) => {
-        if (item === actionEnum.MANAGE && key === 'all') {
+        if (item === ActionEnum.MANAGE && key === 'all') {
           flag = true
         }
 
-        if (item === actionEnum.MANAGE && key === subject) {
+        if (item === ActionEnum.MANAGE && key === subject) {
           flag = true
         }
 

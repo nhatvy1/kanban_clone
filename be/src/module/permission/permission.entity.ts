@@ -1,12 +1,19 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from "../role/role.entity";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Role } from '../role/role.entity'
 
-export enum actionEnum {
+export enum ActionEnum {
   CREATE = 'create',
   READ = 'read',
   UPDATE = 'update',
   DELETE = 'delete',
-  MANAGE = 'manage',
+  MANAGE = 'manage'
+}
+
+export enum ModuleNameEnum {
+  ALL = 'all',
+  USER = 'user',
+  ROLE = 'role',
+  PROJECT = 'project'
 }
 
 @Entity()
@@ -17,9 +24,9 @@ export class Permission {
   @Column({ nullable: false, type: String })
   subject: string
 
-  @Column({ nullable: false, type: 'enum', enum: actionEnum })
-  action: actionEnum
+  @Column({ nullable: false, type: 'enum', enum: ActionEnum })
+  action: ActionEnum
 
-  @ManyToMany(()=> Role, (role)=> role.permission)
+  @ManyToMany(() => Role, (role) => role.permission)
   role: Role[]
 }

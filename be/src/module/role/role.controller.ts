@@ -14,15 +14,18 @@ import { UpdateRoleDto } from './dto/update.role.dto'
 import { CreateRoleDto } from './dto/create.role.dto'
 import { Authentication } from 'src/decorators/authentication.decorator'
 import { Authorization } from 'src/decorators/authorization.decorator'
-import { actionEnum } from '../permission/permission.entity'
+import { ActionEnum } from '../permission/permission.entity'
+import { CheckRoleDto } from './dto/CheckRoleDto'
+import { ResponseMessage } from 'src/decorators/response.message.decorator'
 
 @Controller('role')
-@Authentication()
+// @Authentication()
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Get('')
-  @Authorization('role', actionEnum.READ)
+  @ResponseMessage('Get role successfully')
+  @Authorization('role', ActionEnum.READ)
   async getRole() {
     try {
       const result = await this.roleService.getRole()
@@ -31,34 +34,22 @@ export class RoleController {
         statusCode: HttpStatus.OK,
         result
       })
-    } catch(e) {
-
-    }
+    } catch (e) {}
   }
 
   @Post()
-  async createRole(@Body() createRole: CreateRoleDto) {
-    try {
-      const result = await this.roleService.createRole(createRole)
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {
-      throw e
-    }
+  @ResponseMessage('Create role successfully')
+  createRole(@Body() createRole: CreateRoleDto) {
+    return createRole
+    return this.roleService.createRole(createRole)
   }
 
   @Put(':id')
+  @ResponseMessage('Update role successfully')
   updateRole(
-    @Param('id', ParseIntPipe) id: number,
+    @Param() role: CheckRoleDto,
     @Body() updateRole: UpdateRoleDto
   ) {
-    try {
-      const result = this.roleService.updateRole(id, updateRole)
-    } catch (e) {
-      throw e
-    }
+    return this.roleService.updateRole(role.id, updateRole)
   }
 }
