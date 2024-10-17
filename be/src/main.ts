@@ -19,11 +19,11 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api')
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true }))
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
   app.useGlobalInterceptors(new TransformInterceptor(reflector))
   app.useGlobalFilters(new AllExceptionsFilter())
 
-  const PORT = app.get('PORT') || 8080
+  const PORT = app.get('PORT') || 5000
   await app.listen(PORT, () => console.log(`App is running on port ${PORT}`))
 }
 bootstrap()

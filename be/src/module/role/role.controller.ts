@@ -9,7 +9,6 @@ import {
   Put
 } from '@nestjs/common'
 import { RoleService } from './role.service'
-import { Response } from 'src/utils/response'
 import { UpdateRoleDto } from './dto/update.role.dto'
 import { CreateRoleDto } from './dto/create.role.dto'
 import { Authentication } from 'src/decorators/authentication.decorator'
@@ -26,15 +25,8 @@ export class RoleController {
   @Get('')
   @ResponseMessage('Get role successfully')
   @Authorization('role', ActionEnum.READ)
-  async getRole() {
-    try {
-      const result = await this.roleService.getRole()
-      return Response({
-        message: 'success',
-        statusCode: HttpStatus.OK,
-        result
-      })
-    } catch (e) {}
+  getRole() {
+   return this.roleService.getRole()
   }
 
   @Post()

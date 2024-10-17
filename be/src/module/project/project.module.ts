@@ -5,15 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Project } from './project.entity'
 import { UserModule } from '../user/user.module'
 import { IsNotExistedProjectNameConstraint } from './validations/is-not-existed-project-name.validation'
-import { IsExistedProjectConstraint } from './validations/is-existed-project.validation'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Project]), UserModule],
   controllers: [ProjectController],
   providers: [
     ProjectService,
-    IsNotExistedProjectNameConstraint,
-    IsExistedProjectConstraint
+    IsNotExistedProjectNameConstraint
   ],
   exports: [ProjectService]
 })

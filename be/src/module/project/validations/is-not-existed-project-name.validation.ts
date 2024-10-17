@@ -24,7 +24,7 @@ export class IsNotExistedProjectNameConstraint
     validationArguments?: ValidationArguments
   ): Promise<boolean> {
     const userId = (validationArguments.object as any).userId
-    console.log(validationArguments)
+    console.log('Check userId: ', userId)
     const user = await this.userService.getUserById(userId)
     if(!user) throw new BadRequestException('User not found')
 

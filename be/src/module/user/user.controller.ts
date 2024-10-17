@@ -33,7 +33,7 @@ export class UserController {
   }
 
   @Get()
-  @Authorization('user', ActionEnum.READ)
+  // @Authorization('user', ActionEnum.READ)
   @ResponseMessage('Get list user successfully')
   async getListUser(@Query() filterUser: FilterUserDto) {
     return this.userService.getUsers(filterUser)

@@ -21,6 +21,16 @@ export class ProjectService {
 
   async createProject(userId: number, createProject: CreateProjectDto) {
     const user = await this.userService.getUserById(userId)
+    
+    const project = await this.projectRepository.findOne({
+      where: {
+        name: createProject.name,
+        creator: user
+      }
+    })
+    if(project) {
+      throw new ConflictException('Project already existed.')
+    }
 
     const newProject = this.projectRepository.create({
       ...createProject,
@@ -56,8 +66,7 @@ export class ProjectService {
 
   async getAllProjectByUser(id: number) {
     return this.projectRepository.find({
-      where: { creator: { id: id } },
-      relations: ['creator']
+      where: { creator: { id: id } }
     })
   }
 

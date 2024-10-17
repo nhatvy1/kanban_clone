@@ -1,11 +1,14 @@
-import { IsNotEmpty, IsOptional } from 'class-validator'
-import { IsNotExistedProjectName } from '../validations/is-not-existed-project-name.validation'
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import { TrimAllSpaces } from 'src/utils/trim-all-spaces'
 
 export class CreateProjectDto {
+  @TrimAllSpaces()
+  @IsString()
   @IsNotEmpty({ message: 'Please enter your project name' })
-  @IsNotExistedProjectName()
   name: string
 
+  @TrimAllSpaces()
+  @IsString()
   @IsOptional({ message: 'Please enter your project description' })
   description: string
 }
