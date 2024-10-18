@@ -1,0 +1,17 @@
+{
+  "name": "kanban",
+  "version": "1.0.0",
+  "description": "kanban",
+  "scripts": {
+    "build:be": "docker-compose build be",
+    "build:fe": "docker-compose build fe",
+    "build:admin": "docker-compose build admin",
+    "start:db": "docker-compose up postgres",
+    "start:be": "docker-compose up be --renew-anon-volumes",
+    "start:admin": "docker-compose up admin --renew-anon-volumes",
+    "start:fe": "docker-compose up fe --renew-anon-volumes",
+    "clean": "docker-compose down -v"
+  },
+  "author": "",
+  "license": "ISC"
+}

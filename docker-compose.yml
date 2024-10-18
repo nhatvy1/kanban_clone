@@ -1,0 +1,89 @@
+version: '3.9'
+
+networks:
+  kanban:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: postgresql
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - kanban
+    restart: unless-stopped
+
+  be: 
+    container_name: be
+    depends_on:
+      - postgres
+    build: 
+      context: ./be
+      dockerfile: Dockerfile.dev
+    restart: unless_stopped
+    env_file: ./env_file
+    ports: 
+      -"5000:5000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./be:/app
+      - /app/node_modules
+    networks:
+      - kanban
+
+  fe:
+    container_name: fe
+    depends_on:
+      - be
+    build: 
+      context: ./fe
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+    tty: true
+    volumes:
+      - ./fe:/app
+      - /app/node_modules
+      - /app/dist
+    networks:
+      - kanban
+  
+  admin:
+    container_name: admin
+    depends_on:
+      - be
+    build: 
+      context: ./admin
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - "3001:3001"
+    stdin_open: true
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+    tty: true
+    volumes:
+      - ./admin:/app
+      - /app/node_modules
+      - /app/dist
+    networks:
+      - kanban
+
+volumes:
+  postgres:
