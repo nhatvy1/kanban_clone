@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 networks:
   kanban:
@@ -13,24 +13,23 @@ services:
       POSTGRES_PASSWORD: 123456
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
       - "5433:5432"
     networks:
       - kanban
     restart: unless-stopped
 
-  be: 
+  be:
     container_name: be
     depends_on:
       - postgres
-    build: 
+    build:
       context: ./be
       dockerfile: Dockerfile.dev
     restart: unless_stopped
     env_file: ./env_file
-    ports: 
-      -"5000:5000"
+    ports: -"5000:5000"
     stdin_open: true
     tty: true
     volumes:
@@ -43,7 +42,7 @@ services:
     container_name: fe
     depends_on:
       - be
-    build: 
+    build:
       context: ./fe
       dockerfile: Dockerfile.dev
     restart: unless-stopped
@@ -61,12 +60,12 @@ services:
       - /app/dist
     networks:
       - kanban
-  
+
   admin:
     container_name: admin
     depends_on:
       - be
-    build: 
+    build:
       context: ./admin
       dockerfile: Dockerfile.dev
     restart: unless-stopped
